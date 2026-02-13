@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum SubmissionStatus {
+  PENDING
+  RUNNING
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enrollments     Enrollment[]
+  submissions     Submission[]
+  skillEmbeddings SkillEmbedding[]
+  createdCourses  Course[]         @relation("CourseInstructor")
+
+  @@map("users")
+}
+
+model Course {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  instructorId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  instructor  User         @relation("CourseInstructor", fields: [instructorId], references: [id])
+  enrollments Enrollment[]
+  problems    Problem[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId   String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+model Problem {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  difficulty  Difficulty @default(MEDIUM)
+  courseId     String?
+  tags        String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  course      Course?           @relation(fields: [courseId], references: [id])
+  testCases   TestCase[]
+  submissions Submission[]
+  embedding   ProblemEmbedding?
+
+  @@map("problems")
+}
+
+model TestCase {
+  id        String  @id @default(uuid())
+  problemId String
+  input     String
+  expected  String
+  isHidden  Boolean @default(false)
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@map("test_cases")
+}
+
+model Submission {
+  id        String           @id @default(uuid())
+  userId    String
+  problemId String
+  code      String
+  language  String
+  status    SubmissionStatus @default(PENDING)
+  output    String?
+  runtime   Int?
+  memory    Int?
+  createdAt DateTime         @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  @@map("submissions")
+}
+
+model ProblemEmbedding {
+  id        String   @id @default(uuid())
+  problemId String   @unique
+  embedding Float[]
+  updatedAt DateTime @updatedAt
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@map("problem_embeddings")
+}
+
+model SkillEmbedding {
+  id        String   @id @default(uuid())
+  userId    String
+  skillName String
+  embedding Float[]
+  score     Float    @default(0)
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, skillName])
+  @@map("skill_embeddings")
+}
