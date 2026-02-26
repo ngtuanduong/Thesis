@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: pgvector/pgvector:pg16
@@ -29,6 +27,36 @@ services:
     volumes:
       - redis_data:/data
 
+  backend:
+    image: node:20-slim
+    container_name: adaptive-learning-backend
+    working_dir: /app
+    ports:
+      - '3000:3000'
+      - '5555:5555'
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/adaptive_learning?schema=public
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      JWT_EXPIRATION: 7d
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PORT: 3000
+      NODE_ENV: development
+      AI_SERVICE_URL: http://ai-service:8000
+      AI_SERVICE_KEY: dev-secret-key
+      CLIENT_URL: http://localhost:5173
+    volumes:
+      - ../server:/app
+      - /app/node_modules
+      - /var/run/docker.sock:/var/run/docker.sock
+      - code_execution_temp:/tmp/code-execution
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    command: sh -c "apt-get update -qq && apt-get install -y -qq openssl procps docker.io && npm install && npx prisma generate && npm run start:dev"
+
   ai-service:
     build:
       context: ../ai-service
@@ -47,7 +75,24 @@ services:
       postgres:
         condition: service_healthy
 
+  # Prisma migration helper
+  prisma-migrate:
+    image: node:20-slim
+    container_name: adaptive-learning-prisma
+    working_dir: /app
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/adaptive_learning?schema=public
+    volumes:
+      - ../server:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "apt-get update && apt-get install -y openssl && npm install && npx prisma generate && npx prisma db push"
+    profiles:
+      - tools
+
 volumes:
   postgres_data:
   redis_data:
   model_cache:
+  code_execution_temp:

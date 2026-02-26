@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(server/.env << 'EOF'\n# Database\nDATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/adaptive_learning?schema=public\"\n\n# JWT\nJWT_SECRET=\"your-super-secret-jwt-key-change-in-production\"\nJWT_EXPIRATION=\"7d\"\n\n# Redis\nREDIS_HOST=\"localhost\"\nREDIS_PORT=6379\n\n# App\nPORT=3000\nNODE_ENV=\"development\"\n\n# AI Service\nAI_SERVICE_URL=\"http://localhost:8000\"\nAI_SERVICE_KEY=\"dev-secret-key\"\n\n# Client URL for CORS\nCLIENT_URL=\"http://localhost:5173\"\nEOF)",
+      "Bash(docker-compose ps:*)",
+      "Bash(npm run prisma:generate:*)",
+      "Bash(npm run prisma:migrate:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(docker exec:*)",
+      "Bash(docker-compose restart:*)",
+      "Bash(npx prisma db push:*)",
+      "Bash(docker-compose:*)",
+      "Bash([ -d \"node_modules\" ])",
+      "Bash(npm install:*)",
+      "Bash(npm run start:dev:*)",
+      "Bash(npm rebuild:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(docker build:*)",
+      "Bash(bash:*)",
+      "Bash(npx tsx:*)",
+      "Bash(docker top:*)"
+    ]
+  }
+}

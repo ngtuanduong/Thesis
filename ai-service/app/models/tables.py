@@ -44,7 +44,7 @@ class SubmissionStatus(str, enum.Enum):
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(UUID(as_uuid=False), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True)
     email = Column(String, unique=True, nullable=False)
     name = Column(String, nullable=False)
 
@@ -55,11 +55,11 @@ class User(Base):
 class Problem(Base):
     __tablename__ = "problems"
 
-    id = Column(UUID(as_uuid=False), primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True)
     title = Column(String, nullable=False)
     description = Column(Text, nullable=False)
-    difficulty = Column(Enum(Difficulty), nullable=False, default=Difficulty.MEDIUM)
-    course_id = Column("courseId", UUID(as_uuid=False), ForeignKey("courses.id"), nullable=True)
+    difficulty = Column(Enum(Difficulty, name="Difficulty", schema="public"), nullable=False, default=Difficulty.MEDIUM)
+    course_id = Column("courseId", UUID(as_uuid=True), ForeignKey("courses.id"), nullable=True)
     tags = Column(ARRAY(String), default=[])
     created_at = Column("createdAt", DateTime, server_default=func.now())
     updated_at = Column("updatedAt", DateTime, server_default=func.now(), onupdate=func.now())
@@ -71,12 +71,12 @@ class Problem(Base):
 class Submission(Base):
     __tablename__ = "submissions"
 
-    id = Column(UUID(as_uuid=False), primary_key=True)
-    user_id = Column("userId", UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
-    problem_id = Column("problemId", UUID(as_uuid=False), ForeignKey("problems.id"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True)
+    user_id = Column("userId", UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    problem_id = Column("problemId", UUID(as_uuid=True), ForeignKey("problems.id"), nullable=False)
     code = Column(Text, nullable=False)
     language = Column(String, nullable=False)
-    status = Column(Enum(SubmissionStatus), nullable=False, default=SubmissionStatus.PENDING)
+    status = Column(Enum(SubmissionStatus, name="SubmissionStatus", schema="public"), nullable=False, default=SubmissionStatus.PENDING)
     runtime = Column(Integer, nullable=True)
     memory = Column(Integer, nullable=True)
     created_at = Column("createdAt", DateTime, server_default=func.now())
@@ -88,8 +88,8 @@ class Submission(Base):
 class ProblemEmbedding(Base):
     __tablename__ = "problem_embeddings"
 
-    id = Column(UUID(as_uuid=False), primary_key=True)
-    problem_id = Column("problemId", UUID(as_uuid=False), ForeignKey("problems.id"), unique=True, nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True)
+    problem_id = Column("problemId", UUID(as_uuid=True), ForeignKey("problems.id"), unique=True, nullable=False)
     embedding = Column(ARRAY(Float))
     embedding_vec = Column(Vector(384))
     updated_at = Column("updatedAt", DateTime, server_default=func.now(), onupdate=func.now())
@@ -100,8 +100,8 @@ class ProblemEmbedding(Base):
 class SkillEmbedding(Base):
     __tablename__ = "skill_embeddings"
 
-    id = Column(UUID(as_uuid=False), primary_key=True)
-    user_id = Column("userId", UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True)
+    user_id = Column("userId", UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
     skill_name = Column("skillName", String, nullable=False)
     embedding = Column(ARRAY(Float))
     embedding_vec = Column(Vector(384))

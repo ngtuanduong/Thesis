@@ -24,12 +24,15 @@ class ProfileService:
         session: AsyncSession,
         user_id: str,
     ) -> list[dict]:
+        # Convert string UUID to UUID object
+        user_uuid = uuid.UUID(user_id)
+
         # Fetch accepted submissions with problem info
         result = await session.execute(
             select(Submission, Problem)
             .join(Problem, Submission.problem_id == Problem.id)
             .where(
-                Submission.user_id == user_id,
+                Submission.user_id == user_uuid,
                 Submission.status == SubmissionStatus.ACCEPTED,
             )
         )

@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
 }
 
 enum Role {
@@ -30,7 +32,7 @@ enum SubmissionStatus {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String   @id @default(uuid()) @db.Uuid
   email     String   @unique
   password  String
   name      String
@@ -47,10 +49,10 @@ model User {
 }
 
 model Course {
-  id           String   @id @default(uuid())
+  id           String   @id @default(uuid()) @db.Uuid
   title        String
   description  String?
-  instructorId String
+  instructorId String   @db.Uuid
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -62,9 +64,9 @@ model Course {
 }
 
 model Enrollment {
-  id        String   @id @default(uuid())
-  userId    String
-  courseId   String
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  courseId  String   @db.Uuid
   createdAt DateTime @default(now())
 
   user   User   @relation(fields: [userId], references: [id])
@@ -75,11 +77,11 @@ model Enrollment {
 }
 
 model Problem {
-  id          String     @id @default(uuid())
+  id          String     @id @default(uuid()) @db.Uuid
   title       String
   description String
   difficulty  Difficulty @default(MEDIUM)
-  courseId     String?
+  courseId    String?    @db.Uuid
   tags        String[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -93,8 +95,8 @@ model Problem {
 }
 
 model TestCase {
-  id        String  @id @default(uuid())
-  problemId String
+  id        String  @id @default(uuid()) @db.Uuid
+  problemId String  @db.Uuid
   input     String
   expected  String
   isHidden  Boolean @default(false)
@@ -105,9 +107,9 @@ model TestCase {
 }
 
 model Submission {
-  id        String           @id @default(uuid())
-  userId    String
-  problemId String
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  problemId String           @db.Uuid
   code      String
   language  String
   status    SubmissionStatus @default(PENDING)
@@ -123,10 +125,11 @@ model Submission {
 }
 
 model ProblemEmbedding {
-  id        String   @id @default(uuid())
-  problemId String   @unique
-  embedding Float[]
-  updatedAt DateTime @updatedAt
+  id           String                        @id @default(uuid()) @db.Uuid
+  problemId    String                        @unique @db.Uuid
+  embedding    Float[]
+  embeddingVec Unsupported("vector(384)")? @map("embedding_vec")
+  updatedAt    DateTime                      @updatedAt
 
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
@@ -134,12 +137,13 @@ model ProblemEmbedding {
 }
 
 model SkillEmbedding {
-  id        String   @id @default(uuid())
-  userId    String
-  skillName String
-  embedding Float[]
-  score     Float    @default(0)
-  updatedAt DateTime @updatedAt
+  id           String                        @id @default(uuid()) @db.Uuid
+  userId       String                        @db.Uuid
+  skillName    String
+  embedding    Float[]
+  embeddingVec Unsupported("vector(384)")? @map("embedding_vec")
+  score        Float                         @default(0)
+  updatedAt    DateTime                      @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 
