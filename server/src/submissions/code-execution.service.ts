@@ -29,15 +29,40 @@ export class CodeExecutionService {
   private readonly memoryLimit = '256m';
   private readonly cpuLimit = '0.5';
 
+  private get execEnv(): Record<string, string> {
+    return { ...process.env as Record<string, string> };
+  }
+
   async ensureSandboxImage(): Promise<void> {
+    try {
+      // Verify Docker is available and responsive
+      await execAsync('docker info', { env: this.execEnv });
+    } catch (error: any) {
+      const msg = error.message || '';
+      if (msg.includes('API version') || msg.includes('too old')) {
+        throw new Error(
+          'Docker API version mismatch. Your Docker CLI is too old for the Docker daemon. ' +
+          'Install a newer Docker CLI (v24+) or set DOCKER_API_VERSION to match your daemon.',
+        );
+      }
+      throw new Error(
+        'Docker is not available. Ensure Docker is installed and the daemon is running. ' +
+        `Details: ${msg}`,
+      );
+    }
+
     try {
       const { stdout } = await execAsync(
         `docker images -q ${this.sandboxImage}`,
+        { env: this.execEnv },
       );
       if (!stdout.trim()) {
         this.logger.log('Building sandbox Docker image...');
         const dockerfilePath = join(process.cwd(), '..', 'docker', 'sandbox');
-        await execAsync(`docker build -t ${this.sandboxImage} ${dockerfilePath}`);
+        await execAsync(
+          `docker build -t ${this.sandboxImage} ${dockerfilePath}`,
+          { env: this.execEnv },
+        );
         this.logger.log('Sandbox image built successfully');
       }
     } catch (error) {
@@ -122,8 +147,9 @@ export class CodeExecutionService {
         ${this.sandboxImage} \
         sh -c "echo '${codeBase64}' | base64 -d | timeout ${this.timeoutMs / 1000} python3"`;
 
-      const { stdout, stderr} = await execAsync(dockerCommand, {
+      const { stdout, stderr } = await execAsync(dockerCommand, {
         timeout: this.timeoutMs + 1000,
+        env: this.execEnv,
       });
 
       const runtime = Date.now() - startTime;
@@ -151,10 +177,14 @@ export class CodeExecutionService {
         };
       }
 
+      // Extract the meaningful error from stderr, stripping the docker command prefix
+      const stderr = error.stderr || '';
+      const cleanError = stderr.trim() || error.message.replace(/^Command failed:.*?\n?/, '').trim();
+
       return {
         status: SubmissionStatus.RUNTIME_ERROR,
-        output: '',
-        error: error.message,
+        output: cleanError,
+        error: cleanError,
       };
     } finally {
       // Cleanup

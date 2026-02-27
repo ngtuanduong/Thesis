@@ -20,7 +20,25 @@
       "Bash(docker build:*)",
       "Bash(bash:*)",
       "Bash(npx tsx:*)",
-      "Bash(docker top:*)"
+      "Bash(docker top:*)",
+      "Bash(lsof:*)",
+      "Bash(docker compose:*)",
+      "Bash(ls:*)",
+      "Bash(grep:*)",
+      "Bash(npm ls:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx vite:*)",
+      "Bash(xargs cat:*)",
+      "Bash(docker version:*)",
+      "Bash(echo DOCKER_API_VERSION=$DOCKER_API_VERSION:*)",
+      "Bash(docker run:*)",
+      "Bash(docker ps:*)",
+      "WebSearch",
+      "WebFetch(domain:cs.fit.edu)",
+      "WebFetch(domain:www.adaptemy.com)",
+      "WebFetch(domain:www.cs7.tf.fau.eu)",
+      "WebFetch(domain:pmc.ncbi.nlm.nih.gov)",
+      "Bash(wc:*)"
     ]
   }
 }

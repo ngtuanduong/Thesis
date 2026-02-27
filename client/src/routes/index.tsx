@@ -6,9 +6,15 @@ import Dashboard from '../pages/Dashboard';
 import Problems from '../pages/Problems';
 import ProblemDetail from '../pages/ProblemDetail';
 import Profile from '../pages/Profile';
+import { useMe } from '../api/queries/useAuth';
 
 function AppRoutes() {
-  const isAuthenticated = !!localStorage.getItem('token');
+  const { data: user, isLoading } = useMe();
+  const isAuthenticated = !!user;
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Routes>

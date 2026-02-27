@@ -1,14 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../axios';
-
-interface Problem {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  tags: string[];
-  courseId?: string;
-}
+import type { Problem } from '../../types';
 
 export function useProblems(courseId?: string) {
   return useQuery({

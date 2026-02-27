@@ -17,8 +17,12 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
+      // Don't redirect for the /auth/me check — let React Query handle it
+      const url = error.config?.url || '';
+      if (!url.includes('/auth/me')) {
+        localStorage.removeItem('token');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   },

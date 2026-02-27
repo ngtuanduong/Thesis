@@ -28,11 +28,13 @@ services:
       - redis_data:/data
 
   backend:
-    image: node:20-slim
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
     container_name: adaptive-learning-backend
     working_dir: /app
     ports:
-      - '3000:3000'
+      - '3333:3000'
       - '5555:5555'
     environment:
       DATABASE_URL: postgresql://postgres:postgres@postgres:5432/adaptive_learning?schema=public
@@ -49,13 +51,14 @@ services:
       - ../server:/app
       - /app/node_modules
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./sandbox:/docker/sandbox:ro
       - code_execution_temp:/tmp/code-execution
     depends_on:
       postgres:
         condition: service_healthy
       redis:
         condition: service_started
-    command: sh -c "apt-get update -qq && apt-get install -y -qq openssl procps docker.io && npm install && npx prisma generate && npm run start:dev"
+    command: sh -c "npm install && npx prisma generate && npm run start:dev"
 
   ai-service:
     build:
