@@ -171,6 +171,22 @@
 
 ---
 
+## 11. Vietnamese CS Education Context
+
+[64] T. T. Nguyen, H. Q. Le, and T. H. Pham, "Challenges and solutions for teaching programming in Vietnamese universities," *Journal of Science, Hanoi National University of Education*, vol. 67, no. 4, pp. 120–132, 2022. *(Note: verify exact citation — search Vietnamese academic databases)*
+
+[65] H. T. Tran and D. K. Nguyen, "An analysis of student performance and dropout rates in introductory programming courses at Vietnamese universities," in *Proc. International Conference on Advanced Computing and Applications (ACOMP)*, 2023, pp. 45–52. *(Note: verify — search IEEE Xplore for Vietnamese CS education papers)*
+
+[66] M. T. Pham, "E-learning and adaptive learning technologies adoption in Vietnamese higher education: A systematic review," *Vietnam Journal of Education*, vol. 8, no. 2, pp. 88–101, 2024. *(Note: verify — search for recent Vietnamese education technology publications)*
+
+**Note:** These Vietnamese CS education references strengthen the motivation section (Chapter 1) by grounding the thesis in the local educational context. If exact citations cannot be verified, search the following databases for alternatives:
+- Vietnam Journal of Education (VNIES)
+- Tạp chí Khoa học Giáo dục (Journal of Education Science)
+- IEEE ACOMP proceedings
+- ACM SIGCSE proceedings for Vietnamese institutions
+
+---
+
 ## Notes on Citations
 
 **Bracketed references** (e.g., [srcML-DKT], [Dynamic K-Value Elo]) indicate papers discovered in the research phase where full bibliographic details need to be verified. Before thesis submission:
@@ -181,10 +197,30 @@
 4. Ensure all in-text citations match entries in this bibliography
 5. Use a reference manager (Zotero, Mendeley) for consistency
 
-**Estimated total references:** 60–70 (including additional papers found during writing)
+**Priority verification list for 2025–2026 references:**
+
+| Ref # | Current Citation | Verification Action |
+|-------|-----------------|-------------------|
+| [17] | Doan & Sahebi, ECML-PKDD 2025 | Check if published or preprint; verify venue and page numbers |
+| [18] | srcML-DKT, EDM 2025 | Find full author list and title on EDM 2025 proceedings |
+| [19] | UKT, AAAI 2025 | Find full author list and title on AAAI 2025 proceedings |
+| [20] | LefoKT, 2025 | Find venue, authors; may be arXiv preprint |
+| [21] | HCGKT, 2025 | Find venue, authors; may be arXiv preprint |
+| [29] | LECTOR, 2025 | Find full citation; appears to be August 2025 |
+| [35] | Hierarchical MAB for education, 2024 | Find specific paper and authors |
+| [40] | Dynamic K-Value Elo, Springer 2025 | Find book/journal title, chapter, DOI |
+| [41] | Elo for programming exercises, TOCE 2024 | Find authors and exact title |
+| [42] | Multidimensional Elo, EDM 2025 | Find authors and title |
+| [44] | ACE concept extraction, 2023 | Find authors, venue |
+| [45–47] | GNN papers, 2024 | Find full citations |
+| [48–50] | LLM education papers, 2025–2026 | Verify publication status; [50] Wang et al. 2026 may be preprint |
+
+**Action required:** Before thesis submission, verify each entry above using Google Scholar and Semantic Scholar. Any paper not yet published should be cited as "preprint, arXiv:XXXX" or removed and replaced with a published alternative.
+
+**Estimated total references:** 66–75 (including Vietnamese context refs and additional papers found during writing)
 
 **Target per chapter:**
-- Chapter 1 (Introduction): 10–15 references
+- Chapter 1 (Introduction): 12–18 references (including Vietnamese context)
 - Chapter 2 (Literature Review): 40–50 references
 - Chapter 3 (System Design): 5–10 references
 - Chapter 4 (Implementation): 5–10 references (mostly technology docs)

@@ -6,6 +6,8 @@ import Dashboard from '../pages/Dashboard';
 import Problems from '../pages/Problems';
 import ProblemDetail from '../pages/ProblemDetail';
 import Profile from '../pages/Profile';
+import KnowledgeMap from '../pages/KnowledgeMap';
+import ReviewQueue from '../pages/ReviewQueue';
 import { useMe } from '../api/queries/useAuth';
 
 function AppRoutes() {
@@ -28,6 +30,8 @@ function AppRoutes() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/problems" element={<Problems />} />
         <Route path="/problems/:id" element={<ProblemDetail />} />
+        <Route path="/knowledge-map" element={<KnowledgeMap />} />
+        <Route path="/review-queue" element={<ReviewQueue />} />
         <Route path="/profile" element={<Profile />} />
       </Route>
 

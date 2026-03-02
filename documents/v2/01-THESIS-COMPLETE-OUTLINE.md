@@ -88,11 +88,12 @@
 
 ### 1.4 Research Questions (200–300 words)
 **Content:**
-- **RQ1:** How effectively can a multi-layer adaptive system model student knowledge states in programming?
-- **RQ2:** Does Elo-based difficulty calibration improve problem-student matching compared to static difficulty labels?
-- **RQ3:** Does Hierarchical MAB problem selection improve learning outcomes compared to content-based filtering?
-- **RQ4:** Does spaced repetition scheduling improve long-term retention of programming concepts?
-- **RQ5:** How do students perceive the usability and usefulness of the adaptive platform?
+- **RQ1 (Primary):** How accurately can the multi-layer adaptive system model student knowledge and predict performance? *(Combines knowledge state modeling via BKT and difficulty calibration via Elo — both measure prediction accuracy via AUC-ROC, and together they validate the learner model foundation)*
+- **RQ2:** Does Hierarchical MAB problem selection improve learning outcomes compared to content-based filtering?
+- **RQ3:** Does spaced repetition scheduling improve long-term retention of programming concepts?
+- **RQ4:** How do students perceive the usability and usefulness of the adaptive platform?
+
+**Note:** RQ1 is the primary research question that validates the system's learner modeling capability (BKT prediction accuracy + Elo prediction accuracy). RQ2–RQ3 are secondary quantitative questions. RQ4 is the qualitative question. This consolidation from 5 to 4 RQs ensures each RQ can be answered with sufficient evidence within the available sample size and evaluation period.
 
 ### 1.5 Scope and Limitations (300–400 words)
 **Content:**
@@ -106,15 +107,16 @@
 
 ### 1.7 Contributions (400–600 words)
 **Content:**
-- List 3–5 specific contributions
+- List 3–4 specific contributions
 - For each: what it is, why it's new, and where in the thesis it's developed
 
 **Key contributions to claim:**
-1. **Integrated multi-layer adaptive architecture** — first system combining KT + Elo + MAB + FSRS in a unified pipeline for programming education
-2. **Dynamic K-value Elo for programming exercises** — novel application of trend-aware Elo to calibrate programming problem difficulty
-3. **Prerequisite-constrained Hierarchical MAB** — problem selection that respects knowledge graph prerequisites
-4. **FSRS for programming skill retention** — first application of FSRS algorithm to programming concept review scheduling
-5. **Open-source platform** — complete, deployable system for Vietnamese university context
+1. **Integrated multi-layer adaptive architecture** — first system combining KT + Elo + MAB + FSRS in a unified pipeline for programming education *(STRONG — verified by literature gap analysis)*
+2. **Prerequisite-constrained Hierarchical MAB** — problem selection that respects knowledge graph prerequisites, with BKT mastery as the gating criterion *(MODERATE — novel combination)*
+3. **FSRS for programming skill retention** — first application of FSRS algorithm to programming concept review scheduling, with novel rating mapping from submission outcomes *(STRONG — clearly novel application domain)*
+4. **Open-source platform** — complete, deployable system for Vietnamese university context *(MODERATE — practical contribution)*
+
+**Note:** Dynamic K-Value Elo for programming is NOT claimed as a separate contribution — it is a necessary component of the integrated architecture (Contribution 1) but not novel enough to stand alone. See 08-BRAINSTORM-NOVEL-CONTRIBUTIONS.md for detailed analysis.
 
 ---
 

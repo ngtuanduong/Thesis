@@ -1,5 +1,6 @@
 import { PrismaClient, Role, Difficulty } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { seedAdaptive } from './seed-adaptive';
 
 const prisma = new PrismaClient();
 
@@ -323,12 +324,15 @@ merging them into one sorted list:
 
   console.log(`✅ Created ${5} problems with test cases`);
 
-  console.log('✨ Database seeding completed successfully!');
+  // Seed adaptive learning data (concepts, KG edges, new problems, Elo)
+  await seedAdaptive(course1.id);
+
+  console.log('\n✨ Database seeding completed successfully!');
   console.log('\n📊 Summary:');
   console.log(`   - Users: 4 (1 admin, 1 instructor, 2 students)`);
   console.log(`   - Courses: 2`);
   console.log(`   - Enrollments: 3`);
-  console.log(`   - Problems: 5 (2 easy, 2 medium, 1 hard)`);
+  console.log(`   - Problems: 30 (5 original + 25 new)`);
   console.log('\n🔑 Login Credentials (all users):');
   console.log(`   - Email: admin@example.com | student1@example.com | student2@example.com`);
   console.log(`   - Password: password123`);

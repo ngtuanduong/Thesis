@@ -18,13 +18,23 @@ Phase 7: Layer 5 (Optional)── LLM Feedback Engine
 Phase 8: Evaluation ──────── Experiment setup, data collection, analysis
 ```
 
-**Dependencies:**
+**Dependencies & Critical Path Analysis:**
 ```
-Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 5 ──► Phase 6 ──► Phase 8
-                                        ▲
-             Phase 4 ───────────────────┘
-                                                   Phase 7 (independent, optional)
+Phase 0 ──┬──► Phase 1 ─────┐
+          │                  ├──► Phase 3 ──► Phase 5 ──► Phase 6 ──► Phase 8
+          └──► Phase 2 ─────┘        ▲
+                                     │
+               Phase 4 ──────────────┘
+                                                Phase 7 (independent, optional)
 ```
+
+**Key insight: Phase 1 (BKT) and Phase 2 (Elo) are INDEPENDENT and can run in parallel.** Both depend only on Phase 0 (Knowledge Graph + Schema). Phase 3 (MAB) depends on both Phase 1 and Phase 2 because it uses BKT mastery for prerequisite gating and Elo for ZPD filtering.
+
+**Critical Path:** Phase 0 → Phase 1 ∥ Phase 2 → Phase 3 → Phase 5 → Phase 6 → Phase 8
+
+The critical path length is reduced from 10 weeks to ~9 weeks by parallelizing Phases 1+2. If Phase 0 delays by 1 week, the entire timeline shifts by 1 week — **Phase 0 must start immediately.**
+
+**Risk: Fixed-duration tasks.** Phase 8 includes a 4-week intervention that cannot be compressed. If implementation runs over, the evaluation period shrinks or gets pushed past the deadline.
 
 ---
 
@@ -65,9 +75,14 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 5 
 - [ ] Design concept taxonomy (30 concepts for Python course)
 - [ ] Define prerequisite edges (40–50 edges)
 - [ ] Map each existing problem to 1–3 concepts (primary + secondary)
+- [ ] **Expand problem set from 5 → 30–50 problems** (CRITICAL for evaluation — see 03-SYSTEM-ARCHITECTURE.md §3.3.3)
+  - Source 15–20 from university course assignments/exams
+  - Create 10–15 original problems for concept coverage gaps
+  - Adapt 5–10 from open archives (Codeforces Div 2 A/B, simplified)
+  - Each problem: title, description, 5+ test cases, concept tags, difficulty tag
 - [ ] Write Prisma schema additions
 - [ ] Run migration
-- [ ] Write and run seed script
+- [ ] Write and run seed script (concepts + edges + problem-concept mappings)
 - [ ] Create concept CRUD module in NestJS
 - [ ] Add SQLAlchemy models in AI service
 - [ ] Verify: all tables created, seed data loaded, models aligned
@@ -85,7 +100,7 @@ Phase 0 ──► Phase 1 ──► Phase 2 ──► Phase 3 ──► Phase 5 
 
 ---
 
-## Phase 1: Layer 1 — BKT Knowledge Tracing (Week 2)
+## Phase 1: Layer 1 — BKT Knowledge Tracing (Week 2) — *Parallel with Phase 2*
 
 ### Objectives
 - Implement BKT update algorithm
@@ -139,7 +154,7 @@ GET  /kt/predict/{user_id}/{problem_id} — Predict P(correct) for a problem
 
 ---
 
-## Phase 2: Layer 2 — Dynamic K-Value Elo (Week 2–3)
+## Phase 2: Layer 2 — Dynamic K-Value Elo (Week 2–3) — *Parallel with Phase 1*
 
 ### Objectives
 - Implement dual Elo system (student + problem ratings)
@@ -453,17 +468,22 @@ See [07-EVALUATION-PLAN.md](./07-EVALUATION-PLAN.md) for detailed experiment des
 
 ## Timeline Summary
 
-| Week | Phase | Deliverable |
-|------|-------|-------------|
-| 1 | Phase 0: Foundation | KG + DB schema + concept seed data |
-| 2 | Phase 1 + 2: BKT + Elo | Knowledge tracing + difficulty calibration working |
-| 3 | Phase 3 + 4: MAB + FSRS | Problem selection + review scheduling working |
-| 4–5 | Phase 5: Integration | End-to-end adaptive pipeline working |
-| 5–6 | Phase 6: Frontend | Updated UI with all adaptive features |
-| 6–7 | Phase 7: LLM (optional) | Hint generation working |
-| 7–10 | Phase 8: Evaluation | Experiments completed, data analyzed |
+| Week | Phase | Deliverable | Notes |
+|------|-------|-------------|-------|
+| 1 | Phase 0: Foundation | KG + DB schema + **30–50 problems** + concept seed data | **Must start immediately.** Problem expansion is critical. |
+| 2 | Phase 1 ∥ Phase 2: BKT + Elo | Knowledge tracing + difficulty calibration working | **Run in parallel** — independent of each other |
+| 3 | Phase 3 + 4: MAB + FSRS | Problem selection + review scheduling working | Phase 3 depends on both Phase 1+2 |
+| 4–5 | Phase 5: Integration | End-to-end adaptive pipeline working | |
+| 5–6 | Phase 6: Frontend | Updated UI with all adaptive features | |
+| 6–7 | Phase 7: LLM (optional) | Hint generation working | **Cut entirely if timeline is tight** |
+| 7–10 | Phase 8: Evaluation | Experiments completed, data analyzed | 4-week intervention is non-compressible |
 
 **Total: ~10 weeks** (March → May 2026)
+
+**Scope reduction contingency:** If timeline pressure is severe by end of Week 3:
+- **Cut Layer 5 (LLM) completely** — do not just defer, remove from scope. The thesis stands on Layers 1–4.
+- Focus engineering effort on delivering Layers 1–4 with high quality.
+- Mention LLM as "designed but not implemented; left for future work" in thesis Chapter 6.
 
 ---
 

@@ -130,15 +130,17 @@ This thesis is the first to build and evaluate the complete pipeline.
 
 ### Contribution 2: Dynamic K-Value Elo for Programming Exercises
 
-**Claim:** First application of trend-aware dynamic K-value Elo to calibrate programming exercise difficulty.
+**Claim:** Application of trend-aware dynamic K-value Elo to calibrate programming exercise difficulty.
 
 **Novelty argument:**
 - Dynamic K-value Elo exists in the literature (Springer 2025) but for general education
 - Elo for programming exists (ACM TOCE) but with fixed K
 - Combining dynamic K with programming-specific features is new
-- The dual Elo system (student + problem ratings) with programming-specific initialization is novel
+- The dual Elo system (student + problem ratings) with programming-specific initialization is a modest extension
 
-**Strength of claim:** MODERATE. The components exist separately; the combination for programming is new.
+**Strength of claim:** WEAK. This is essentially applying an existing technique to a new domain without fundamental modification. The dynamic K-value mechanism is unchanged from the Springer 2025 formulation; only the domain (programming exercises instead of general education) is new. **Do not oversell this contribution.** Instead, position it as a necessary engineering component of the integrated architecture, not as a standalone research contribution.
+
+**Marketing strategy:** Fold this into Contribution 1 (the integration) rather than claiming it as a separate novel contribution. The Elo component's value comes from its role in the pipeline (feeding ZPD constraints to MAB), not from the algorithm itself.
 
 ### Contribution 3: Prerequisite-Constrained Hierarchical MAB
 
@@ -206,8 +208,27 @@ Searching for systems that combine these techniques:
 3. **Data requirements:** Each layer needs interaction data; together they need more data
 4. **Disciplinary boundaries:** BKT comes from education, MAB from statistics, FSRS from memory science, LLM from NLP — integration requires cross-disciplinary knowledge
 5. **Engineering effort:** Production-quality implementation of all 5 layers is a substantial software project
+6. **Uncertain marginal benefit:** It is not yet empirically established that combining all 5 layers produces significantly better outcomes than simpler 2–3 layer systems. Researchers may reasonably ask: "Does adding FSRS on top of BKT+Elo+MAB justify the added complexity?" The answer is an empirical question that this thesis aims to address through ablation analysis.
 
 This thesis bridges these gaps by being both a research contribution and a software engineering project.
+
+### 4.3 Justifying Each Layer's Marginal Benefit
+
+Anticipated reviewer question: *"Does each additional layer provide sufficient marginal benefit to justify its complexity?"*
+
+**Prepared response:**
+
+| Layer Added | What It Enables | What Breaks Without It | Marginal Complexity |
+|-------------|----------------|----------------------|-------------------|
+| BKT (Layer 1) | Prerequisite gating, mastery estimation | MAB recommends advanced concepts to beginners; no concept mastery tracking | Low (O(1) HMM update) |
+| Elo (Layer 2) | ZPD difficulty matching | MAB recommends too-easy or too-hard problems; no calibration | Low (simple arithmetic) |
+| MAB (Layer 3) | Exploration-exploitation balance | System always exploits known-good concepts; never discovers new strengths | Low (Beta sampling) |
+| FSRS (Layer 4) | Forgetting prevention | Mastered concepts decay without review; long-term retention degraded | Medium (FSRS state machine) |
+| LLM (Layer 5) | Natural language hints | Student stuck with no help; higher abandonment | High (API cost, prompt engineering) |
+
+**Key argument:** Layers 1–3 are **foundational** — removing any one fundamentally breaks the recommendation quality. Layer 4 addresses a **distinct learning science concern** (forgetting) not addressed by Layers 1–3. Layer 5 is **supplementary** and the thesis stands without it.
+
+**Empirical validation plan:** The within-system ablation study (see 07-EVALUATION-PLAN.md §9) will provide evidence for each layer's contribution by replaying interaction logs with layers disabled.
 
 ---
 

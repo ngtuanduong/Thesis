@@ -72,11 +72,14 @@ services:
       DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/adaptive_learning
       AI_SERVICE_KEY: ${AI_SERVICE_KEY:-dev-secret-key}
       EMBEDDING_MODEL: all-MiniLM-L6-v2
+      REDIS_URL: redis://redis:6379/0
     volumes:
       - model_cache:/app/model_cache
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_started
 
   # Prisma migration helper
   prisma-migrate:

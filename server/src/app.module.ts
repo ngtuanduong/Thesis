@@ -9,6 +9,8 @@ import { SkillsModule } from './skills/skills.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AiModule } from './ai/ai.module';
+import { ConceptsModule } from './concepts/concepts.module';
+import { AdaptiveModule } from './adaptive/adaptive.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { AiModule } from './ai/ai.module';
     SkillsModule,
     RecommendationsModule,
     AiModule,
+    ConceptsModule,
+    AdaptiveModule,
   ],
 })
 export class AppModule {}

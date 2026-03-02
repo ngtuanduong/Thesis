@@ -38,7 +38,17 @@
       "WebFetch(domain:www.adaptemy.com)",
       "WebFetch(domain:www.cs7.tf.fau.eu)",
       "WebFetch(domain:pmc.ncbi.nlm.nih.gov)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(npx prisma:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/adaptive_learning?schema=public\" npx prisma:*)",
+      "Bash(python3:*)",
+      "Bash(DATABASE_URL=\"postgresql://postgres:postgres@localhost:5432/adaptive_learning\" npx prisma:*)",
+      "Bash(node:*)",
+      "Bash(pip3 show pytest)",
+      "Bash(pip3 install pytest)",
+      "Bash(pip3 install -r /Users/avada/WebstormProjects/KhoaLuan/ai-service/requirements.txt)",
+      "Bash(docker cp:*)",
+      "Bash(__NEW_LINE_355ded8638a03a5e__ echo:*)"
     ]
   }
 }

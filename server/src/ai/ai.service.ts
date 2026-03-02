@@ -100,4 +100,85 @@ export class AiService {
       }[];
     }>('GET', `/skill-gap/${userId}`);
   }
+
+  // === Adaptive Learning Layer Methods ===
+
+  async updateAdaptiveLayers(data: {
+    studentId: string;
+    problemId: string;
+    isCorrect: boolean;
+    attemptNumber: number;
+    timeSpent: number;
+  }) {
+    return this.request('POST', '/adaptive/update', {
+      student_id: data.studentId,
+      problem_id: data.problemId,
+      is_correct: data.isCorrect,
+      attempt_number: data.attemptNumber,
+      time_spent_seconds: data.timeSpent,
+    });
+  }
+
+  async getAdaptiveRecommendations(userId: string, limit = 5) {
+    return this.request('GET', `/adaptive/recommend/${userId}?limit=${limit}`);
+  }
+
+  async getKnowledgeState(userId: string) {
+    return this.request('GET', `/adaptive/knowledge-state/${userId}`);
+  }
+
+  async getReviewQueue(userId: string) {
+    return this.request('GET', `/adaptive/review-queue/${userId}`);
+  }
+
+  // === Evaluation Methods ===
+
+  async logEvent(data: {
+    userId: string;
+    event: string;
+    data?: Record<string, unknown>;
+    sessionId?: string;
+  }) {
+    return this.request('POST', '/evaluation/log', {
+      user_id: data.userId,
+      event: data.event,
+      data: data.data || {},
+      session_id: data.sessionId || null,
+    });
+  }
+
+  async getUserGroup(userId: string) {
+    return this.request<{ user_id: string; group: string | null }>(
+      'GET',
+      `/evaluation/group/${userId}`,
+    );
+  }
+
+  async assignGroup(userId: string, group: 'experimental' | 'control') {
+    return this.request('POST', '/evaluation/assign-group', {
+      user_id: userId,
+      group,
+    });
+  }
+
+  async generateHint(data: {
+    studentId: string;
+    problemId: string;
+    code: string;
+    errorMessage?: string;
+    hintLevel?: number;
+  }) {
+    return this.request<{
+      hint: string | null;
+      hint_level: number;
+      concepts_referenced: string[];
+      error: string | null;
+    }>('POST', '/hints/generate', {
+      student_id: data.studentId,
+      problem_id: data.problemId,
+      code: data.code,
+      error_message: data.errorMessage || null,
+      hint_level: data.hintLevel || 1,
+    });
+  }
 }

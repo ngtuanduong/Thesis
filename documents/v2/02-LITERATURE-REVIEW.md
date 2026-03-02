@@ -554,14 +554,29 @@ Pan et al. (2024) specifically model prerequisites in GNN:
 - A concept is "unlocked" only when all prerequisite concepts have readiness > threshold
 - This prevents skipping foundational concepts and creates personalized learning paths
 
-### 6.5 Application in This Thesis
+### 6.5 Manual vs Automated KG Construction — Justification
+
+For this thesis, we adopt a **manually curated Knowledge Graph** rather than automated construction. This decision merits justification:
+
+**Arguments for manual curation:**
+1. **Accuracy:** Manual curation by a domain expert (the thesis author, validated by the advisor) ensures correctness of prerequisite relationships — a single wrong edge (e.g., marking "recursion" as a prerequisite for "variables") could permanently block learners from accessing content.
+2. **Scale:** A university Python course maps to ~30 concepts with ~40–50 prerequisite edges — a manageable size for manual construction, unlike a MOOC with thousands of topics.
+3. **Curriculum alignment:** The KG must reflect the specific university's teaching order and emphasis, which automated tools cannot capture without extensive customization.
+4. **Validation:** Manual construction allows direct validation against the course syllabus, ensuring every concept is covered and no spurious prerequisites exist.
+
+**Arguments for automated construction (future work):**
+1. **Scalability:** ACE methodology could generalize to other courses/languages without expert effort.
+2. **Data-driven refinement:** Student performance data could reveal implicit prerequisites not recognized by instructors (e.g., students who struggle with "dictionaries" often lack mastery of "loops," suggesting a missing edge).
+3. **Cross-institutional portability:** An automated KG could adapt to different universities' curricula.
+
+**Our approach:** Start with manual curation (Phase 0), then use student interaction data to validate and refine edges post-deployment. This hybrid strategy gives us a reliable foundation while leaving room for data-driven improvement.
+
+### 6.6 Application in This Thesis
 
 Our knowledge graph serves three roles:
 1. **BKT structure:** Defines the set of concepts tracked by knowledge tracing
 2. **MAB constraint:** Only unlocked concepts (prerequisites mastered) are eligible for recommendation
 3. **LLM context:** KG provides structured context for generating relevant hints
-
-We use a **manually curated KG** for the Python programming curriculum, validated against the university's course outline. Automated construction (ACE) is left for future work.
 
 ---
 
@@ -651,7 +666,27 @@ Focus on the prerequisite with lowest mastery.
 
 **Key insight:** Each technique addresses one aspect of adaptive learning but has blind spots. An integrated system where each layer compensates for others' limitations is more powerful than any single technique.
 
-### 8.2 The Integration Gap
+### 8.2 Challenges of Multi-Technique Integration — Critical Discussion
+
+Before arguing for integration, it is important to address why the research community has not yet combined all five techniques, beyond mere engineering difficulty. There are **legitimate theoretical concerns:**
+
+1. **Parameter explosion:** Each layer introduces its own parameters (BKT: 4 per concept, Elo: K-factor range + trend window, MAB: reward weights, FSRS: 19 weights). With ~30 concepts, the total parameter space exceeds 200 values. Overfitting to a small student population is a real risk if parameters are tuned aggressively.
+
+2. **Diminishing returns:** Adding a 4th or 5th layer may provide marginal learning improvement that is statistically undetectable with a feasible sample size. The question "Does adding FSRS on top of BKT+Elo+MAB significantly improve outcomes?" requires an ablation study with sufficient power.
+
+3. **Conflicting signals:** Layers can disagree — FSRS may flag 10 concepts for review while MAB wants to explore a new concept. The arbitration policy between layers introduces design choices that may not generalize.
+
+4. **Evaluation attribution:** When learning improves, attributing the gain to a specific layer is methodologically challenging without prohibitively large ablation studies.
+
+**Our position:** We acknowledge these concerns and address them through:
+- **Conservative parameter initialization** with literature-backed defaults (not data-tuned initially)
+- **Feature flags** allowing each layer to be independently disabled for ablation analysis
+- **Clear arbitration rules** documented in the architecture (FSRS review priority with a threshold mechanism)
+- **Within-system ablation** design that programmatically disables layers rather than requiring separate participant groups
+
+The integration is justified because each layer addresses a fundamentally different aspect of the learning process (what to teach, how hard, when to review, how to help), and the information flows between them are unidirectional — making conflicts manageable rather than chaotic.
+
+### 8.3 The Integration Gap
 
 No existing system — academic or commercial — integrates all five components:
 
@@ -665,7 +700,7 @@ No existing system — academic or commercial — integrates all five components
 - Codeforces: Elo for competitive ranking, but no pedagogical use
 - Duolingo: spaced repetition only, no knowledge tracing or MAB
 
-### 8.3 Position of This Thesis
+### 8.4 Position of This Thesis
 
 This thesis fills the integration gap by:
 1. Building a **complete pipeline** where KT informs Elo, Elo constrains MAB, MAB respects KG, and FSRS schedules reviews

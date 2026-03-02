@@ -349,6 +349,10 @@ Student submits code
 
 ### 3.3 Cold Start Handling
 
+Cold start is a **critical UX issue** that significantly affects first impressions. With only 5 seed problems in the current system, the cold start experience is particularly important to design well.
+
+#### 3.3.1 New Student Cold Start
+
 ```
 New Student (no submissions):
   ├── BKT: All concepts P(L₀) = 0.1 (low initial mastery)
@@ -357,12 +361,40 @@ New Student (no submissions):
   ├── FSRS: No cards yet (created on first encounter)
   └── Recommendation: Prerequisite-free concepts, EASY problems
       (e.g., variables, basic I/O, simple arithmetic)
+```
 
+**Cold start resolution strategy:**
+1. **First 3 interactions:** Recommend from prerequisite-free concepts only (Level 1: variables, data_types, operators, io, strings). Use round-robin across these concepts to gather initial signal for each.
+2. **Interactions 4–10:** BKT has enough signal to differentiate mastery across basic concepts. Elo begins converging (high K = 40 for fast initial calibration). MAB starts exploiting concepts with higher learning gain.
+3. **After 10 interactions:** Cold start effectively resolved. BKT mastery estimates are informative, Elo has narrowed to ±100 range, MAB has meaningful Beta parameters.
+
+**Adaptive onboarding quiz (optional enhancement):** Present 5 diagnostic questions covering different difficulty tiers before the first recommendation. This immediately provides BKT and Elo signals, reducing cold start to near-zero interactions.
+
+#### 3.3.2 New Problem Cold Start
+
+```
 New Problem (no submissions against it):
   ├── Elo: Mapped from difficulty tag (EASY=1000, MEDIUM=1400, HARD=1800)
   ├── MAB: Beta(1, 1) for all students (will be explored)
   └── Calibration: Elo updates rapidly (high K) for first ~30 submissions
 ```
+
+**Problem Elo convergence:** With K_problem = 40/√(n_attempts), the problem's Elo converges within ~30 submissions. For the first 10 submissions, the problem is essentially in "calibration mode" — its Elo may swing widely but stabilizes quickly.
+
+#### 3.3.3 Problem Content Gap — Expansion Plan
+
+**Current state:** 5 seed problems (Two Sum, Palindrome, etc.) — far too few for meaningful adaptive recommendation or evaluation.
+
+**Minimum viable problem set for evaluation:** 30–50 problems covering ~30 concepts (at least 1 problem per concept, ideally 2–3 per concept for ZPD variation).
+
+**Problem creation strategy (added to Phase 0):**
+1. Source 15–20 problems from university course assignments and exams (with instructor permission)
+2. Create 10–15 original problems targeting gaps in concept coverage
+3. Adapt 5–10 problems from open competitive programming archives (e.g., Codeforces Div 2 A/B problems, simplified for course level)
+4. Each problem must have: title, description, 5+ test cases (2 visible, 3+ hidden), concept tags (1 primary + 0–2 secondary), difficulty tag
+5. Validate by having 2–3 students pilot-test before deployment
+
+**Target timeline:** Problem set expansion completed by end of Phase 0 (Week 1), before any adaptive layer development begins.
 
 ---
 
@@ -894,6 +926,23 @@ Client ──REST──▶ NestJS ──REST──▶ AI Service ──SQL──
 
 Both NestJS (via Prisma) and AI Service (via SQLAlchemy) access the same PostgreSQL database. This avoids API calls between services for data reads and keeps latency low.
 
+**Write Responsibility Convention (Critical):**
+
+To prevent race conditions and schema drift from dual-writer access, strict write ownership is enforced:
+
+| Table(s) | Write Owner | Read By | Rationale |
+|-----------|------------|---------|-----------|
+| `user`, `problem`, `test_case`, `submission`, `enrollment`, `course` | **NestJS (Prisma)** | Both | Core domain entities managed by API |
+| `concept`, `knowledge_graph_edge`, `problem_concept` | **NestJS (Prisma)** | Both | KG management is an instructor-facing CRUD operation |
+| `knowledge_state`, `elo_rating`, `mab_state`, `fsrs_card` | **AI Service (SQLAlchemy)** | Both | Adaptive state is computed by AI algorithms |
+
+**Rules:**
+1. NestJS **never** writes to adaptive tables (`knowledge_state`, `elo_rating`, `mab_state`, `fsrs_card`)
+2. AI Service **never** writes to core domain tables (`user`, `problem`, `submission`)
+3. Both services may **read** from any table
+4. Schema migrations are always managed by Prisma; SQLAlchemy models must stay aligned manually (verified in Phase 0, task 0.16)
+5. If a future requirement needs cross-service writes (e.g., AI service creating a concept), route through NestJS API instead of direct DB write
+
 ### 6.3 Caching Strategy (Redis)
 
 Redis is already provisioned but unused. Introduce caching for:
@@ -905,4 +954,33 @@ Redis is already provisioned but unused. Introduce caching for:
 | Problem Elo ratings | 10 min | Updates only on submissions |
 | Recommendation results | 2 min | Avoid recomputing for rapid page loads |
 
-Invalidation: On submission processing, invalidate the student's cached states.
+**Invalidation strategy:**
+
+| Event | Keys Invalidated | Reason |
+|-------|-----------------|--------|
+| Student submits code | `knowledge_state:{student_id}`, `recommendations:{student_id}` | Mastery and recommendations changed |
+| Problem Elo update (from any submission) | `problem_elo:{problem_id}` | Problem difficulty changed |
+| Instructor adds/removes KG edge | `knowledge_graph` (global), `recommendations:*` (all students) | Prerequisite structure changed |
+| Instructor adds/modifies problem | `recommendations:*` (all students) | New problem available for recommendation |
+
+**Implementation:**
+```python
+# Redis invalidation in AI service after submission processing
+async def invalidate_after_submission(student_id: int, problem_id: int):
+    await redis.delete(f"knowledge_state:{student_id}")
+    await redis.delete(f"recommendations:{student_id}")
+    await redis.delete(f"problem_elo:{problem_id}")
+
+# Redis invalidation in NestJS after KG modification
+async invalidateKnowledgeGraph(): Promise<void> {
+    await this.redis.del("knowledge_graph");
+    // Use pattern-based deletion for all student recommendations
+    const keys = await this.redis.keys("recommendations:*");
+    if (keys.length > 0) await this.redis.del(...keys);
+}
+```
+
+**Stale cache risk mitigation:**
+- Recommendation cache TTL is 2 minutes — even without explicit invalidation, stale recommendations are short-lived
+- Knowledge state cache is invalidated on every submission — the most critical path
+- KG cache (1 hour TTL) is only stale if an instructor modifies the KG while students are using the system — rare and low-impact

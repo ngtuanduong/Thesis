@@ -6,13 +6,14 @@
 
 ## 1. Research Questions
 
-| ID | Research Question | Measurement |
-|----|------------------|-------------|
-| RQ1 | How effectively can a multi-layer adaptive system model student knowledge states in programming? | BKT prediction accuracy (AUC), Elo prediction accuracy |
-| RQ2 | Does Elo-based difficulty calibration improve problem-student matching compared to static difficulty labels? | Acceptance rate per difficulty band, Elo convergence speed |
-| RQ3 | Does Hierarchical MAB problem selection improve learning outcomes compared to content-based filtering? | Normalized Learning Gain (NLG), problems-to-mastery ratio |
-| RQ4 | Does spaced repetition scheduling improve long-term retention of programming concepts? | Retention test score, concept recall rate after 2-week gap |
-| RQ5 | How do students perceive the usability and usefulness of the adaptive platform? | SUS score, TAM scores, qualitative interview themes |
+| ID | Research Question | Measurement | Type |
+|----|------------------|-------------|------|
+| RQ1 | How accurately can the multi-layer adaptive system model student knowledge and predict performance? | BKT prediction accuracy (AUC), Elo prediction accuracy (AUC), acceptance rate per difficulty band, Elo convergence speed | Primary |
+| RQ2 | Does Hierarchical MAB problem selection improve learning outcomes compared to content-based filtering? | Normalized Learning Gain (NLG), problems-to-mastery ratio | Secondary |
+| RQ3 | Does spaced repetition scheduling improve long-term retention of programming concepts? | Retention test score (Week 8), concept recall rate after 2-week gap | Secondary |
+| RQ4 | How do students perceive the usability and usefulness of the adaptive platform? | SUS score, TAM scores, qualitative interview themes | Qualitative |
+
+**Note:** Consolidated from 5 to 4 RQs. Original RQ1 (knowledge state modeling) and RQ2 (Elo difficulty calibration) merged into a single RQ1 because both measure the system's learner modeling accuracy via AUC-ROC. This ensures each RQ can be adequately answered within the available sample size and 4-week evaluation period. RQ numbering in subsequent sections reflects this consolidation.
 
 ---
 
@@ -60,6 +61,17 @@ Control (C):        │Pre-  │──────▶│ Non-adapt. │───
 - Required n per group: ~26 (using G*Power for independent t-test)
 - Target: 30 per group to account for dropout (~20% expected)
 - Minimum viable: 20 per group
+
+**Backup plan for smaller sample (20–30 total participants):**
+If recruitment yields only 20–30 participants (10–15 per group):
+- **Statistical power:** Can only detect large effects (d ≥ 0.8) with 80% power
+- **Adjusted analysis:** Use non-parametric tests (Mann-Whitney U) which are more robust at small n
+- **Supplementary evidence:** Compensate with stronger within-group analysis:
+  - Detailed BKT/Elo convergence curves per student (rich individual trajectories)
+  - Per-concept mastery progression showing adaptive system's behavior
+  - System log analysis (recommendations accepted/rejected, session patterns)
+- **Reframe contribution:** Shift emphasis from "statistically significant group difference" to "demonstration of integrated adaptive system with preliminary effectiveness evidence"
+- **Qualitative strengthening:** Interview all participants (not just a sample) for richer thematic analysis
 
 **Random assignment:**
 - Stratified randomization by pre-test score (low/medium/high terciles)
@@ -133,12 +145,16 @@ Control (C):        │Pre-  │──────▶│ Non-adapt. │───
 - Parallel form to pre-test: same topics, same difficulty distribution, different questions
 - Ensures pre/post comparison is valid (no test-retest effect from identical questions)
 
-### 3.4 Optional: Week 8 Retention Test
+### 3.4 Week 8 Retention Test (Committed)
 
-- Administered 2 weeks after the intervention ends
+This test is **committed, not optional**. FSRS evaluation (RQ3) requires retention data — without it, we can only claim short-term learning improvement, not long-term retention.
+
+- Administered **2 weeks** after the intervention ends (Week 8)
 - 10-question retention test (subset of post-test topics)
 - Tests whether FSRS spaced repetition leads to better long-term retention
 - Only concepts that were "mastered" during intervention are tested
+- **Critical for RQ3:** 4-week intervention is already short for spaced repetition evaluation. FSRS stability values typically need several weeks to diverge between conditions. The Week 8 retention test provides the minimum viable window to detect FSRS effects.
+- **Logistics:** Communicate to participants during onboarding that a brief follow-up assessment is part of the study. Schedule reminders 3 days and 1 day before the retention test.
 
 ---
 
@@ -329,7 +345,7 @@ All comparisons report effect sizes:
 ### 5.4 Multiple Comparisons
 
 With 5 research questions and multiple metrics, apply:
-- **Bonferroni correction** for the 5 primary comparisons (α' = 0.05/5 = 0.01)
+- **Bonferroni correction** for the 4 primary comparisons (α' = 0.05/4 = 0.0125)
 - Secondary/exploratory analyses reported without correction but flagged as exploratory
 
 ### 5.5 Missing Data
@@ -465,20 +481,42 @@ Based on literature benchmarks:
 
 ---
 
-## 9. Ablation Study Design (Optional but Recommended)
+## 9. Ablation Study Design — Within-System Approach
 
-If time permits, run a smaller ablation study to isolate each layer's contribution:
+**Important clarification:** The ablation study uses **within-system programmatic layer disabling**, NOT separate participant groups. This is feasible with any sample size because it analyzes the same system's behavior under different configurations, using logged data rather than requiring additional participants.
 
-| Condition | BKT | Elo | MAB | FSRS | LLM |
-|-----------|:---:|:---:|:---:|:----:|:---:|
-| Full adaptive | ✓ | ✓ | ✓ | ✓ | ✓ |
-| No FSRS | ✓ | ✓ | ✓ | ✗ | ✓ |
-| No MAB (random select) | ✓ | ✓ | ✗ | ✓ | ✓ |
-| No Elo (static difficulty) | ✓ | ✗ | ✓ | ✓ | ✓ |
-| No BKT (no mastery tracking) | ✗ | ✓ | ✓ | ✓ | ✓ |
-| Baseline (current system) | ✗ | ✗ | ✗ | ✗ | ✗ |
+### 9.1 Approach: Feature Flag Ablation
 
-This requires larger sample size (N ≥ 150) and may not be feasible for a single thesis. Alternative: run ablation as a within-subject A/B test with crossover design.
+Using the feature flags defined in the implementation (see 05-IMPLEMENTATION-PLAN.md):
+
+```python
+ENABLE_BKT = os.getenv('ENABLE_BKT', 'true') == 'true'
+ENABLE_ELO = os.getenv('ENABLE_ELO', 'true') == 'true'
+ENABLE_MAB = os.getenv('ENABLE_MAB', 'true') == 'true'
+ENABLE_FSRS = os.getenv('ENABLE_FSRS', 'true') == 'true'
+```
+
+**Method:** After the main experiment completes, **replay** the experimental group's interaction logs through the adaptive engine with different layer configurations disabled. Compare the *recommendations that would have been generated* under each ablation condition.
+
+### 9.2 Ablation Conditions
+
+| Condition | BKT | Elo | MAB | FSRS | What Changes |
+|-----------|:---:|:---:|:---:|:----:|-------------|
+| Full adaptive | ✓ | ✓ | ✓ | ✓ | Baseline (actual system) |
+| No FSRS | ✓ | ✓ | ✓ | ✗ | No review scheduling — MAB explores freely |
+| No MAB (random select) | ✓ | ✓ | ✗ | ✓ | Random problem selection within ZPD |
+| No Elo (static difficulty) | ✓ | ✗ | ✓ | ✓ | No ZPD filtering — MAB selects from all problems |
+| No BKT (no mastery tracking) | ✗ | ✓ | ✓ | ✓ | No prerequisite gating — all concepts eligible |
+
+### 9.3 Metrics for Ablation
+
+Since we can't measure actual learning gain under counterfactual conditions, we evaluate:
+- **Recommendation divergence:** How different are recommendations under ablation vs full system?
+- **Predicted correctness calibration:** Using the logged actual outcomes, compute AUC of predictions under each configuration
+- **Prerequisite violation rate:** How often does the ablated system recommend problems with unmet prerequisites?
+- **Difficulty mismatch rate:** How often are recommended problems outside the optimal difficulty range?
+
+This approach is **not a substitute** for a true between-subjects ablation, but it provides compelling evidence for each layer's contribution without additional participants.
 
 ---
 
@@ -492,5 +530,5 @@ This requires larger sample size (N ≥ 150) and may not be feasible for a singl
 | Weeks 4–7 | Intervention period (4 weeks) |
 | Week 8 | Post-test, surveys, interviews |
 | Week 9 | Data export, cleaning, anonymization |
-| Week 10 | Optional: retention test (2 weeks after intervention) |
+| Week 10 | **Retention test** (2 weeks after intervention — committed, not optional) |
 | Weeks 10–12 | Statistical analysis + writing |

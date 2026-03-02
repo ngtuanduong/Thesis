@@ -1,12 +1,16 @@
-import { Row, Col, Card, Statistic, Typography, List, Tag, Spin, Empty } from 'antd';
+import { Row, Col, Card, Statistic, Typography, List, Tag, Spin, Empty, Progress } from 'antd';
 import {
   CodeOutlined,
   CheckCircleOutlined,
   TrophyOutlined,
   BookOutlined,
   ClockCircleOutlined,
+  NodeIndexOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
 import { useDashboardStats, useRecentSubmissions, useRecommendations } from '../api/queries/useDashboard';
+import { useKnowledgeState, useReviewQueue, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
+import { useMe } from '../api/queries/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
@@ -28,9 +32,13 @@ const statusColors: Record<string, string> = {
 
 function Dashboard() {
   const navigate = useNavigate();
+  const { data: user } = useMe();
   const { data: stats, isLoading: statsLoading } = useDashboardStats();
   const { data: recentSubmissions, isLoading: submissionsLoading } = useRecentSubmissions(5);
   const { data: recommendations, isLoading: recommendationsLoading } = useRecommendations(5);
+  const { data: knowledgeState } = useKnowledgeState(user?.id);
+  const { data: reviewData } = useReviewQueue(user?.id);
+  const { data: adaptiveRecs } = useAdaptiveRecommendations(user?.id, 3);
 
   return (
     <div>
@@ -83,11 +91,117 @@ function Dashboard() {
         </Col>
       </Row>
 
+      {/* Adaptive Learning Overview */}
+      {knowledgeState?.summary && (
+        <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+          <Col xs={24} sm={8}>
+            <Card
+              hoverable
+              onClick={() => navigate('/knowledge-map')}
+              style={{ cursor: 'pointer' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <Progress
+                  type="circle"
+                  percent={Math.round(knowledgeState.summary.overall_mastery * 100)}
+                  size={64}
+                  strokeColor={{
+                    '0%': '#108ee9',
+                    '100%': '#87d068',
+                  }}
+                />
+                <div>
+                  <Text strong>Knowledge Mastery</Text>
+                  <br />
+                  <Text type="secondary" style={{ fontSize: 12 }}>
+                    {knowledgeState.summary.mastered}/{knowledgeState.summary.total_concepts} concepts mastered
+                  </Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Card
+              hoverable
+              onClick={() => navigate('/review-queue')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Statistic
+                title="Reviews Due"
+                value={reviewData?.due_now?.length || 0}
+                prefix={<ThunderboltOutlined />}
+                valueStyle={{
+                  color: (reviewData?.due_now?.length || 0) > 0 ? '#cf1322' : '#3f8600',
+                }}
+                suffix={
+                  <Text type="secondary" style={{ fontSize: 14 }}>
+                    {' '}concepts
+                  </Text>
+                }
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={8}>
+            <Card
+              hoverable
+              onClick={() => navigate('/knowledge-map')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Statistic
+                title="Learning Progress"
+                value={knowledgeState.summary.learning}
+                prefix={<NodeIndexOutlined />}
+                valueStyle={{ color: '#1890ff' }}
+                suffix={
+                  <Text type="secondary" style={{ fontSize: 14 }}>
+                    {' '}in progress
+                  </Text>
+                }
+              />
+            </Card>
+          </Col>
+        </Row>
+      )}
+
       {/* Recommendations and Recent Activity */}
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
         <Col xs={24} lg={12}>
-          <Card title="🎯 Recommended Problems" extra={<Text type="secondary">AI-Powered</Text>}>
-            {recommendationsLoading ? (
+          <Card
+            title="Recommended Problems"
+            extra={<Text type="secondary">Adaptive Engine</Text>}
+          >
+            {adaptiveRecs?.recommendations && adaptiveRecs.recommendations.length > 0 ? (
+              <List
+                dataSource={adaptiveRecs.recommendations}
+                renderItem={(rec: any) => (
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/problems/${rec.problem_id}`)}
+                  >
+                    <List.Item.Meta
+                      title={
+                        <span>
+                          {rec.title}{' '}
+                          <Tag color={difficultyColors[rec.difficulty]}>
+                            {rec.difficulty}
+                          </Tag>
+                        </span>
+                      }
+                      description={
+                        <span>
+                          <Tag color="blue" style={{ marginRight: 4 }}>
+                            {rec.concept_display_name}
+                          </Tag>
+                          <Text type="secondary" style={{ fontSize: 12 }}>
+                            {rec.reason}
+                          </Text>
+                        </span>
+                      }
+                    />
+                  </List.Item>
+                )}
+              />
+            ) : recommendationsLoading ? (
               <div style={{ textAlign: 'center', padding: '20px' }}>
                 <Spin />
               </div>

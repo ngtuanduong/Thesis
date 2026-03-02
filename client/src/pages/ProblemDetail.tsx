@@ -27,6 +27,7 @@ import { python } from '@codemirror/lang-python';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { useProblem, useSubmitCode } from '../api/queries/useProblems';
 import { useProblemSubmissions, useSubmission } from '../api/queries/useSubmissions';
+import HintPanel from '../components/HintPanel';
 import type { Submission } from '../types';
 
 const { Title, Text, Paragraph } = Typography;
@@ -398,6 +399,13 @@ function ProblemDetail() {
         <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           {resultsToolbar}
           {resultDisplay}
+          <div style={{ padding: '0 12px 8px' }}>
+            <HintPanel
+              problemId={id!}
+              code={code}
+              errorMessage={latestResult?.output || undefined}
+            />
+          </div>
         </div>
       </Splitter.Panel>
     </Splitter>

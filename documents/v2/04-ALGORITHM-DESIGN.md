@@ -313,6 +313,22 @@ def get_zpd_problems(student_id: int, concept_id: int,
 
     ZPD is defined as problems where:
         student_elo + zpd_min <= problem_elo <= student_elo + zpd_max
+
+    ZPD range justification:
+    - The [+100, +300] range is treated as a HYPERPARAMETER, not a fixed constant.
+    - Initial values based on:
+      * Elo scale: 400 points ≈ 10× expected score difference
+      * +100 offset: P(correct) ≈ 0.64 → challenging but achievable
+      * +300 offset: P(correct) ≈ 0.36 → difficult stretch zone
+      * This maps to ~36%–64% expected success rate, aligning with
+        flow theory (Csikszentmihalyi) and desirable difficulty (Bjork)
+    - Tuning strategy:
+      * If completion rate > 85%: shift range up (e.g., [+150, +350])
+      * If completion rate < 40%: shift range down (e.g., [+50, +250])
+      * Per-student ZPD adaptation is a future enhancement
+    - Alternative ranges to evaluate:
+      * [+50, +200]: conservative, higher success rate (~45%–76%)
+      * [+150, +400]: aggressive, more challenge (~25%–53%)
     """
     student_elo = get_elo(student_id, 'STUDENT').rating
 
@@ -442,6 +458,34 @@ def compute_reward(student_id: int, concept_id: int,
     return min(1.0, max(0.0, reward))  # clamp to [0, 1]
 ```
 
+### 3.2.1 Reward Function — Sensitivity Analysis
+
+**The ΔP(mastery) noise problem:**
+
+A single BKT update typically produces small mastery changes (0.01–0.05 per interaction). This means the `learning_gain` component of the reward is inherently noisy:
+- A correct response on a nearly-mastered concept (P(mastery)=0.9) yields ΔP ≈ 0.02
+- A correct response on a new concept (P(mastery)=0.1) yields ΔP ≈ 0.12
+- An incorrect response may yield ΔP < 0 (small negative)
+
+**Consequences if unaddressed:**
+- MAB converges slowly: needs ~50–100 pulls per arm before Beta distributions narrow meaningfully
+- Noisy rewards lead to suboptimal arm selection in early interactions
+
+**Mitigations implemented in the reward function:**
+1. **Scaling factor:** `learning_gain * 10` amplifies the small BKT deltas to a range where Beta updates are meaningful
+2. **Multi-component reward:** The `difficulty_reward` (0.3 weight) and `efficiency` (0.2 weight) components provide less noisy signals that help the MAB learn even when BKT changes are tiny
+3. **Minimum exploration guarantee:** Beta(1,1) prior ensures every arm gets explored at least a few times before exploitation dominates
+
+**Hyperparameter sensitivity:**
+
+| Parameter | Default | Low Alternative | High Alternative | Effect |
+|-----------|---------|----------------|-----------------|--------|
+| Learning gain weight | 0.5 | 0.3 | 0.7 | Lower → MAB relies more on difficulty/efficiency; Higher → MAB tracks mastery more closely |
+| Gain scaling factor | 10 | 5 | 20 | Lower → slower MAB convergence; Higher → oversensitive to small mastery changes |
+| Difficulty weight | 0.3 | 0.1 | 0.5 | Lower → ignores difficulty matching; Higher → over-optimizes for "easy wins" |
+
+**Recommendation:** Start with defaults. After 2 weeks of data collection, analyze reward distributions across arms. If variance is too high (coefficient of variation > 1.0), increase the difficulty/efficiency weights to stabilize.
+
 ### 3.3 Hierarchical Selection Algorithm
 
 ```python
@@ -477,11 +521,38 @@ def hierarchical_mab_recommend(student_id: int, n_recommendations: int = 5) -> l
             eligible_concepts.append(concept)
 
     # Step 2: Allocate recommendations between review and new concepts
-    n_review = min(len(due_reviews), n_recommendations // 2 + 1)
+    # FSRS-MAB Conflict Resolution: Threshold Mechanism
+    #
+    # Problem: If FSRS flags 10 concepts for review, MAB exploration is
+    # completely suppressed. This prevents the student from learning new
+    # material even when reviews are only slightly overdue.
+    #
+    # Solution: Cap review allocation based on urgency thresholds:
+    #   - Critical reviews (R < 0.7): always included, up to n_recommendations
+    #   - Standard reviews (0.7 ≤ R < 0.9): limited to max 50% of recommendations
+    #   - If zero critical reviews: allocate max 40% of slots to standard reviews
+    #
+    # This ensures MAB always gets at least some exploration slots.
+    critical_reviews = [r for r in due_reviews if r.retrievability < 0.7]
+    standard_reviews = [r for r in due_reviews if 0.7 <= r.retrievability < 0.9]
+
+    # Critical reviews take absolute priority
+    n_critical = min(len(critical_reviews), n_recommendations)
+    # Standard reviews get up to 50% of remaining slots
+    remaining_after_critical = n_recommendations - n_critical
+    n_standard = min(len(standard_reviews), remaining_after_critical // 2)
+    n_review = n_critical + n_standard
     n_new = n_recommendations - n_review
+    # Guarantee: MAB always gets at least 1 slot (unless all slots are critical reviews)
+    if n_new == 0 and n_critical < n_recommendations:
+        n_review -= 1
+        n_new = 1
 
     # Step 3: Select review concepts (prioritize by urgency)
-    review_concepts = sorted(due_reviews, key=lambda r: r.retrievability)[:n_review]
+    # Critical reviews first (lowest retrievability), then standard reviews
+    all_reviews_sorted = sorted(critical_reviews + standard_reviews,
+                                 key=lambda r: r.retrievability)
+    review_concepts = all_reviews_sorted[:n_review]
 
     for review in review_concepts:
         problem = select_problem_for_concept(

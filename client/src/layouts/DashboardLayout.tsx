@@ -8,6 +8,8 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  NodeIndexOutlined,
+  CalendarOutlined,
 } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
@@ -21,6 +23,8 @@ function DashboardLayout() {
   const menuItems = [
     { key: '/', icon: <DashboardOutlined />, label: 'Dashboard' },
     { key: '/problems', icon: <CodeOutlined />, label: 'Problems' },
+    { key: '/knowledge-map', icon: <NodeIndexOutlined />, label: 'Knowledge Map' },
+    { key: '/review-queue', icon: <CalendarOutlined />, label: 'Review Queue' },
     { key: '/profile', icon: <UserOutlined />, label: 'Profile' },
   ];
 

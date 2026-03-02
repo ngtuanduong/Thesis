@@ -7,3 +7,5 @@ pgvector==0.3.6
 sentence-transformers==3.3.1
 torch==2.5.1
 numpy==2.2.1
+openai==1.58.1
+redis[hiredis]==5.2.1

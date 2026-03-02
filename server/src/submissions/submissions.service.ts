@@ -1,12 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
 import { CodeExecutionService } from './code-execution.service';
+import { AdaptiveService } from '../adaptive/adaptive.service';
 import { SubmissionStatus } from '@prisma/client';
 
 @Injectable()
 export class SubmissionsService {
+  private readonly logger = new Logger(SubmissionsService.name);
   private aiServiceUrl: string;
   private aiServiceKey: string;
 
@@ -14,6 +16,7 @@ export class SubmissionsService {
     private prisma: PrismaService,
     private codeExecutionService: CodeExecutionService,
     private configService: ConfigService,
+    private adaptiveService: AdaptiveService,
   ) {
     this.aiServiceUrl = this.configService.get<string>('AI_SERVICE_URL') || 'http://localhost:8000';
     this.aiServiceKey = this.configService.get<string>('AI_SERVICE_KEY') || 'dev-secret-key';
@@ -86,8 +89,33 @@ export class SubmissionsService {
       // If submission was accepted, update user's skill profile
       if (result.status === SubmissionStatus.ACCEPTED) {
         await this.updateUserSkills(updatedSubmission.userId).catch((error) => {
-          console.error('Failed to update user skills:', error.message);
+          this.logger.error(`Failed to update user skills: ${error.message}`);
         });
+      }
+
+      // Update adaptive learning layers (BKT, Elo, MAB, FSRS)
+      if (
+        result.status === SubmissionStatus.ACCEPTED ||
+        result.status === SubmissionStatus.WRONG_ANSWER
+      ) {
+        const attemptCount = await this.prisma.submission.count({
+          where: {
+            userId: updatedSubmission.userId,
+            problemId: problemId,
+          },
+        });
+
+        await this.adaptiveService
+          .updateAfterSubmission({
+            studentId: updatedSubmission.userId,
+            problemId: problemId,
+            isCorrect: result.status === SubmissionStatus.ACCEPTED,
+            attemptNumber: attemptCount,
+            timeSpent: result.runtime ? Math.round(result.runtime / 1000) : 60,
+          })
+          .catch((error) => {
+            this.logger.error(`Failed to update adaptive layers: ${error.message}`);
+          });
       }
     } catch (error: any) {
       // Handle execution errors
