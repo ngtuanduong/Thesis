@@ -1,5 +1,5 @@
 # Claude Code Configuration
-
+Do not commit anything with claude or Anthropic contribution mention
 
 
 <skills_system priority="1">

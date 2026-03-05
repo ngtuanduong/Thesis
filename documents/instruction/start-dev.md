@@ -115,7 +115,7 @@ Create `server/.env`:
 
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/adaptive_learning?schema=public"
-JWT_SECRET="your-super-secret-jwt-key-change-in-production"
+JWT_SECRET="Duong-2025-Adaptive-Learning"
 JWT_EXPIRATION="7d"
 REDIS_HOST="localhost"
 REDIS_PORT=6379

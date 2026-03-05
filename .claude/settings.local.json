@@ -48,7 +48,8 @@
       "Bash(pip3 install pytest)",
       "Bash(pip3 install -r /Users/avada/WebstormProjects/KhoaLuan/ai-service/requirements.txt)",
       "Bash(docker cp:*)",
-      "Bash(__NEW_LINE_355ded8638a03a5e__ echo:*)"
+      "Bash(__NEW_LINE_355ded8638a03a5e__ echo:*)",
+      "Bash(xargs:*)"
     ]
   }
 }
