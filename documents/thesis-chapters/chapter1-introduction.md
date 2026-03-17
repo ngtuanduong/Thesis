@@ -2,13 +2,13 @@
 
 ## 1.1 Problem Statement
 
-Programming has become a foundational competency in higher education worldwide, with enrollment in introductory computer science courses growing steadily over the past two decades. Yet despite this growth in demand, programming education continues to face a persistent and well-documented crisis: high failure and dropout rates that far exceed those of most other undergraduate disciplines. A comprehensive systematic literature review by Luxton-Reilly et al. [2018] found that failure rates in introductory programming courses average between 30% and 40% globally, a figure that has remained remarkably stable over several decades of pedagogical experimentation. Robins et al. [2003], in their seminal review of learning and teaching programming, identified the heterogeneity of student backgrounds as one of the central challenges --- some students arrive with years of self-taught coding experience, while others encounter their first line of code on the first day of class.
+Programming has become a foundational competency in higher education worldwide, with enrollment in introductory computer science courses growing steadily over the past two decades. Yet despite this growth in demand, programming education continues to face a persistent and well-documented crisis: high failure and dropout rates that far exceed those of most other undergraduate disciplines. A comprehensive systematic literature review by Luxton-Reilly et al. [1] found that failure rates in introductory programming courses average between 30% and 40% globally, a figure that has remained remarkably stable over several decades of pedagogical experimentation. Robins et al. [2], in their seminal review of learning and teaching programming, identified the heterogeneity of student backgrounds as one of the central challenges --- some students arrive with years of self-taught coding experience, while others encounter their first line of code on the first day of class.
 
-This heterogeneity creates a fundamental tension in traditional lecture-based instruction. In a typical university programming class of 50 to 100 students, the instructor must deliver content at a single pace and a single difficulty level. Students who already possess foundational skills --- variables, control flow, basic data structures --- find themselves disengaged while waiting for peers to catch up. Conversely, students who lack prior exposure fall progressively further behind, unable to bridge the gap between knowing syntax and developing the computational thinking required to solve problems independently. Programming, unlike many academic subjects, is fundamentally a *skill* that demands deliberate, individualized practice [Anderson et al., 1985]. Passive consumption of lectures, no matter how well designed, cannot substitute for the iterative cycle of writing code, encountering errors, debugging, and refining solutions.
+This heterogeneity creates a fundamental tension in traditional lecture-based instruction. In a typical university programming class of 50 to 100 students, the instructor must deliver content at a single pace and a single difficulty level. Students who already possess foundational skills --- variables, control flow, basic data structures --- find themselves disengaged while waiting for peers to catch up. Conversely, students who lack prior exposure fall progressively further behind, unable to bridge the gap between knowing syntax and developing the computational thinking required to solve problems independently. Programming, unlike many academic subjects, is fundamentally a *skill* that demands deliberate, individualized practice [3]. Passive consumption of lectures, no matter how well designed, cannot substitute for the iterative cycle of writing code, encountering errors, debugging, and refining solutions.
 
 The problem is compounded by the resource constraints that instructors face. Providing personalized feedback on student code --- identifying misconceptions, suggesting targeted practice problems, and monitoring individual progress across multiple programming concepts --- requires time and effort that scale linearly with class size. In large sections, meaningful individualized instruction becomes practically impossible. Grading coding assignments is itself time-consuming, and delayed feedback diminishes its pedagogical value, as students have often moved on to new topics by the time they receive comments on prior work.
 
-Within the Vietnamese university context specifically, these challenges are no less pressing. Programming courses at Vietnamese institutions face the same diversity of student preparation, the same limitations of one-size-fits-all instruction, and additional constraints including limited access to advanced educational technology platforms and a scarcity of adaptive learning tools designed for local curricula [Nguyen et al., 2022; Tran & Nguyen, 2023]. The gap between the growing demand for software engineering graduates and the effectiveness of current programming pedagogy represents both an educational and an economic concern.
+Within the Vietnamese university context specifically, these challenges are no less pressing. Programming courses at Vietnamese institutions face the same diversity of student preparation, the same limitations of one-size-fits-all instruction, and additional constraints including limited access to advanced educational technology platforms and a scarcity of adaptive learning tools designed for local curricula [4]. A worldwide systematic review by Watson and Li [5] confirmed a mean failure rate of 32.3% across 161 courses in 15 countries, underscoring that this is not merely a local phenomenon but a global challenge that Vietnamese institutions share. The gap between the growing demand for software engineering graduates and the effectiveness of current programming pedagogy represents both an educational and an economic concern.
 
 In summary, the core problem this thesis addresses is the mismatch between the individualized, practice-intensive nature of programming skill acquisition and the uniform, resource-constrained reality of university instruction. Students need personalized learning paths, appropriately challenging practice problems, timely feedback, and systematic review of previously learned concepts --- yet current educational practices and platforms provide none of these at scale.
 
@@ -16,9 +16,9 @@ In summary, the core problem this thesis addresses is the mismatch between the i
 
 ### 1.2.1 The Promise of Adaptive Learning
 
-Adaptive learning --- the practice of adjusting instructional content, pace, and methodology based on individual learner characteristics and performance --- has demonstrated significant effectiveness across multiple educational domains [Brusilovsky, 2001; Paramythis & Loidl-Reisinger, 2004]. The fundamental premise is that learning is optimized when instruction matches the learner's current knowledge state, cognitive ability, and learning trajectory.
+Adaptive learning --- the practice of adjusting instructional content, pace, and methodology based on individual learner characteristics and performance --- has demonstrated significant effectiveness across multiple educational domains [6], [7]. The fundamental premise is that learning is optimized when instruction matches the learner's current knowledge state, cognitive ability, and learning trajectory.
 
-The history of adaptive learning in education spans several generations of increasingly sophisticated systems. The first generation, Intelligent Tutoring Systems (ITS) developed in the 1970s through 1990s, included landmark systems such as the LISP Tutor and Cognitive Tutor series [Anderson et al., 1985]. The Cognitive Tutor for mathematics demonstrated 50--100% improvements in problem-solving skills compared to traditional instruction in controlled studies [Ritter et al., 2007]. More recently, modern platforms have leveraged machine learning and data-driven approaches to achieve adaptation at scale: ALEKS uses Knowledge Space Theory to map student states and select optimal learning paths [Doignon & Falmagne, 1999], Khan Academy employs mastery-based progression [Murphy et al., 2014], and Duolingo uses spaced repetition algorithms to optimize language learning retention [Settles & Meeder, 2016].
+Research spanning several decades has validated this premise. Early Intelligent Tutoring Systems such as the Cognitive Tutor series demonstrated 50--100% improvements in problem-solving skills [3], [8], while modern platforms like ALEKS [9] and Duolingo [10] have shown that machine learning-driven adaptation can operate effectively at scale. A detailed review of these systems and their evolution is provided in Chapter 2.
 
 These success stories motivate the application of adaptive learning to programming education, a domain with properties that make it particularly amenable to data-driven personalization.
 
@@ -26,7 +26,7 @@ These success stories motivate the application of adaptive learning to programmi
 
 Programming education possesses several characteristics that distinguish it from other domains and make it an ideal candidate for adaptive learning systems:
 
-**Objectively measurable outcomes.** Unlike essay-based subjects or open-ended creative tasks, programming exercises produce artifacts --- code --- that can be evaluated automatically against test cases. A solution can be automatically evaluated against test cases, providing at minimum a binary correctness signal and often more granular feedback such as the proportion of tests passed. This measurability provides a clean foundation for knowledge modeling.
+**Objectively measurable outcomes.** Unlike essay-based subjects or open-ended creative tasks, programming exercises produce artifacts --- code --- that can be automatically evaluated against test cases, providing at minimum a binary correctness signal and often more granular feedback such as the proportion of tests passed. This measurability provides a clean foundation for knowledge modeling.
 
 **Rich behavioral signals.** Beyond binary correctness, each code submission contains a wealth of information: the number of attempts before success, the time elapsed between attempts, the types of errors encountered (syntax, runtime, logic), the structural complexity of the submitted code, and its similarity to known optimal solutions. These signals are far richer than those available in multiple-choice assessments.
 
@@ -40,12 +40,10 @@ These properties mean that an adaptive system for programming can leverage unusu
 
 Despite the strong case for adaptive learning in programming, existing online coding platforms fail to deliver comprehensive adaptation. Platforms such as LeetCode, HackerRank, and Codeforces have achieved remarkable scale with millions of users, but their pedagogical architecture remains fundamentally static:
 
-- **LeetCode** classifies problems into fixed difficulty tiers (Easy, Medium, Hard) that do not adapt to individual users. Students must self-assess their level and manually select problems, with no mechanism to prevent a beginner from attempting dynamic programming problems before mastering recursion.
-- **HackerRank** offers curated skill tracks but treats skill assessment as binary (attempted or not attempted), with no probabilistic knowledge model and no difficulty calibration.
-- **Codeforces** employs an Elo rating system, but solely for competitive ranking rather than pedagogical recommendation. There is no knowledge tracing, no concept prerequisite awareness, and no spaced repetition.
-- **CodeSignal** uses an Elo-IRT hybrid for assessment but does not combine this with knowledge tracing, exploration-exploitation optimization, or retention scheduling.
+- **LeetCode** and **HackerRank** classify problems into fixed difficulty tiers that do not adapt to individual users, with no probabilistic knowledge model or prerequisite awareness.
+- **Codeforces** and **CodeSignal** employ Elo-based rating systems, but primarily for competitive ranking or assessment rather than pedagogical recommendation integrated with knowledge tracing or retention scheduling.
 
-A systematic comparison reveals that no existing platform --- academic or commercial --- integrates all the components that learning science indicates are necessary for effective personalized instruction: modeling *what* the student knows (knowledge tracing), calibrating *how hard* each problem is for each individual (difficulty calibration), selecting *which* problem to recommend next to maximize learning (intelligent selection), scheduling *when* to review previously learned concepts to prevent forgetting (spaced repetition), and providing *contextual help* when the student is stuck (feedback generation) [see Table 1.1].
+A systematic comparison reveals that no existing platform --- academic or commercial --- integrates all the components that learning science indicates are necessary for effective personalized instruction: modeling *what* the student knows (knowledge tracing), calibrating *how hard* each problem is for each individual (difficulty calibration), selecting *which* problem to recommend next to maximize learning (intelligent selection), scheduling *when* to review previously learned concepts to prevent forgetting (spaced repetition), and providing *contextual help* when the student is stuck (feedback generation) [see Table 1.1]. The table includes both programming-focused platforms (LeetCode through CodeSignal) and adaptive learning platforms from other domains (Duolingo through Knewton Alta); the research gap this thesis targets lies precisely at their intersection --- bringing the adaptive sophistication of the latter category into the programming education domain.
 
 **Table 1.1.** Comparison of adaptive capabilities across existing platforms and this thesis.
 
@@ -81,13 +79,13 @@ Propose a modular, five-layer architecture in which each layer addresses a disti
 Implement Bayesian Knowledge Tracing (BKT) to estimate the probability of mastery for each student across each programming concept, using submission outcomes as the primary observation signal. The knowledge tracer provides the foundation for prerequisite-aware recommendations.
 
 **Objective 3: Implement difficulty calibration using Elo ratings for both students and problems.**
-Implement a dual Elo rating system with dynamic K-values that continuously calibrates the difficulty of each programming problem relative to each student's ability. Leverage the mathematical equivalence between the Elo system and Item Response Theory (IRT) to provide principled difficulty matching grounded in psychometric theory [Pelanek, 2016].
+Implement a dual Elo rating system with dynamic K-values that continuously calibrates the difficulty of each programming problem relative to each student's ability. Leverage the well-documented relationship between the Elo system and Item Response Theory (IRT) to provide principled difficulty matching grounded in psychometric theory [11].
 
 **Objective 4: Implement intelligent problem selection using Hierarchical Multi-Armed Bandits.**
 Implement a two-level Hierarchical Multi-Armed Bandit (H-MAB) algorithm using Thompson Sampling that first selects a concept to study (Level 1) and then selects a specific problem within that concept (Level 2). The selection process must respect knowledge graph prerequisites (concepts are only eligible if all prerequisites are mastered) and Elo-based Zone of Proximal Development (ZPD) constraints (problems must be appropriately challenging for the individual student).
 
 **Objective 5: Implement spaced repetition scheduling for long-term retention of programming concepts.**
-Apply the Free Spaced Repetition Scheduler (FSRS) algorithm [Ye, 2023] to programming concept review scheduling --- a novel application domain for FSRS. Design a mapping from code submission outcomes to FSRS review ratings, and integrate the review scheduler with the MAB-based recommendation pipeline so that concepts due for review are prioritized alongside exploration of new material.
+Apply the Free Spaced Repetition Scheduler (FSRS) algorithm [12] to programming concept review scheduling --- a novel application domain for FSRS. Design a mapping from code submission outcomes to FSRS review ratings, and integrate the review scheduler with the MAB-based recommendation pipeline so that concepts due for review are prioritized alongside exploration of new material.
 
 **Objective 6: Evaluate the system's effectiveness through a controlled experiment.**
 Conduct a between-subjects experiment with pre-test and post-test design, comparing the adaptive platform (experimental group) against the same platform with adaptive features disabled (control group). Evaluate learning effectiveness, recommendation quality, student engagement, and usability.
@@ -97,7 +95,7 @@ Conduct a between-subjects experiment with pre-test and post-test design, compar
 This thesis addresses four research questions, one primary and three secondary. For comparative questions (RQ2, RQ3), corresponding hypotheses are stated and will be tested at the alpha = 0.05 significance level.
 
 **RQ1 (Primary): How accurately can the multi-layer adaptive system model student knowledge and predict performance?**
-This question evaluates the foundational capability of the system's learner model. It is assessed through the prediction accuracy (AUC-ROC) of both the BKT knowledge tracer and the Elo difficulty calibrator, as well as the acceptance rate of recommendations per difficulty band and the convergence speed of Elo ratings. Following established thresholds in educational data mining [Pelanek, 2016], an AUC-ROC exceeding 0.70 is considered acceptable predictive performance. If the system cannot accurately model what students know and predict how they will perform, the downstream recommendation and scheduling layers cannot function effectively.
+This question evaluates the foundational capability of the system's learner model. It is assessed through the prediction accuracy (AUC-ROC) of both the BKT knowledge tracer and the Elo difficulty calibrator, as well as the acceptance rate of recommendations per difficulty band and the convergence speed of Elo ratings. Following established thresholds in educational data mining [11], an AUC-ROC exceeding 0.70 is considered acceptable predictive performance. If the system cannot accurately model what students know and predict how they will perform, the downstream recommendation and scheduling layers cannot function effectively.
 
 **RQ2: Does Hierarchical MAB problem selection improve learning outcomes compared to content-based filtering?**
 This question tests the core adaptive recommendation mechanism. It compares the experimental group (H-MAB with BKT prerequisite gating and Elo ZPD filtering) against the control group (content-based filtering using cosine similarity of embedding vectors). The primary metric is Normalized Learning Gain (NLG), supplemented by the problems-to-mastery ratio (how efficiently students achieve concept mastery).
@@ -110,7 +108,7 @@ This question evaluates the application of FSRS to programming education. It is 
 - *H3₀ (Null):* There is no significant difference in retention scores between the two groups.
 
 **RQ4: How do students perceive the usability and usefulness of the adaptive platform?**
-This qualitative question captures the student experience through the System Usability Scale (SUS) [Brooke, 1996], the Technology Acceptance Model (TAM) constructs of Perceived Usefulness and Perceived Ease of Use [Davis, 1989], and semi-structured interviews analyzed using thematic analysis [Braun & Clarke, 2006].
+This qualitative question captures the student experience through the System Usability Scale (SUS) [13], the Technology Acceptance Model (TAM) constructs of Perceived Usefulness and Perceived Ease of Use [14], and semi-structured interviews analyzed using thematic analysis [15].
 
 ## 1.5 Proposed Solution
 
@@ -122,13 +120,13 @@ The platform extends an existing three-tier web application (React frontend, Nes
 
 **Foundation: Knowledge Graph.** A manually curated directed graph of programming concepts (e.g., variables, loops, functions, recursion, dynamic programming) connected by prerequisite edges. Each problem in the database is mapped to one or more concepts. The knowledge graph provides the structural backbone that constrains and coordinates all adaptive layers.
 
-**Layer 1: Knowledge Tracer (Bayesian Knowledge Tracing).** For each (student, concept) pair, BKT maintains a probabilistic estimate of mastery using a Hidden Markov Model [Corbett & Anderson, 1994]. After each submission, the mastery probability is updated via Bayesian inference, enabling prerequisite-gated progression through the knowledge graph.
+**Layer 1: Knowledge Tracer (Bayesian Knowledge Tracing).** For each (student, concept) pair, BKT maintains a probabilistic estimate of mastery using a Hidden Markov Model [16]. After each submission, the mastery probability is updated via Bayesian inference, enabling prerequisite-gated progression through the knowledge graph.
 
-**Layer 2: Difficulty Calibrator (Dynamic K-Value Elo).** A dual Elo rating system assigns numerical ratings to both students and problems, with ratings updated after each submission based on the match between expected and actual outcomes [Elo, 1978]. This thesis proposes a dynamic K-factor mechanism that adapts based on the student's recent learning trend, drawing on the principles of adaptive Elo systems in educational contexts [Pelanek, 2016]. This ensures that ratings converge efficiently for all students regardless of their learning phase.
+**Layer 2: Difficulty Calibrator (Dynamic K-Value Elo).** A dual Elo rating system assigns numerical ratings to both students and problems, with ratings updated after each submission based on the match between expected and actual outcomes [17]. This thesis proposes a dynamic K-factor mechanism that adapts based on the student's recent learning trend, drawing on the principles of adaptive Elo systems in educational contexts [11]. This ensures that ratings converge efficiently for all students regardless of their learning phase.
 
-**Layer 3: Problem Selector (Hierarchical Multi-Armed Bandit).** The recommendation engine formulates problem selection as a Hierarchical MAB problem solved via Thompson Sampling [Thompson, 1933; Russo et al., 2018]. At Level 1, the system selects a concept to study from among those whose prerequisites are met. At Level 2, it selects a specific problem within that concept whose Elo rating falls within the student's Zone of Proximal Development [Vygotsky, 1978], aligning with the desirable difficulty framework [Bjork & Bjork, 2011]. The MAB naturally balances exploitation (practicing concepts with high learning gain) and exploration (trying new concepts to discover strengths and weaknesses).
+**Layer 3: Problem Selector (Hierarchical Multi-Armed Bandit).** The recommendation engine formulates problem selection as a Hierarchical MAB problem solved via Thompson Sampling [18], [19]. At Level 1, the system selects a concept to study from among those whose prerequisites are met. At Level 2, it selects a specific problem within that concept whose Elo rating falls within the student's Zone of Proximal Development [20], aligning with the desirable difficulty framework [21]. The MAB naturally balances exploitation (practicing concepts with high learning gain) and exploration (trying new concepts to discover strengths and weaknesses).
 
-**Layer 4: Review Scheduler (FSRS).** The Free Spaced Repetition Scheduler tracks memory states per (student, concept) pair, modeling the decay of retrievability over time according to a power-law forgetting curve [Ye, 2023]. When retrievability drops below a threshold, the concept is flagged for review, and the MAB layer prioritizes it in the next recommendation cycle. A key design element is the mapping of code submission outcomes to FSRS review ratings, bridging the gap between FSRS's flashcard-oriented design and the richer signal space of programming exercises. The specific mapping is detailed in Chapter 4.
+**Layer 4: Review Scheduler (FSRS).** The Free Spaced Repetition Scheduler tracks memory states per (student, concept) pair, modeling the decay of retrievability over time according to a power-law forgetting curve [12]. When retrievability drops below a threshold, the concept is flagged for review, and the MAB layer prioritizes it in the next recommendation cycle. A key design element is the mapping of code submission outcomes to FSRS review ratings, bridging the gap between FSRS's flashcard-oriented design and the richer signal space of programming exercises. The specific mapping is detailed in Chapter 4.
 
 **Layer 5: LLM Feedback Engine (Optional).** When a student struggles with a problem, a Retrieval-Augmented Generation (RAG) pipeline retrieves relevant context from the knowledge graph and prompts a large language model to generate Socratic hints that guide the student toward the solution without revealing it directly. This layer is supplementary; the core thesis contribution stands on Layers 1 through 4.
 
@@ -194,7 +192,7 @@ The thesis delivers a complete, deployable system --- React frontend, NestJS API
 
 The remainder of this thesis is organized as follows:
 
-**Chapter 2: Literature Review and Theoretical Foundations** surveys the research landscape across six thematic areas: adaptive learning systems, knowledge tracing (from BKT to state-of-the-art DKT2), spaced repetition (from Ebbinghaus to FSRS), Multi-Armed Bandits in education, Elo rating systems and Item Response Theory, and knowledge graphs with graph neural networks. The chapter concludes with a gap analysis that positions this thesis within the existing literature.
+**Chapter 2: Literature Review and Theoretical Foundations** surveys the research landscape across six thematic areas: adaptive learning systems, knowledge tracing (from BKT to state-of-the-art Deep Knowledge Tracing), spaced repetition (from Ebbinghaus to FSRS), Multi-Armed Bandits in education, Elo rating systems and Item Response Theory, and knowledge graphs with graph neural networks. The chapter concludes with a gap analysis that positions this thesis within the existing literature.
 
 **Chapter 3: System Requirements and Analysis** defines the functional and non-functional requirements of the platform, presents user personas and use case diagrams, describes the system workflow and data model, and details the proposed five-layer architecture including the knowledge graph foundation, data flow diagrams, database schema design, and API specifications.
 
@@ -208,48 +206,44 @@ The remainder of this thesis is organized as follows:
 
 ## References
 
-[Anderson et al., 1985] J. R. Anderson, C. F. Boyle, and B. J. Reiser, "Intelligent tutoring systems," *Science*, vol. 228, no. 4698, pp. 456--462, 1985.
+[1]    A. Luxton-Reilly et al., "Introductory programming: A systematic literature review," in *Proc. ITiCSE Companion*, 2018, pp. 55--106, doi: https://doi.org/10.1145/3293881.3295779.
 
-[Bjork & Bjork, 2011] R. A. Bjork and E. L. Bjork, "Making things hard on yourself, but in a good way: Creating desirable difficulties to enhance learning," in *Psychology and the Real World*, M. A. Gernsbacher et al., Eds. New York: Worth, 2011, pp. 56--64.
+[2]    A. Robins, J. Rountree, and N. Rountree, "Learning and teaching programming: A review and discussion," *Computer Science Education*, vol. 13, no. 2, pp. 137--172, 2003, doi: https://doi.org/10.1076/csed.13.2.137.14200.
 
-[Braun & Clarke, 2006] V. Braun and V. Clarke, "Using thematic analysis in psychology," *Qualitative Research in Psychology*, vol. 3, no. 2, pp. 77--101, 2006.
+[3]    J. R. Anderson, C. F. Boyle, and B. J. Reiser, "Intelligent tutoring systems," *Science*, vol. 228, no. 4698, pp. 456--462, 1985, doi: https://doi.org/10.1126/science.228.4698.456.
 
-[Brooke, 1996] J. Brooke, "SUS: A 'quick and dirty' usability scale," in *Usability Evaluation in Industry*, P. W. Jordan et al., Eds. London: Taylor & Francis, 1996, pp. 189--194.
+[4]    T. T. Nguyen, H. Q. Le, and T. H. Pham, "Challenges and solutions for teaching programming in Vietnamese universities," *Journal of Science, Hanoi National University of Education*, vol. 67, no. 4, pp. 120--132, 2022. (in Vietnamese)
 
-[Brusilovsky, 2001] P. Brusilovsky, "Adaptive hypermedia," *User Modeling and User-Adapted Interaction*, vol. 11, no. 1--2, pp. 87--110, 2001.
+[5]    C. Watson and F. W. B. Li, "Failure rates in introductory programming revisited," in *Proc. ITiCSE*, 2014, pp. 39--44, doi: https://doi.org/10.1145/2591708.2591749.
 
-[Corbett & Anderson, 1994] A. T. Corbett and J. R. Anderson, "Knowledge tracing: Modeling the acquisition of procedural knowledge," *User Modeling and User-Adapted Interaction*, vol. 4, no. 4, pp. 253--278, 1994.
+[6]    P. Brusilovsky, "Adaptive hypermedia," *User Modeling and User-Adapted Interaction*, vol. 11, no. 1--2, pp. 87--110, 2001, doi: https://doi.org/10.1023/A:1011143116306.
 
-[Davis, 1989] F. D. Davis, "Perceived usefulness, perceived ease of use, and user acceptance of information technology," *MIS Quarterly*, vol. 13, no. 3, pp. 319--340, 1989.
+[7]    A. Paramythis and S. Loidl-Reisinger, "Adaptive learning environments and e-learning standards," *Electronic Journal of e-Learning*, vol. 2, no. 1, pp. 181--194, 2004.
 
-[Doignon & Falmagne, 1999] J.-D. Doignon and J.-C. Falmagne, *Knowledge Spaces*. Berlin: Springer-Verlag, 1999.
+[8]    S. Ritter, J. R. Anderson, K. R. Koedinger, and A. Corbett, "Cognitive Tutor: Applied research in mathematics education," *Psychonomic Bulletin & Review*, vol. 14, no. 2, pp. 249--255, 2007, doi: https://doi.org/10.3758/BF03194060.
 
-[Klinkenberg et al., 2011] S. Klinkenberg, M. Straatemeier, and H. L. J. van der Maas, "Computer adaptive practice of Maths ability using a new item response model for on the fly ability and difficulty estimation," *Computers & Education*, vol. 57, no. 2, pp. 1813--1824, 2011.
+[9]    J.-P. Doignon and J.-C. Falmagne, *Knowledge Spaces*. Berlin: Springer-Verlag, 1999, doi: https://doi.org/10.1007/978-3-642-58625-5.
 
-[Russo et al., 2018] D. Russo, B. Van Roy, A. Kazerouni, I. Osband, and Z. Wen, "A tutorial on Thompson Sampling," *Foundations and Trends in Machine Learning*, vol. 11, no. 1, pp. 1--96, 2018.
+[10]   B. Settles and B. Meeder, "A trainable spaced repetition model for language learning," in *Proc. ACL*, 2016, pp. 1848--1858, doi: https://doi.org/10.18653/v1/P16-1174.
 
-[Elo, 1978] A. E. Elo, *The Rating of Chessplayers, Past and Present*. New York: Arco, 1978.
+[11]   R. Pelanek, "Applications of the Elo rating system in adaptive educational systems," *Computers & Education*, vol. 98, pp. 169--179, 2016, doi: https://doi.org/10.1016/j.compedu.2016.03.015.
 
-[Luxton-Reilly et al., 2018] A. Luxton-Reilly et al., "Introductory programming: A systematic literature review," in *Proc. ITiCSE Companion*, 2018, pp. 55--106.
+[12]   J. Ye, "A stochastic shortest path algorithm for optimizing spaced repetition scheduling," in *Proc. SIGKDD*, 2023, doi: https://doi.org/10.1145/3580305.3599922.
 
-[Murphy et al., 2014] R. Murphy, L. Gallagher, A. Krumm, J. Mislevy, and A. Hafter, "Research on the use of Khan Academy in schools," *SRI Education*, 2014.
+[13]   J. Brooke, "SUS: A 'quick and dirty' usability scale," in *Usability Evaluation in Industry*, P. W. Jordan et al., Eds. London: Taylor & Francis, 1996, pp. 189--194.
 
-[Nguyen et al., 2022] T. T. Nguyen, H. Q. Le, and T. H. Pham, "Challenges and solutions for teaching programming in Vietnamese universities," *Journal of Science, Hanoi National University of Education*, vol. 67, no. 4, pp. 120--132, 2022. (in Vietnamese)
+[14]   F. D. Davis, "Perceived usefulness, perceived ease of use, and user acceptance of information technology," *MIS Quarterly*, vol. 13, no. 3, pp. 319--340, 1989, doi: https://doi.org/10.2307/249008.
 
-[Paramythis & Loidl-Reisinger, 2004] A. Paramythis and S. Loidl-Reisinger, "Adaptive learning environments and e-learning standards," *Electronic Journal of e-Learning*, vol. 2, no. 1, pp. 181--194, 2004.
+[15]   V. Braun and V. Clarke, "Using thematic analysis in psychology," *Qualitative Research in Psychology*, vol. 3, no. 2, pp. 77--101, 2006, doi: https://doi.org/10.1191/1478088706qp063oa.
 
-[Pelanek, 2016] R. Pelanek, "Applications of the Elo rating system in adaptive educational systems," *Computers & Education*, vol. 98, pp. 169--179, 2016.
+[16]   A. T. Corbett and J. R. Anderson, "Knowledge tracing: Modeling the acquisition of procedural knowledge," *User Modeling and User-Adapted Interaction*, vol. 4, no. 4, pp. 253--278, 1994, doi: https://doi.org/10.1007/BF01099821.
 
-[Ritter et al., 2007] S. Ritter, J. R. Anderson, K. R. Koedinger, and A. Corbett, "Cognitive Tutor: Applied research in mathematics education," *Psychonomic Bulletin & Review*, vol. 14, no. 2, pp. 249--255, 2007.
+[17]   A. E. Elo, *The Rating of Chessplayers, Past and Present*. New York: Arco, 1978.
 
-[Robins et al., 2003] A. Robins, J. Rountree, and N. Rountree, "Learning and teaching programming: A review and discussion," *Computer Science Education*, vol. 13, no. 2, pp. 137--172, 2003.
+[18]   W. R. Thompson, "On the likelihood that one unknown probability exceeds another in view of the evidence of two samples," *Biometrika*, vol. 25, no. 3--4, pp. 285--294, 1933, doi: https://doi.org/10.2307/2332286.
 
-[Settles & Meeder, 2016] B. Settles and B. Meeder, "A trainable spaced repetition model for language learning," in *Proc. ACL*, 2016, pp. 1848--1858.
+[19]   D. Russo, B. Van Roy, A. Kazerouni, I. Osband, and Z. Wen, "A tutorial on Thompson Sampling," *Foundations and Trends in Machine Learning*, vol. 11, no. 1, pp. 1--96, 2018, doi: https://doi.org/10.1561/2200000070.
 
-[Thompson, 1933] W. R. Thompson, "On the likelihood that one unknown probability exceeds another in view of the evidence of two samples," *Biometrika*, vol. 25, no. 3--4, pp. 285--294, 1933.
+[20]   L. S. Vygotsky, *Mind in Society: The Development of Higher Psychological Processes*. Cambridge, MA: Harvard University Press, 1978.
 
-[Tran & Nguyen, 2023] H. T. Tran and D. K. Nguyen, "An analysis of student performance and dropout rates in introductory programming courses at Vietnamese universities," in *Proc. International Conference on Advanced Computing and Applications (ACOMP)*, 2023, pp. 45--52. (in Vietnamese)
-
-[Vygotsky, 1978] L. S. Vygotsky, *Mind in Society: The Development of Higher Psychological Processes*. Cambridge, MA: Harvard University Press, 1978.
-
-[Ye, 2023] J. Ye, "A stochastic shortest path algorithm for optimizing spaced repetition scheduling," in *Proc. SIGKDD*, 2023.
+[21]   R. A. Bjork and E. L. Bjork, "Making things hard on yourself, but in a good way: Creating desirable difficulties to enhance learning," in *Psychology and the Real World*, M. A. Gernsbacher et al., Eds. New York: Worth, 2011, pp. 56--64.
