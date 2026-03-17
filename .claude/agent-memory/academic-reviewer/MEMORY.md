@@ -17,14 +17,24 @@
   - Remaining: Vietnamese citations still lack DOIs, Table 1.1 needs category clarification, Section 1.2.1 slightly long, Klinkenberg et al. cited in refs but not in text, DKT2 undefined
   - Writing quality consistently strong for bachelor's level
 
+## Review History (continued)
+- Chapter 3 reviewed (2026-03-17, round 1): MINOR REVISION recommended
+  - Major: chapter ~10K words vs 6-8K target, unjustified hyperparameters (theta_m=0.85, ZPD bounds, reward weights), composite reward signal theoretical gap (Beta updates with continuous rewards), polymorphic Elo table anti-pattern, missing error handling/failure modes
+  - Minor: ASCII diagrams should be UML, FR9 optional handling, imprecise "~30 concepts", missing requirements traceability matrix, write-ownership enforcement unspecified
+  - Unhedged FSRS novelty claim (line 289) -- same pattern as Ch1
+  - Missing: security for AI service API, scalability beyond caching, data consistency under concurrent updates, knowledge graph validation rules, hyperparameter summary table
+  - Writing quality remains consistently strong
+
 ## Patterns to Watch
-- Author tends to make absolute novelty claims -- now mostly hedged, but verify in future chapters
+- Author tends to make absolute novelty claims -- now mostly hedged, but verify in future chapters (Ch3 line 289 still unhedged)
 - Vietnamese citations [Nguyen et al., 2022] and [Tran & Nguyen, 2023] repeatedly flagged for missing DOIs
 - Section 1.2.1 historical content overlaps with what should be in Chapter 2 (Literature Review)
 - Author handles scoping well -- optional Layer 5, honest effect size limitations
 - Table comparisons mix different platform categories without explicit acknowledgment
 - Unused references appear in the bibliography (Klinkenberg et al., 2011)
 - "Mathematical equivalence" between Elo and IRT is slightly overclaimed -- should be "relationship"
+- Author introduces hyperparameters without justification -- pattern across Ch3 (needs systematic fix)
+- Chapters tend to exceed word targets -- Ch3 is 25-30% over budget
 
 ## Vietnamese Thesis Standards (Key Points)
 - Introduction should be 5-10 pages
