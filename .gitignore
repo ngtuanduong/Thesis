@@ -10,6 +10,10 @@ build/
 .env.local
 .env.*.local
 
+# Service account credentials
+*.iam.gserviceaccount.com*
+infra-inkwell-*.json
+
 # IDE
 .idea/
 .vscode/

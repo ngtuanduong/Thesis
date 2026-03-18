@@ -49,7 +49,19 @@
       "Bash(pip3 install -r /Users/avada/WebstormProjects/KhoaLuan/ai-service/requirements.txt)",
       "Bash(docker cp:*)",
       "Bash(__NEW_LINE_355ded8638a03a5e__ echo:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "mcp__chrome-devtools__take_snapshot",
+      "mcp__chrome-devtools__click",
+      "mcp__chrome-devtools__evaluate_script",
+      "mcp__chrome-devtools__take_screenshot",
+      "mcp__chrome-devtools__wait_for",
+      "mcp__chrome-devtools__new_page",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__chrome-devtools__navigate_page",
+      "Bash(find /Users/avada/WebstormProjects/Thesis -name *gdoc* -o -name *google*)",
+      "mcp__chrome-devtools__select_page",
+      "mcp__chrome-devtools__resize_page",
+      "Bash(python:*)"
     ]
   }
 }

@@ -7,50 +7,58 @@
 <style>
   body {
     font-family: 'Times New Roman', Times, serif;
-    max-width: 960px;
-    margin: 40px auto;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
     background: #fff;
     color: #222;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  #tight-container {
+    display: inline-block;
+    width: 680px;
+    padding: 10px;
+    box-sizing: border-box;
   }
   .table-title {
     font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 13px;
+    margin-bottom: 6px;
+    font-size: 16px;
   }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
   thead {
-    border-top: 2px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 2.5px solid #000;
+    border-bottom: 1.5px solid #000;
   }
   tbody {
-    border-bottom: 2px solid #000;
+    border-bottom: 2.5px solid #000;
   }
   th {
     font-weight: bold;
     text-align: center;
-    padding: 8px 6px;
-    font-size: 12px;
+    padding: 6px 4px;
+    font-size: 14px;
     vertical-align: bottom;
+    line-height: 1.2;
   }
   th:first-child {
     text-align: left;
   }
   td {
-    padding: 6px;
+    padding: 5px 4px;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     vertical-align: middle;
+    line-height: 1.2;
   }
   td:first-child {
     text-align: left;
     font-weight: normal;
+    white-space: nowrap;
   }
   tr.highlight {
     background-color: #e8f4e8;
@@ -59,35 +67,33 @@
   tr.highlight td {
     font-weight: bold;
   }
-  tr.section-divider td {
-    border-top: 1px solid #999;
-  }
   .check { color: #2e7d32; font-weight: bold; }
   .cross { color: #c62828; }
-  .partial { color: #e65100; font-style: italic; }
+  .partial { color: #e65100; font-style: italic; font-size: 13px; }
   .note {
-    font-size: 11px;
+    font-size: 13px;
     font-style: italic;
-    margin-top: 6px;
+    margin-top: 4px;
     line-height: 1.4;
   }
   .category-label {
-    font-size: 11px;
+    font-size: 13px;
     font-style: italic;
     color: #666;
-    padding: 4px 6px;
+    padding: 4px 4px;
     border-top: 1px dashed #ccc;
   }
 </style>
 </head>
 <body>
+<div id="tight-container">
 
 <div class="table-title">Table 1.1. Comparison of adaptive capabilities across existing platforms and this thesis.</div>
 
 <table>
   <thead>
     <tr>
-      <th style="width:15%">Platform</th>
+      <th style="width:14%">Platform</th>
       <th>Knowledge<br>Tracing</th>
       <th>Difficulty<br>Calibration</th>
       <th>Intelligent<br>Selection</th>
@@ -121,7 +127,7 @@
     <tr>
       <td>Codeforces</td>
       <td class="cross">No</td>
-      <td class="partial">Elo (ranking only)</td>
+      <td class="partial">Elo (ranking)</td>
       <td class="cross">No</td>
       <td class="cross">No</td>
       <td class="cross">No</td>
@@ -150,8 +156,8 @@
     </tr>
     <tr>
       <td>Khan Academy</td>
-      <td class="partial">Mastery-based</td>
-      <td class="partial">Mastery-based</td>
+      <td class="partial">Mastery</td>
+      <td class="partial">Mastery</td>
       <td class="partial">Implicit</td>
       <td class="cross">No</td>
       <td class="check">Khanmigo</td>
@@ -159,7 +165,7 @@
     </tr>
     <tr>
       <td>ALEKS</td>
-      <td class="check">Knowledge Spaces</td>
+      <td class="check">KS</td>
       <td class="partial">Implicit</td>
       <td class="check">Adaptive</td>
       <td class="cross">No</td>
@@ -168,7 +174,7 @@
     </tr>
     <tr>
       <td>Carnegie MATHia</td>
-      <td class="check">BKT-based</td>
+      <td class="check">BKT</td>
       <td class="partial">Implicit</td>
       <td class="partial">Model-tracing</td>
       <td class="cross">No</td>
@@ -177,7 +183,7 @@
     </tr>
     <tr>
       <td>Knewton Alta</td>
-      <td class="check">IRT-based</td>
+      <td class="check">IRT</td>
       <td class="check">IRT</td>
       <td class="check">Adaptive</td>
       <td class="cross">No</td>
@@ -188,7 +194,7 @@
       <td>This Thesis *</td>
       <td class="check">BKT</td>
       <td class="check">Dynamic Elo</td>
-      <td class="check">Hierarchical MAB</td>
+      <td class="check">H-MAB</td>
       <td class="check">FSRS</td>
       <td class="check">RAG+LLM</td>
       <td class="check">Yes</td>
@@ -198,7 +204,8 @@
 
 <div class="note">
   * This row represents a proposed system, not yet deployed and validated at scale. All other rows represent production systems.<br>
-  Note. Platforms were selected based on two criteria: (1) commercial platforms with over one million active users widely used for programming practice or adaptive learning, and (2) well-known academic systems from the Intelligent Tutoring Systems and Adaptive Learning literature.
+  Note. Platforms were selected based on: (1) commercial platforms with over one million active users, and (2) well-known academic systems from the ITS and Adaptive Learning literature.
+</div>
 </div>
 
 </body>
