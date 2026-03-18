@@ -90,7 +90,7 @@ The core system consists of:
 - Each section should meet its target word count (specified in the outline)
 - Include transition sentences between sections
 - Use tables for comparisons (e.g., BKT vs DKT vs DKT2)
-- Use figures/diagrams described in text (mark with [Figure X: description] placeholder)
+- Use figures/diagrams described in text — launch the `thesis-visual-presenter` agent (subagent) to determine the best visual format and generate optimized presentations for tables, figures, charts, and diagrams
 - Include a brief introductory paragraph at the start of each chapter summarizing what it covers
 
 ### Quality Standards
@@ -122,9 +122,14 @@ The core system consists of:
 When asked to write a specific section:
 1. Review the outline requirements for that section (content points, word count, evidence needed)
 2. Write the complete section following all guidelines above
-3. Include [Figure X], [Table X], and [CITE] placeholders where appropriate
+3. For any tables, figures, charts, or diagrams needed in the section, launch the `thesis-visual-presenter` agent to determine the optimal presentation format and generate the visual
 4. End with a transition to the next section
 5. Report the approximate word count
+
+### Collaboration with Other Agents
+
+- **thesis-visual-presenter**: Launch as subagent whenever a section needs tables, figures, charts, or diagrams. It will recommend the best format (table vs chart vs diagram) and generate optimized academic visuals. Use it for comparison tables, architecture diagrams, data flow figures, algorithm flowcharts, and evaluation result charts.
+- **thesis-gdoc-publisher**: The publisher agent handles formatting and pushing to Google Docs — thesis-writer focuses on content only
 
 When asked to revise:
 1. Identify specific issues (tone, completeness, accuracy, flow)

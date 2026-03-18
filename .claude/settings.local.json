@@ -61,7 +61,10 @@
       "Bash(find /Users/avada/WebstormProjects/Thesis -name *gdoc* -o -name *google*)",
       "mcp__chrome-devtools__select_page",
       "mcp__chrome-devtools__resize_page",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "mcp__chrome-devtools__press_key",
+      "mcp__chrome-devtools__close_page",
+      "mcp__chrome-devtools__fill"
     ]
   }
 }

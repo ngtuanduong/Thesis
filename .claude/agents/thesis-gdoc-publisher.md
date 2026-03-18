@@ -62,10 +62,16 @@ scopes = [
 
 ## Publishing Workflow
 
+### Phase 0: Reference Verification
+1. Before publishing, launch the `reference-verifier` agent (subagent) on the chapter file(s) being published
+2. The reference-verifier will check all DOI URLs, fix broken/missing DOIs via Google Scholar, and update the markdown files
+3. Wait for the reference-verifier to complete before proceeding — the chapter files must have verified references before publishing
+4. If the reference-verifier fails or is unavailable, proceed with original references (don't block publishing)
+
 ### Phase 1: Pre-processing
-1. Read the markdown chapter file(s) from `documents/thesis-chapters/`
-2. Parse into blocks (headings, paragraphs, tables, code blocks, lists, math)
-3. Identify which paragraphs need humanizing (body text paragraphs, not headings/tables/code)
+5. Read the markdown chapter file(s) from `documents/thesis-chapters/` (re-read after reference verification to get updated DOIs)
+6. Parse into blocks (headings, paragraphs, tables, code blocks, lists, math)
+7. Identify which paragraphs need humanizing (body text paragraphs, not headings/tables/code)
 
 ### Phase 2: Text Humanization
 4. For each body text paragraph that sounds AI-generated:
@@ -212,6 +218,22 @@ When the markdown contains a reference to a visual (e.g., a section that should 
 - **Text humanizer fails**: Use original text, don't block the pipeline
 - **Index out of range**: Re-fetch document to get current indices before retrying
 
+## References Handling
+
+When publishing chapters, **collect all references from every chapter** and write them as a single consolidated **References** section at the very end of the thesis document (after the last chapter). This means:
+
+1. **Parse references** from each chapter's `## References` section at the bottom of the markdown file
+2. **Merge all references** across all published chapters into one unified list, sorted by reference number (e.g., [1], [2], ..., [55])
+3. **Remove duplicate references** — if the same reference number appears in multiple chapters, include it only once
+4. **Do NOT include per-chapter reference sections** in the document body — strip them from chapter content before inserting
+5. **Insert a page break** before the References section
+6. **Format the References section** with:
+   - Heading: "REFERENCES" (HEADING_1, bold, centered, ALL CAPS)
+   - Each reference: hanging indent (first line flush left, subsequent lines indented 1.27cm)
+   - Font: Times New Roman 12pt
+   - Single spacing within each reference, 6pt spacing between references
+7. If only publishing a single chapter, still place references at the end (not inline with the chapter)
+
 ## Important Notes
 
 - Always process insertions from **last to first** (reverse index order) to avoid index shifting
@@ -240,6 +262,7 @@ Located in `documents/thesis-chapters/`:
 
 ## Collaboration with Other Agents
 
+- **reference-verifier**: Verify and fix DOI URLs in references before publishing (launch as subagent in Phase 0)
 - **text-humanizer**: Delegate paragraph humanization (launch as subagent)
 - **thesis-visual-presenter**: Visuals are already QA'd and exported — just read VISUAL-GUIDE.md for URLs
 - **thesis-writer**: May provide updated markdown content — always read the latest file

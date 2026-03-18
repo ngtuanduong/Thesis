@@ -334,17 +334,17 @@ The following chapter presents the detailed system design and architecture that 
 
 [34]   J. Zhang, X. Shi, I. King, and D.-Y. Yeung, "Dynamic key-value memory networks for knowledge tracing," in *Proc. WWW*, 2017, pp. 765--774.
 
-[35]   T. N. Doan and Y. Sahebi, "DKT2: Deep knowledge tracing with xLSTM and IRT integration," in *Proc. ECML-PKDD*, 2025, doi: https://doi.org/10.1007/978-3-032-06109-6_14.
+[35]   T. N. Doan and Y. Sahebi, "DKT2: Deep knowledge tracing with xLSTM and IRT integration," in *Proc. ECML-PKDD*, 2025. <!-- DOI REMOVED: previous DOI 10.1007/978-3-032-06109-6_14 resolved to a different paper. Reference not found on Google Scholar; verify existence. -->
 
 [36]   J. Leinonen et al., "srcML-DKT: Source code-aware deep knowledge tracing for programming exercises," in *Proc. Educational Data Mining (EDM)*, 2025.
 
-[37]   Z. Li, X. Wang, and Y. Chen, "UKT: Uncertainty-aware knowledge tracing," in *Proc. AAAI Conference on Artificial Intelligence*, 2025, doi: https://doi.org/10.1609/aaai.v39i1.35007.
+[37]   W. Cheng, H. Du, C. Li, E. Ni, L. Tan, T. Xu, and Y. Ni, "Uncertainty-aware knowledge tracing," in *Proc. AAAI Conference on Artificial Intelligence*, 2025. [Online]. Available: https://ojs.aaai.org/index.php/AAAI/article/view/35007 <!-- DOI FIXED: previous DOI 10.1609/aaai.v39i1.35007 was not found; authors corrected from "Z. Li, X. Wang, and Y. Chen" per Google Scholar. -->
 
 [38]   R. Pelanek and J. Rihak, "Experimental analysis of the Elo rating system for adaptive practice of programming exercises," *ACM Transactions on Computing Education (TOCE)*, vol. 22, no. 3, pp. 1--22, 2022, doi: https://doi.org/10.1145/3511886.
 
 [39]   G. Rasch, *Probabilistic Models for Some Intelligence and Attainment Tests*. Copenhagen: Danish Institute for Educational Research, 1960.
 
-[40]   S. Klinkenberg, M. Straatemeier, and H. L. J. van der Maas, "Adaptive K-factor Elo rating for personalized education," *User Modeling and User-Adapted Interaction*, 2025, doi: https://doi.org/10.1007/s11257-025-09439-z.
+[40]   H. Vermeiren, A. D. Hofman, M. Bolsinova, H. L. J. van der Maas, and W. Van Den Noortgate, "Balancing stability and flexibility: investigating a dynamic K value approach for the Elo rating system in adaptive learning environments," *User Modeling and User-Adapted Interaction*, vol. 36, no. 4, 2026, doi: https://doi.org/10.1007/s11257-025-09439-z. <!-- AUTHORS CORRECTED: previously listed as "S. Klinkenberg, M. Straatemeier, and H. L. J. van der Maas". -->
 
 [41]   R. Pelanek, "Multidimensional Elo ratings for concept-specific ability estimation," in *Proc. Educational Data Mining (EDM)*, 2025.
 
@@ -360,7 +360,7 @@ The following chapter presents the detailed system design and architecture that 
 
 [47]   Y. Zhang, J. Wang, and L. Sun, "LECTOR: LLM-enhanced concept-based test-oriented repetition," 2025, arXiv: 2508.03275.
 
-[48]   X. Chen, D. Shi, and H. Zhao, "Automatic concept extraction for building knowledge graphs in education," *Journal of Educational Data Mining*, vol. 16, no. 1, 2024, doi: https://doi.org/10.5281/jedm.737.
+[48]   X. Chen, D. Shi, and H. Zhao, "Automatic concept extraction for building knowledge graphs in education," *Journal of Educational Data Mining*, vol. 16, no. 1, 2024. <!-- DOI REMOVED: previous DOI 10.5281/jedm.737 was not found in DOI system. Reference not found on Google Scholar; verify existence. -->
 
 [49]   L. Pan, C. Li, J. Li, and J. Tang, "Prerequisite-enhanced category-aware graph neural networks for educational recommendation," *ACM Transactions on Knowledge Discovery from Data*, vol. 18, no. 6, 2024, doi: https://doi.org/10.1145/3643644.
 

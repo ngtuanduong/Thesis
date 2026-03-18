@@ -30,6 +30,111 @@ from googleapiclient.errors import HttpError
 
 CREDENTIALS_PATH = '/Users/avada/WebstormProjects/Thesis/infra-inkwell-465003-f2-369235afe5ac.json'
 CHAPTER_PATH = '/Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/chapter1-introduction.md'
+DEFAULT_DOC_ID = '1Q1mihSftbOtxuPTitDmcdjE7Av-EHxyjgZAfqw3Gfok'
+
+# ---------------------------------------------------------------------------
+# Humanized text replacements (from QuillBot AI Humanizer)
+# Keys are the first 60 chars of the original paragraph text.
+# Values are the humanized replacement text.
+# ---------------------------------------------------------------------------
+HUMANIZED_PARAGRAPHS = {
+    # Section 1.1 Paragraph 1 (two chunks combined)
+    "Programming has become a foundational competency in higher education worldwide":
+        "Over the past 20 years, enrollment in introductory computer science courses has steadily increased, making programming a fundamental skill in higher education across the globe. However, despite this increase in demand, programming education still faces a long-standing and well-documented crisis: high failure and dropout rates that are significantly higher than those of the majority of other undergraduate fields. The average failure rate in introductory programming courses is between 30% and 40% worldwide, according to a thorough systematic literature review by Luxton-Reilly et al. [1]. This figure has remained remarkably stable over several decades of pedagogical experimentation. The diversity of student backgrounds is one of the main obstacles, according to Robins et al.'s [2] groundbreaking review of learning and teaching programming. While some students come with years of self-taught coding experience, others encounter their first line of code on the first day of class.",
+
+    # Section 1.1 Paragraph 2
+    "This heterogeneity creates a fundamental tension in traditional lecture-based":
+        "Traditional lecture-based instruction is fundamentally tense due to this heterogeneity. The instructor in a typical 50 to 100 student university programming class is required to present the material at a single pace and difficulty level. While they wait for their peers to catch up, students who already have fundamental skills become disengaged. On the other hand, students who don't have any prior exposure gradually lag behind because they can't bridge the gap between understanding syntax and acquiring the computational thinking needed to solve problems on their own. Programming, unlike many academic subjects, is at its core a skill that calls for deliberate, individualized practice [3]. No amount of well-designed lectures can replace the iterative cycle of writing code, running into errors, debugging, and refining solutions.",
+
+    # Section 1.1 Paragraph 3
+    "The problem is compounded by the resource constraints that instructors face":
+        "The resource constraints that instructors face make the problem even worse. Giving personalized feedback on student code, spotting misconceptions, recommending targeted practice problems, and tracking individual progress across multiple programming concepts takes time and effort that grow linearly with class size. In large sections, meaningful one-on-one instruction becomes practically impossible. Grading coding assignments is time-consuming by itself, and when feedback is delayed, its pedagogical value drops because students have usually moved on to new topics by the time they get comments on prior work.",
+
+    # Section 1.1 Paragraph 4
+    "Within the Vietnamese university context specifically, these challenges are no less pressing":
+        "Within the Vietnamese university context, these challenges are just as pressing. Programming courses at Vietnamese institutions deal with the same variety in student preparation, the same constraints of one-size-fits-all teaching, and additional hurdles including limited access to advanced educational technology platforms and a lack of adaptive learning tools built for local curricula [4]. A worldwide systematic review by Watson and Li [5] found a mean failure rate of 32.3% across 161 courses in 15 countries, showing that this is not just a local issue but a global challenge that Vietnamese institutions share. The gap between the rising demand for software engineering graduates and the effectiveness of current programming pedagogy is both an educational and an economic concern.",
+
+    # Section 1.1 Paragraph 5
+    "In summary, the core problem this thesis addresses is the mismatch":
+        "In short, the core problem this thesis takes on is the mismatch between the individualized, practice-heavy nature of programming skill development and the uniform, resource-limited reality of university instruction. Students need personalized learning paths, appropriately challenging practice problems, timely feedback, and systematic review of concepts they have already learned, yet current educational practices and platforms provide none of these at scale.",
+
+    # Section 1.2.1 Paragraph 1
+    "Adaptive learning --- the practice of adjusting instructional content":
+        "Adaptive learning, the practice of tailoring instructional content, pace, and methods based on individual learner traits and performance, has shown significant effectiveness across multiple educational domains [6], [7]. The core idea is that learning works best when instruction matches the learner's current knowledge state, cognitive ability, and learning trajectory.",
+
+    # Section 1.2.1 Paragraph 2
+    "Research spanning several decades has validated this premise":
+        "Research going back several decades has confirmed this premise. Early Intelligent Tutoring Systems like the Cognitive Tutor series showed 50 to 100% gains in problem-solving skills [3], [8], while modern platforms such as ALEKS [9] and Duolingo [10] have demonstrated that machine learning-driven adaptation can work effectively at scale. A thorough review of these systems and how they have evolved is provided in Chapter 2.",
+
+    # Section 1.2.1 Paragraph 3
+    "These success stories motivate the application of adaptive learning to programming":
+        "These success stories point toward applying adaptive learning to programming education, a field whose properties make it especially well-suited to data-driven personalization.",
+
+    # Section 1.2.2 Paragraph 1
+    "Programming education possesses several characteristics that distinguish":
+        "Programming education has several traits that set it apart from other fields and make it a strong candidate for adaptive learning systems:",
+
+    # Section 1.2.2 Conclusion
+    "These properties mean that an adaptive system for programming can leverage":
+        "These properties mean that an adaptive system for programming can draw on unusually rich data to model student knowledge with high accuracy, recommend problems at precisely calibrated difficulty levels, and deliver targeted feedback, capabilities that are difficult or impossible to achieve through manual instruction alone.",
+
+    # Section 1.2.3 Paragraph 1
+    "Despite the strong case for adaptive learning in programming, existing online coding platforms fail":
+        "Despite the compelling case for adaptive learning in programming, existing online coding platforms fall short of delivering comprehensive adaptation. Platforms like LeetCode, HackerRank, and Codeforces have reached remarkable scale with millions of users, but their pedagogical design remains fundamentally static:",
+
+    # Section 1.2.3 Paragraph 2
+    "A systematic comparison reveals that no existing platform":
+        "A systematic comparison shows that no existing platform, whether academic or commercial, brings together all the components that learning science says are needed for effective personalized instruction: modeling what the student knows (knowledge tracing), calibrating how hard each problem is for each individual (difficulty calibration), picking which problem to recommend next to maximize learning (intelligent selection), scheduling when to review previously learned concepts to prevent forgetting (spaced repetition), and offering contextual help when the student is stuck (feedback generation) [see Table 1.1]. The table covers both programming-focused platforms (LeetCode through CodeSignal) and adaptive learning platforms from other fields (Duolingo through Knewton Alta); the research gap this thesis targets sits precisely at their intersection, bringing the adaptive sophistication of the latter category into the programming education domain.",
+
+    # Section 1.2.3 Paragraph 3
+    "The platforms in Table 1.1 were selected based on two criteria":
+        "The platforms in Table 1.1 were chosen based on two criteria: (1) commercial platforms with over one million active users that are widely used for programming practice or adaptive learning, and (2) well-known academic systems from the Intelligent Tutoring Systems and Adaptive Learning literature. The comparison focuses on whether each platform integrates the six adaptive components identified above.",
+
+    # Section 1.2.3 Paragraph 4
+    "Academic research, similarly, has tended to study these adaptive components in isolation":
+        "Academic research has also tended to study these adaptive components separately. Knowledge tracing papers measure prediction accuracy but don't build recommendation systems around their models. Multi-Armed Bandit papers for education assume fixed difficulty models rather than adaptive ones. The FSRS algorithm was created for flashcard-based memorization (vocabulary, facts) and has not yet been applied to programming skill retention. Each line of work addresses one part of the problem but leaves the integration challenge unresolved.",
+
+    # Section 1.2.3 Paragraph 5
+    "This thesis aims to address this integration gap":
+        "This thesis sets out to address this integration gap by proposing and evaluating a unified adaptive platform that brings together all five components into a coherent, closed-loop system.",
+
+    # Section 1.3 Paragraph 1
+    "The primary aim of this thesis is to design, implement, and evaluate":
+        "The primary goal of this thesis is to design, build, and evaluate an adaptive learning platform for university programming courses that brings together multiple complementary adaptive techniques into a unified, closed-loop system. The specific objectives are as follows:",
+
+    # Section 1.4 Intro
+    "This thesis addresses four research questions":
+        "This thesis tackles four research questions, one primary and three secondary. For comparative questions (RQ2, RQ3), corresponding hypotheses are stated and will be tested at the alpha = 0.05 significance level.",
+
+    # Section 1.5 Paragraph 1
+    "This thesis proposes an Adaptive Learning Platform for University Programming Courses":
+        "This thesis puts forward an Adaptive Learning Platform for University Programming Courses built on a five-layer adaptive engine, unified through a knowledge graph of programming concepts. The system works as a closed loop: student interactions produce data that updates the learner model, which in turn shapes subsequent recommendations, creating a continuously evolving personalized learning experience.",
+
+    # Section 1.5.2 Intro
+    "The system operates through a continuous feedback cycle":
+        "The system runs through a continuous feedback cycle:",
+
+    # Section 1.5.2 Conclusion
+    "This closed-loop design ensures that the learning experience evolves continuously":
+        "This closed-loop design means that the learning experience evolves continuously with the student's progress, keeping challenge levels in the right range and preventing the stagnation that happens when recommendations are based on static profiles.",
+
+    # Section 1.7 Intro
+    "This thesis makes the following contributions to the fields":
+        "This thesis makes the following contributions to the fields of educational technology and computer science education:",
+
+    # Section 1.8 Intro
+    "The remainder of this thesis is organized as follows":
+        "The rest of this thesis is organized as follows:",
+}
+
+
+def humanize_paragraph(text: str) -> str:
+    """Look up humanized replacement for a paragraph, or return original."""
+    for key, replacement in HUMANIZED_PARAGRAPHS.items():
+        if text.strip().startswith(key):
+            return replacement
+    return text
+
 
 # Chapter 1 visuals from VISUAL-GUIDE.md
 VISUALS = {
@@ -1108,6 +1213,29 @@ def publish_chapter1(doc_id):
     blocks = insert_visual_markers(blocks)
     print(f"  Total blocks after visual insertion: {len(blocks)}")
 
+    # Step 2.5: Humanize body text paragraphs
+    print("\n[2.5/7] Applying text humanization...")
+    humanized_count = 0
+    skipped_types = {BlockType.HEADING, BlockType.TABLE, BlockType.CODE_BLOCK,
+                     BlockType.MATH_BLOCK, BlockType.CAPTION, BlockType.FOOTNOTE,
+                     BlockType.HORIZONTAL_RULE, BlockType.IMAGE_PLACEHOLDER}
+    for block in blocks:
+        if block.type == BlockType.PARAGRAPH:
+            # Skip paragraphs that are references (start with [number])
+            if re.match(r'^\[\d+\]', block.raw_text.strip()):
+                continue
+            # Skip bold-only paragraphs (objective/contribution descriptions)
+            if block.raw_text.strip().startswith('**') and block.raw_text.strip().count('**') >= 2:
+                # These are like sub-headings (e.g., "**Objective 1:...**")
+                # Only humanize if there's substantial non-bold text after
+                pass
+            humanized = humanize_paragraph(block.raw_text)
+            if humanized != block.raw_text:
+                block.raw_text = humanized
+                block.spans = parse_inline(humanized)
+                humanized_count += 1
+    print(f"  Humanized {humanized_count} paragraphs (out of {sum(1 for b in blocks if b.type == BlockType.PARAGRAPH)} total)")
+
     # Step 3: Build document structure
     print("\n[3/7] Building document structure...")
     builder = ChapterBuilder()
@@ -1183,5 +1311,5 @@ def publish_chapter1(doc_id):
 
 if __name__ == '__main__':
     import sys
-    doc_id = sys.argv[1] if len(sys.argv) > 1 else '1Q1mihSftbOtxuPTitDmcdjE7Av-EHxyjgZAfqw3Gfok'
+    doc_id = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_DOC_ID
     publish_chapter1(doc_id)

@@ -102,6 +102,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.1 — Functional & Non-Functional Requirements Tables (Tables 3.1, 3.2)
 - **File:** `html/ch3-functional-requirements-table.html`
+- **PNG Export:** `png/ch3-functional-requirements-table.png`
+- **Catbox URL:** https://files.catbox.moe/yk5jth.png
 - **Type:** Two formatted HTML tables (APA style)
 - **Section:** 3.1.1 Functional Requirements, 3.1.2 Non-Functional Requirements
 - **Why tables:** Requirements are structured data (ID, description, priority, source). Tables are the standard format for requirements specification in software engineering theses.
@@ -109,6 +111,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.2 — System Architecture Diagram (Figure 3.1)
 - **File:** `html/ch3-system-architecture-diagram.html`
+- **PNG Export:** `png/ch3-system-architecture-diagram.png`
+- **Catbox URL:** https://files.catbox.moe/702phb.png
 - **Type:** SVG architecture diagram showing four components and five layers
 - **Section:** 3.2 System Architecture / 3.3 Five-Layer Adaptive Architecture
 - **Why architecture diagram:** This is the central technical figure of the thesis. It shows how the four platform components (React, NestJS, FastAPI, Docker) interact and where the five adaptive layers sit within the AI Service. No other format can communicate system topology this effectively.
@@ -116,6 +120,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.3 — Knowledge Graph Diagram (Figure 3.2)
 - **File:** `html/ch3-knowledge-graph-diagram.html`
+- **PNG Export:** `png/ch3-knowledge-graph-diagram.png`
+- **Catbox URL:** https://files.catbox.moe/w87g2s.png
 - **Type:** SVG directed acyclic graph
 - **Section:** 3.3.7 Knowledge Graph Foundation
 - **Why graph diagram:** The knowledge graph is literally a graph; a DAG visualization with color-coded topic groups and prerequisite edges is the natural representation. Readers can trace prerequisite chains visually.
@@ -123,6 +129,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.4 — Recommendation Flow Sequence Diagram (Figure 3.3)
 - **File:** `html/ch3-recommendation-sequence-diagram.html`
+- **PNG Export:** `png/ch3-recommendation-sequence-diagram.png`
+- **Catbox URL:** https://files.catbox.moe/8aai68.png
 - **Type:** SVG UML-style sequence diagram
 - **Section:** 3.4.1 Recommendation Flow
 - **Why sequence diagram:** The recommendation flow involves five actors (Student, React, NestJS, Redis, AI Service) exchanging messages in a specific order. A sequence diagram is the standard UML format for this and shows timing, parallelism, and cache interactions clearly.
@@ -130,6 +138,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.5 — Submission Processing Flow (Figure 3.4)
 - **File:** `html/ch3-submission-processing-flow.html`
+- **PNG Export:** `png/ch3-submission-processing-flow.png`
+- **Catbox URL:** https://files.catbox.moe/ntu24z.png
 - **Type:** SVG dual-phase flowchart (synchronous + asynchronous)
 - **Section:** 3.4.2 Submission Processing Flow
 - **Why dual-phase flowchart:** The key insight is the separation of synchronous execution (student-facing) from asynchronous adaptive updates (background). A side-by-side layout makes this architectural decision immediately visible.
@@ -137,6 +147,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.6 — Hyperparameter Summary Table (Table 3.3)
 - **File:** `html/ch3-hyperparameter-summary-table.html`
+- **PNG Export:** `png/ch3-hyperparameter-summary-table.png`
+- **Catbox URL:** https://files.catbox.moe/ue4upp.png
 - **Type:** Formatted HTML table with layer color badges
 - **Section:** 3.3.8 Hyperparameter Summary
 - **Why table:** 20 hyperparameters with 6 attributes each (name, symbol, default, range, justification, layer). This is reference data that readers need to look up precisely. Color-coded layer badges enable quick scanning by layer.
@@ -144,6 +156,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.7 — Database Schema ERD (Figure 3.5)
 - **File:** `html/ch3-database-schema-erd.html`
+- **PNG Export:** `png/ch3-database-schema-erd.png`
+- **Catbox URL:** https://files.catbox.moe/d0hf0q.png
 - **Type:** SVG entity-relationship diagram
 - **Section:** 3.5 Database Schema Design
 - **Why ERD:** The database schema has 9 tables with foreign key relationships. An ERD is the standard representation, showing table structures, column types, and relationships at a glance.
@@ -151,6 +165,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.8 — Layer Interaction Matrix (Figure 3.6)
 - **File:** `html/ch3-layer-interaction-matrix.html`
+- **PNG Export:** `png/ch3-layer-interaction-matrix.png`
+- **Catbox URL:** https://files.catbox.moe/13j7lt.png
 - **Type:** SVG heatmap-style matrix
 - **Section:** 3.3 (cross-layer discussion)
 - **Why matrix:** The data dependencies between 5 layers + KG Foundation form a producer-consumer matrix. A grid visualization shows at a glance which layers talk to which, with the key insight (Layer 3 as integration hub) highlighted.
@@ -158,6 +174,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.9 — Cold Start Handling Flowchart (Figure 3.7)
 - **File:** `html/ch3-cold-start-flowchart.html`
+- **PNG Export:** `png/ch3-cold-start-flowchart.png`
+- **Catbox URL:** https://files.catbox.moe/fwnr4w.png
 - **Type:** SVG decision flowchart with timeline
 - **Section:** 3.4.4 Cold Start Handling
 - **Why flowchart:** The cold start strategy is a three-phase decision process based on submission count. A flowchart with a decision diamond and timeline bar shows both the logic and the temporal progression.
@@ -165,6 +183,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.10 — Caching Strategy Table (Table 3.5)
 - **File:** `html/ch3-caching-strategy-table.html`
+- **PNG Export:** `png/ch3-caching-strategy-table.png`
+- **Catbox URL:** https://files.catbox.moe/7e8r9q.png
 - **Type:** Formatted HTML table (APA style)
 - **Section:** 3.7 Caching Strategy
 - **Why table:** 7 cache entries with 4 attributes (key pattern, data, TTL, invalidation trigger). This is lookup-oriented reference data best served by a table.

@@ -77,8 +77,19 @@ Use `mcp__chrome-devtools__evaluate_script` to extract the output text:
 
 If the script returns null, take a snapshot and manually extract the humanized text from the right-side output panel in the snapshot (look for the generic elements with value attributes after the "Re-humanize" button area).
 
-### Step 9: Return the result
-Return ONLY the humanized text to the caller. Format it clearly.
+### Step 9: Save the result to file
+After successfully humanizing the text, you MUST write the humanized output to a file in `documents/thesis-chapters/processed/`.
+
+- Use the chapter filename provided by the caller (e.g., `chapter1-introduction.md`).
+- The output file path should be: `documents/thesis-chapters/processed/<chapter-filename>`
+- If processing multiple chunks, accumulate all humanized chunks and write the complete result to the file at the end.
+- If the file already exists, **append** the new humanized text to the existing file (read the file first, then write the combined content).
+- Preserve any markdown headers (##, ###, etc.) and formatting markers that were passed along with the text — only the prose paragraphs should be humanized, not headers or tables.
+
+Use the `Write` tool to save the file.
+
+### Step 10: Return the result
+Return the humanized text AND confirm the file path it was saved to.
 
 ## Word Limit Handling
 
