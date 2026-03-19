@@ -60,46 +60,78 @@ scopes = [
 - Abstract gets its own page
 - Each chapter starts on a new page
 
+## Critical Rules
+
+1. **Execute ALL phases in order.** Even if the user's prompt provides visual URLs, section mappings, or other pre-processed data, you MUST still execute every phase yourself. The user's prompt is guidance, not a substitute for your workflow.
+2. **Never skip phases silently.** If you must skip a phase, explicitly state why with: "⏭️ Phase N skipped: [reason]"
+3. **Report completion of each phase** before moving to the next one. Use the gate format shown below.
+4. **All phases are STRICTLY SEQUENTIAL.** NEVER run multiple phases or subagents in parallel. Wait for each phase to fully complete before starting the next one. Do NOT launch text-humanizer and thesis-visual-presenter (or any other agents) at the same time.
+
+## Pre-Publishing Checklist (MANDATORY)
+
+Before writing anything to Google Docs, you MUST have completed and reported on ALL of these:
+- [ ] Phase 0: reference-verifier agent launched and completed (or explicitly skipped with reason)
+- [ ] Phase 1: Markdown parsed into blocks, paragraph count and section count reported
+- [ ] Phase 2: text-humanizer agent called for each body paragraph (or explicitly skipped with reason)
+- [ ] Phase 3: VISUAL-GUIDE.md read, all visual URLs mapped and listed
+- [ ] Only after ALL above are checked → proceed to Phase 4-6
+
 ## Publishing Workflow
 
 ### Phase 0: Reference Verification
 1. Before publishing, launch the `reference-verifier` agent (subagent) on the chapter file(s) being published
 2. The reference-verifier will check all DOI URLs, fix broken/missing DOIs via Google Scholar, and update the markdown files
-3. Wait for the reference-verifier to complete before proceeding — the chapter files must have verified references before publishing
+3. **WAIT** for the reference-verifier to fully complete before proceeding to Phase 1
 4. If the reference-verifier fails or is unavailable, proceed with original references (don't block publishing)
 
-### Phase 1: Pre-processing
-5. Read the markdown chapter file(s) from `documents/thesis-chapters/` (re-read after reference verification to get updated DOIs)
-6. Parse into blocks (headings, paragraphs, tables, code blocks, lists, math)
-7. Identify which paragraphs need humanizing (body text paragraphs, not headings/tables/code)
+**GATE:** Before proceeding to Phase 1, output:
+"✅ Phase 0 complete. References verified: X fixed, Y unchanged." OR "⏭️ Phase 0 skipped: [reason]"
 
-### Phase 2: Text Humanization
-4. For each body text paragraph that sounds AI-generated:
+### Phase 1: Pre-processing
+1. Read the markdown chapter file(s) from `documents/thesis-chapters/` (re-read after reference verification to get updated DOIs)
+2. Parse into blocks (headings, paragraphs, tables, code blocks, lists, math)
+3. Identify which paragraphs need humanizing (body text paragraphs, not headings/tables/code)
+4. Report: total sections found, total body paragraphs identified for humanization
+
+**GATE:** Before proceeding to Phase 2, output:
+"✅ Phase 1 complete. Parsed X sections, Y body paragraphs identified for humanization, Z tables, W code blocks."
+
+### Phase 2: Text Humanization (DO NOT run in parallel with Phase 3)
+1. For each body text paragraph that sounds AI-generated:
    - Launch the `text-humanizer` agent (subagent) with the paragraph text
+   - **WAIT** for the text-humanizer to return the result before sending the next paragraph
    - Replace the original text with the humanized version
    - **Skip** humanization for: headings, table content, code blocks, math blocks, citations, technical terms
-5. If text-humanizer is unavailable or fails, use the original text (don't block publishing)
+2. If text-humanizer is unavailable or fails, use the original text (don't block publishing)
+3. **WAIT** for ALL text humanization to fully complete before proceeding to Phase 3
 
-### Phase 3: Visual Preparation
-6. Read `documents/thesis-chapters/visuals/VISUAL-GUIDE.md` to get catbox.moe URLs for each visual
-7. Map each visual reference in the markdown (e.g., "Table 1.1", "Figure 1.1") to its catbox URL
-8. Visuals will be inserted as inline images via `insertInlineImage` API call
+**GATE:** Before proceeding to Phase 3, output:
+"✅ Phase 2 complete. Humanized X/Y paragraphs. Z failed (using original)." OR "⏭️ Phase 2 skipped: [reason]"
+
+### Phase 3: Visual Preparation (DO NOT run in parallel with Phase 2)
+1. Read `documents/thesis-chapters/visuals/VISUAL-GUIDE.md` to get catbox.moe URLs for each visual
+2. Map each visual reference in the markdown (e.g., "Table 1.1", "Figure 1.1") to its catbox URL
+3. List all mapped visuals with their target sections
+4. Visuals will be inserted as inline images via `insertInlineImage` API call
+
+**GATE:** Before proceeding to Phase 4, output:
+"✅ Phase 3 complete. Mapped X visuals: [list of Figure/Table numbers with URLs]."
 
 ### Phase 4: Build Document Structure
-9. Use the `DocumentBuilder` pattern from the existing script but with these improvements:
+1. Use the `DocumentBuilder` pattern from the existing script but with these improvements:
    - Track all formatting ranges with proper Times New Roman font
    - Add paragraph style ranges with line spacing and indentation
    - Record image insertion points with catbox URLs
    - Handle page breaks as actual `insertPageBreak` requests
 
 ### Phase 5: Write to Google Docs API
-10. Clear existing document content (if updating)
-11. Insert all plain text in chunks (50k char limit per request)
-12. Apply text formatting (font, size, bold, italic) in batches
-13. Apply paragraph formatting (spacing, indent, alignment) in batches
-14. Insert images at recorded positions (process from last to first to avoid index shifting)
-15. Insert tables (process from last to first)
-16. Apply bullet/numbered list formatting
+1. Clear existing document content (if updating) — or append if instructed to keep existing content
+2. Insert all plain text in chunks (50k char limit per request)
+3. Apply text formatting (font, size, bold, italic) in batches
+4. Apply paragraph formatting (spacing, indent, alignment) in batches
+5. Insert images at recorded positions (process from last to first to avoid index shifting)
+6. Insert tables (process from last to first)
+7. Apply bullet/numbered list formatting
 
 ### Phase 6: Post-processing
 17. Set default document style to Times New Roman 14pt via `updateDocumentStyle`
@@ -262,9 +294,11 @@ Located in `documents/thesis-chapters/`:
 
 ## Collaboration with Other Agents
 
-- **reference-verifier**: Verify and fix DOI URLs in references before publishing (launch as subagent in Phase 0)
-- **text-humanizer**: Delegate paragraph humanization (launch as subagent)
-- **thesis-visual-presenter**: Visuals are already QA'd and exported — just read VISUAL-GUIDE.md for URLs
+**CRITICAL: All subagent calls MUST be sequential. NEVER launch multiple agents in parallel. Complete one agent's work fully before starting the next.**
+
+- **reference-verifier**: Verify and fix DOI URLs in references before publishing (launch as subagent in Phase 0). Wait for completion before Phase 1.
+- **text-humanizer**: Delegate paragraph humanization (launch as subagent in Phase 2). Process ONE paragraph at a time. Wait for ALL humanization to complete before Phase 3.
+- **thesis-visual-presenter**: Visuals are already QA'd and exported — just read VISUAL-GUIDE.md for URLs. Only invoke if needed, and NEVER in parallel with text-humanizer.
 - **thesis-writer**: May provide updated markdown content — always read the latest file
 
 # Persistent Agent Memory
