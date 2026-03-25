@@ -1,0 +1,35 @@
+{
+  "status": "blocked - QuillBot daily limit reached after 5 paragraphs",
+  "last_updated": "2026-03-25",
+  "paragraphs_completed": 5,
+  "paragraphs_remaining": "~42",
+  "results": {
+    "P1": {
+      "line": 3,
+      "original": "Chapter 3 presented the architectural blueprint for the five-layer adaptive learning platform, detailing each layer's responsibilities, interfaces, and data flows. This chapter describes how that design was translated into working software. It covers the technology choices and their justifications, the construction of the knowledge graph that underpins the adaptive engine, the implementation of each adaptive layer with code walkthroughs drawn from the actual codebase, the frontend components that surface adaptive data to students, and the deployment configuration that ties the system together.",
+      "humanized": "The five-layer adaptive learning platform's architectural blueprint, which included information on each layer's functions, interfaces, and data flows, was presented in Chapter 3. The process of turning that design into functional software is covered in this chapter. The knowledge graph that supports the adaptive engine, the deployment configuration that connects the system, the frontend components that present adaptive data to students, the implementation of each adaptive layer with code walkthroughs taken from the actual codebase, and the technology choices and their explanations are all covered."
+    },
+    "P2": {
+      "line": 5,
+      "original": "The implementation follows the phased roadmap outlined in the implementation plan: Phase 0 established the knowledge graph and database schema, Phases 1 through 4 built the four adaptive layers in dependency order, Phase 5 integrated the layers into a unified pipeline, Phase 6 updated the frontend, and Phase 7 added optional LLM feedback. Each section in this chapter corresponds to one of these phases or to one of the nine sections specified in the thesis outline.",
+      "humanized": "The implementation adheres to the implementation plan's phased roadmap: Phase 0 created the database schema and knowledge graph; Phases 1 through 4 constructed the four adaptive layers in dependency order; Phase 5 combined the layers into a single pipeline; Phase 6 made frontend updates; and Phase 7 added optional LLM feedback. Each of the nine sections listed in the thesis outline or one of these phases is represented by a section in this chapter."
+    },
+    "P3": {
+      "line": 9,
+      "original": "The platform comprises four principal components, each chosen for a specific role in the system. This section justifies those choices and explains how they interact.",
+      "humanized": "Each of the platform's four main components was selected for a particular function within the system. These decisions are explained in this section along with their rationale."
+    },
+    "P4": {
+      "line": 11,
+      "section": "Frontend description (without bold label)",
+      "original": "The client application is built with React 18 using Vite as the build tool. TypeScript provides static type checking, which reduces runtime errors in the data-intensive dashboard components that display mastery probabilities, Elo histories, and review schedules. Ant Design supplies a comprehensive component library with data tables, charts, and form elements that accelerate the development of the instructor and student dashboards. React's component model aligns well with the modular structure of the adaptive UI: each adaptive metric (mastery radar, Elo chart, review queue) is an independent component that can be composed onto any page.",
+      "humanized": "Using Vite as the build tool, React 18 is used to create the client application. Static type checking offered by TypeScript lowers runtime errors in the data-intensive dashboard components that show review schedules, Elo histories, and mastery probabilities. The instructor and student dashboards can be developed more quickly thanks to Ant Design's extensive component library, which includes data tables, charts, and form elements. Because each adaptive metric (mastery radar, Elo chart, review queue) is a separate component that can be assembled onto any page, React's component model fits in nicely with the adaptive UI's modular structure."
+    },
+    "P5": {
+      "line": 13,
+      "section": "Backend API description (without bold label)",
+      "original": "The API gateway is built with NestJS, a TypeScript framework that enforces modular architecture through its module-controller-service pattern. NestJS was selected over Express or Fastify because its built-in dependency injection and decorator-based routing reduce boilerplate in a system with many interconnected modules. Prisma serves as the ORM, providing type-safe database access and a declarative schema that generates both the TypeScript client and database migrations from a single source of truth. The NestJS server handles authentication with JWT, manages problems and test cases, proxies adaptive requests to the AI service, and orchestrates the Docker sandbox for code execution.",
+      "humanized": "NestJS, a TypeScript framework that uses the module-controller-service pattern to enforce modular architecture, is used in the construction of the API gateway. Because NestJS's built-in dependency injection and decorator-based routing minimize boilerplate in a system with numerous interconnected modules, it was chosen over Express or Fastify. Prisma serves as the ORM, providing type-safe database access and a declarative schema that generates both the TypeScript client and database migrations from a single source of truth. The NestJS server handles authentication with JWT, manages problems and test cases, proxies adaptive requests to the AI service, and orchestrates the Docker sandbox for code execution."
+    }
+  }
+}

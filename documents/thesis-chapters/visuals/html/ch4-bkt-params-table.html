@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman', serif; }
+.table-container { max-width: 800px; margin: 0 auto; }
+.caption { text-align: center; font-size: 12pt; margin-bottom: 12px; }
+.caption .label { font-weight: bold; }
+table { width: 100%; border-collapse: collapse; font-size: 11pt; }
+thead tr { border-top: 2px solid #000; border-bottom: 1px solid #000; }
+thead th { padding: 8px 10px; text-align: center; font-weight: bold; }
+thead th:first-child, thead th:nth-child(2) { text-align: left; }
+tbody td { padding: 7px 10px; text-align: center; }
+tbody td:first-child, tbody td:nth-child(2) { text-align: left; }
+tbody tr:last-child { border-bottom: 2px solid #000; }
+.tier-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 9pt; color: #fff; font-weight: bold; }
+.tier-1 { background: #4caf50; }
+.tier-2 { background: #2196f3; }
+.tier-3 { background: #ff9800; }
+.tier-4 { background: #e65100; }
+.tier-5 { background: #880e4f; }
+.math { font-family: 'Cambria Math', 'Times New Roman', serif; font-style: italic; }
+.note { font-size: 10pt; color: #555; margin-top: 8px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="table-container">
+<div class="caption"><span class="label">Table 4.2.</span> Default BKT Parameters by Difficulty Tier</div>
+<table>
+<thead>
+<tr>
+<th style="width:14%">Tier</th>
+<th style="width:30%">Example Concepts</th>
+<th style="width:14%"><span class="math">P(L<sub>0</sub>)</span></th>
+<th style="width:14%"><span class="math">P(T)</span></th>
+<th style="width:14%"><span class="math">P(G)</span></th>
+<th style="width:14%"><span class="math">P(S)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="tier-badge tier-1">1</span> Foundations</td>
+<td>Variables, I/O, Data Types</td>
+<td>0.20</td>
+<td>0.30</td>
+<td>0.25</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td><span class="tier-badge tier-2">2</span> Core Skills</td>
+<td>Loops, Conditionals, Operators</td>
+<td>0.15</td>
+<td>0.25</td>
+<td>0.20</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td><span class="tier-badge tier-3">3</span> Intermediate</td>
+<td>Functions, Lists, Strings</td>
+<td>0.10</td>
+<td>0.20</td>
+<td>0.15</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td><span class="tier-badge tier-4">4</span> Advanced</td>
+<td>OOP, Dictionaries, File I/O</td>
+<td>0.07</td>
+<td>0.15</td>
+<td>0.12</td>
+<td>0.10</td>
+</tr>
+<tr>
+<td><span class="tier-badge tier-5">5</span> Expert</td>
+<td>Recursion, Sorting, Algorithms</td>
+<td>0.05</td>
+<td>0.10</td>
+<td>0.10</td>
+<td>0.10</td>
+</tr>
+</tbody>
+</table>
+<div class="note">Note: <span class="math">P(L<sub>0</sub>)</span> = prior knowledge, <span class="math">P(T)</span> = learn rate, <span class="math">P(G)</span> = guess rate, <span class="math">P(S)</span> = slip rate. Slip rate is held constant at 0.10 across tiers; guess and learn rates decrease with difficulty.</div>
+</div>
+</body>
+</html>
