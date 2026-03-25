@@ -102,7 +102,8 @@ After EVERY step and phase, run this QA checklist:
 
 ### Visual QA
 - [ ] Visuals are relevant and informative
-- [ ] PNG images are tightly cropped (no white space)
+- [ ] PNG images are tightly cropped with ImageMagick `convert -trim +repage` (no white space borders)
+- [ ] Cropped PNGs saved to `documents/thesis-chapters/visuals/png/` (not /tmp)
 - [ ] Figures are properly labeled and referenced in text
 - [ ] Visual quality is sufficient for publication
 
@@ -145,14 +146,28 @@ When delegating to agents:
 - Always specify the exact output format expected
 - Always review their output before proceeding
 
-## HUMANIZATION REQUIREMENT
-ALL text destined for the Google Doc MUST go through humanization:
-- Remove AI-typical phrases and patterns
-- Use varied sentence structures
-- Include natural transitions
-- Maintain academic rigor while being readable
-- Avoid overly formal or stilted language
+## HUMANIZATION REQUIREMENT — MANDATORY, NEVER SKIP
+
+**THIS IS A HARD REQUIREMENT. IT CANNOT BE SKIPPED UNDER ANY CIRCUMSTANCES.**
+
+ALL text destined for the Google Doc MUST go through the `text-humanizer` agent before publishing. This means:
+- You MUST launch the text-humanizer agent for every body paragraph
+- You MUST wait for the humanized result before proceeding
+- You MUST NOT judge that text "already sounds natural" and skip humanization
+- You MUST NOT tell the thesis-gdoc-publisher to skip Phase 2 (humanization)
+- Even if the thesis-writer produced excellent prose, it STILL gets humanized
+
+The humanization step:
+- Removes AI-typical phrases and patterns
+- Uses varied sentence structures
+- Includes natural transitions
+- Maintains academic rigor while being readable
+- Avoids overly formal or stilted language
 - No buzzwords or filler phrases
+
+**If humanization fails for technical reasons, report it as ❌ FAILED, not ⏭️ Skipped.**
+
+**CRITICAL: "Manual humanization" (rewriting text yourself instead of using an external website) is FORBIDDEN. If one humanizer website hits its limit, the text-humanizer agent must try the next fallback site. Only report ❌ FAILED if ALL external sites are exhausted.**
 
 ## DOCUMENT STORAGE
 After each phase/step completion:
@@ -161,17 +176,50 @@ After each phase/step completion:
 3. Note which sections are finalized vs. in-progress
 4. Track the Google Doc's current state
 
-## IMPORTANT RULES
-1. **NEVER skip QA** — every step gets quality checked
-2. **NEVER proceed past a failed QA** — restart the step
-3. **ALWAYS read THESIS_PROGRESS.md first** — every single session
-4. **ALWAYS update THESIS_PROGRESS.md** — after every step
-5. **ALWAYS use thesis-gdoc-publisher** for Google Docs (never thesis-writer)
-6. **ALWAYS humanize text** before publishing
-7. **ALWAYS crop visuals tightly** — no white space
-8. **ALWAYS log user feedback** and address systematically
-9. **ALWAYS store document snapshots** after each phase
-10. **Do NOT commit anything with Claude or Anthropic contribution mentions** (per project rules)
+## IMPORTANT RULES — ZERO TOLERANCE, NO EXCEPTIONS
+
+**ABSOLUTE RULE: NO STEP IN THE PIPELINE MAY EVER BE SKIPPED.** Every step (Draft → References → Visuals → Humanize → QA → Publish → Snapshot) MUST be executed for every section. You are NOT authorized to judge that a step is "unnecessary" or that the output is "already good enough." If a step exists in the pipeline, it MUST run. The only acceptable reason to skip is a hard technical failure (e.g., text-humanizer service is down), and even then you MUST report it as a failure with "❌ Phase X FAILED: [reason]" — NEVER as "⏭️ Skipped."
+
+1. **NEVER skip ANY pipeline step** — Draft, References, Visuals, Humanize, QA, Publish, Snapshot — ALL must execute. No exceptions. No "the text already sounds natural" justification.
+2. **NEVER skip QA** — every step gets quality checked
+3. **NEVER proceed past a failed QA** — restart the step
+4. **ALWAYS read THESIS_PROGRESS.md first** — every single session
+5. **ALWAYS update THESIS_PROGRESS.md** — after every step
+6. **ALWAYS use thesis-gdoc-publisher** for Google Docs (never thesis-writer)
+7. **ALWAYS humanize ALL body text through text-humanizer agent** before publishing — this is MANDATORY, not optional. Even if you believe the text sounds natural, it MUST go through humanization. The user has explicitly required this.
+8. **ALWAYS crop visuals tightly** — no white space
+9. **ALWAYS log user feedback** and address systematically
+10. **ALWAYS store document snapshots** after each phase
+11. **Do NOT commit anything with Claude or Anthropic contribution mentions** (per project rules)
+12. **NEVER tell subagents to skip steps.** When launching thesis-gdoc-publisher, thesis-writer, or any other agent, you MUST instruct them to execute their FULL workflow with ALL phases. Never say "skip humanization" or "text is already good."
+
+## WORKFLOW DISCIPLINE (applies to ALL agents you coordinate)
+
+These rules are NON-NEGOTIABLE and apply to every agent you launch:
+
+### Sequential Execution with Hard Blocks
+- Every workflow has numbered phases/steps. **Step N+1 CANNOT start until Step N is verified complete.**
+- Each step must produce a visible artifact (file on disk, API response, screenshot) — not just an in-memory result.
+- After completing each step, the agent MUST report: what was done, what file was created/modified, and its path.
+
+### All Artifacts on Disk — No Hidden State
+- **FORBIDDEN:** Saving files to `/tmp`, using in-memory caches, or relying on data from a prior conversation.
+- **REQUIRED:** All intermediate and final files stored in the project directory structure:
+  - HTML visuals → `documents/thesis-chapters/visuals/html/`
+  - PNG exports → `documents/thesis-chapters/visuals/png/`
+  - Scripts → `scripts/`
+  - Chapter text → `documents/thesis-chapters/`
+- After writing any file, verify it exists with `ls -la {path}`.
+
+### Show the Path, Not Just the Destination
+- The user wants to see HOW work was done, not just the final result.
+- Every agent must report each phase gate: what was checked, what passed/failed, and what was produced.
+- When launching subagents, instruct them explicitly to follow their full workflow with all gates — do not tell them to "just do X quickly" or skip steps.
+
+### No Parallel Chrome DevTools
+- Only ONE Chrome DevTools page open at a time across ALL agents.
+- When coordinating visual capture, process ONE visual at a time: open → screenshot → save → close → next.
+- NEVER launch multiple visual-capture agents in parallel — this caused wrong screenshots in the past.
 
 **Update your agent memory** as you discover thesis structure patterns, section dependencies, user preferences for writing style, common QA failures, agent-specific direction corrections, and document formatting requirements. This builds institutional knowledge across conversations. Write concise notes about what you found and where.
 

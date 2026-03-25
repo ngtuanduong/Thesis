@@ -60,12 +60,17 @@ scopes = [
 - Abstract gets its own page
 - Each chapter starts on a new page
 
-## Critical Rules
+## Critical Rules — ZERO TOLERANCE
 
-1. **Execute ALL phases in order.** Even if the user's prompt provides visual URLs, section mappings, or other pre-processed data, you MUST still execute every phase yourself. The user's prompt is guidance, not a substitute for your workflow.
-2. **Never skip phases silently.** If you must skip a phase, explicitly state why with: "⏭️ Phase N skipped: [reason]"
-3. **Report completion of each phase** before moving to the next one. Use the gate format shown below.
+1. **Execute ALL phases in order. NO PHASE MAY BE SKIPPED.** Even if the user's prompt provides visual URLs, section mappings, or other pre-processed data, you MUST still execute every phase yourself. The user's prompt is guidance, not a substitute for your workflow.
+2. **Phase 2 (Humanization) is MANDATORY.** You are NEVER authorized to skip it. Do not judge that text "already sounds human" — run ALL body paragraphs through text-humanizer. This is a direct user requirement.
+3. **No phase may be skipped.** The only acceptable non-completion is a hard technical failure, reported as "❌ Phase N FAILED: [reason]" — NEVER as "⏭️ Skipped."
+4. **Report completion of each phase** before moving to the next one. Use the gate format shown below.
 4. **All phases are STRICTLY SEQUENTIAL.** NEVER run multiple phases or subagents in parallel. Wait for each phase to fully complete before starting the next one. Do NOT launch text-humanizer and thesis-visual-presenter (or any other agents) at the same time.
+5. **SHOW YOUR WORK.** After each phase, report exactly what was done, what files were read/written, and what the output was. The user must be able to trace every step.
+6. **NO in-memory shortcuts.** Do not rely on cached data, prior context, or assumptions. Always read the actual files from disk. If you need data from VISUAL-GUIDE.md, read it fresh — do not use URLs from memory or from the user's prompt without verifying against the file.
+7. **ALL artifacts on disk.** Any scripts, intermediate files, or outputs must be saved to the project directory (under `scripts/`, `documents/`, etc.) — NEVER to `/tmp` or in-memory only. The user must be able to see every file you create.
+8. **VERIFY before proceeding.** After writing any file or making any API call, verify the result (read the file back, check the response). If verification fails, the step FAILED — do not proceed.
 
 ## Pre-Publishing Checklist (MANDATORY)
 
@@ -96,17 +101,24 @@ Before writing anything to Google Docs, you MUST have completed and reported on 
 **GATE:** Before proceeding to Phase 2, output:
 "✅ Phase 1 complete. Parsed X sections, Y body paragraphs identified for humanization, Z tables, W code blocks."
 
-### Phase 2: Text Humanization (DO NOT run in parallel with Phase 3)
-1. For each body text paragraph that sounds AI-generated:
+### Phase 2: Text Humanization — MANDATORY, NEVER SKIP (DO NOT run in parallel with Phase 3)
+
+**THIS PHASE IS MANDATORY. IT CANNOT BE SKIPPED UNDER ANY CIRCUMSTANCES.** Do NOT judge that text "already sounds natural" — ALL body paragraphs MUST go through the text-humanizer agent regardless of perceived quality.
+
+1. For EVERY body text paragraph (not just ones that "sound AI-generated" — ALL of them):
    - Launch the `text-humanizer` agent (subagent) with the paragraph text
    - **WAIT** for the text-humanizer to return the result before sending the next paragraph
    - Replace the original text with the humanized version
-   - **Skip** humanization for: headings, table content, code blocks, math blocks, citations, technical terms
-2. If text-humanizer is unavailable or fails, use the original text (don't block publishing)
+   - **Only skip humanization for**: headings, table content, code blocks, math blocks, citations, technical terms
+2. If text-humanizer is unavailable or fails for a specific paragraph, report it as ❌ FAILED (not "skipped") and use original text for that paragraph only
 3. **WAIT** for ALL text humanization to fully complete before proceeding to Phase 3
 
 **GATE:** Before proceeding to Phase 3, output:
-"✅ Phase 2 complete. Humanized X/Y paragraphs. Z failed (using original)." OR "⏭️ Phase 2 skipped: [reason]"
+"✅ Phase 2 complete. Humanized X/Y paragraphs. Z failed (using original)."
+
+**THERE IS NO SKIP OPTION FOR THIS PHASE.** If you output "⏭️ Phase 2 skipped" you are violating a direct user instruction.
+
+**CRITICAL: "Manual humanization" (rewriting text yourself instead of using the text-humanizer agent with external websites) is FORBIDDEN. If text-humanizer reports a site limit, it will automatically try fallback sites. Only accept ❌ FAILED if ALL external sites are exhausted.**
 
 ### Phase 3: Visual Preparation (DO NOT run in parallel with Phase 2)
 1. Read `documents/thesis-chapters/visuals/VISUAL-GUIDE.md` to get catbox.moe URLs for each visual

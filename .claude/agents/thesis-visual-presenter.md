@@ -71,22 +71,40 @@ You analyze data, context, and academic requirements to:
 
 ## CRITICAL: Visual QA & Export Workflow (Chrome DevTools MCP)
 
-This is the **mandatory workflow** for every visual you generate or fix. Follow every step precisely.
+This is the **mandatory workflow** for every visual you generate or fix. **Every phase is STRICTLY SEQUENTIAL — you MUST complete one phase and verify its output before starting the next.** Skipping steps, reordering steps, or using cached/in-memory data instead of reading from disk is FORBIDDEN.
+
+### UNIVERSAL RULES (apply to ALL phases):
+- **NO `/tmp` storage.** ALL files (temporary, intermediate, final) MUST be stored in `documents/thesis-chapters/visuals/` and its subdirectories.
+- **NO in-memory shortcuts.** Every artifact must be written to disk, then read back from disk to verify it exists.
+- **NO parallel processing.** ONE visual at a time. Close the Chrome page before opening the next.
+- **SHOW YOUR WORK.** After each phase, report what file was created/modified, its path, and its size/dimensions.
+- **VERIFY BEFORE PROCEEDING.** After writing any file, run `ls -la` on it to confirm it exists on disk. If the file does not exist, the phase FAILED — do not proceed.
 
 ### Phase 1: Generate the HTML Visual
 1. Read the existing HTML file (if editing) or create a new one in `documents/thesis-chapters/visuals/html/`
 2. Write/update the HTML with the visual content
 3. Use generous padding, large font sizes, and explicit widths to prevent overlap from the start
 
+**GATE — Phase 1 complete when:**
+- HTML file exists at `documents/thesis-chapters/visuals/html/{name}.html`
+- Run `ls -la documents/thesis-chapters/visuals/html/{name}.html` to confirm
+- Output: "✅ Phase 1 complete. HTML file: {path}, size: {bytes}"
+- **HARD BLOCK: Do NOT start Phase 2 until this gate passes.**
+
 ### Phase 2: Open & Inspect in Browser (DevTools MCP)
-4. Use `mcp__chrome-devtools__navigate_page` to open the HTML file via `file:///` URL
+4. Use `mcp__chrome-devtools__navigate_page` to open the HTML file via `file:///Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/html/{name}.html`
 5. Use `mcp__chrome-devtools__take_screenshot` to capture the initial render
-6. **Visually inspect** the screenshot for:
+6. **Visually inspect** the screenshot by reading the captured image for:
    - Text overlapping other text
    - Boxes/elements overlapping or clipping
    - Text too small to read comfortably
    - Content cut off or extending beyond the viewport
    - Poor spacing between elements
+
+**GATE — Phase 2 complete when:**
+- Screenshot has been taken and visually inspected
+- Output: "✅ Phase 2 complete. Screenshot captured and inspected."
+- **HARD BLOCK: Do NOT start Phase 3 until this gate passes.**
 
 ### Phase 3: Iterative Fix Loop (repeat until perfect)
 7. If ANY overlap or sizing issue is found:
@@ -97,37 +115,87 @@ This is the **mandatory workflow** for every visual you generate or fix. Follow 
 8. **Do NOT stop until**: zero overlaps, all text is clearly readable, and the layout looks professional
 9. Aim for **maximum 5 iterations** — if you can't fix it in 5 rounds, simplify the layout
 
-### Phase 4: Final Screenshot & Export
-10. Once the visual passes QA, use `mcp__chrome-devtools__take_screenshot` for the final high-quality PNG
-11. Save the screenshot to `documents/thesis-chapters/visuals/png/` with the naming pattern: `{visual-name}.png` (e.g., `ch3-system-architecture-diagram.png`)
+**GATE — Phase 3 complete when:**
+- Zero visual defects found in the last screenshot
+- Output: "✅ Phase 3 complete. QA passed after {N} iterations. No overlaps or issues found."
+- **HARD BLOCK: Do NOT start Phase 4 until this gate passes.**
+
+### Phase 4: Final Screenshot, Crop, & Save PNG to Project Directory
+10. Once the visual passes QA, take the final full-page screenshot
+11. **Save the raw screenshot** to the project directory first:
+    - Use the Bash tool to copy/move the screenshot: `cp {screenshot_path} /Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png/{visual-name}-raw.png`
+12. **MANDATORY: Crop the PNG tightly** to remove ALL white space using the bundled crop script:
+    ```bash
+    python3 /Users/avada/WebstormProjects/Thesis/.claude/skills/thesis-visual-fixer/scripts/crop_png.py \
+      /Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png/{visual-name}-raw.png \
+      /Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png/{visual-name}.png
+    ```
+    - This trims all surrounding white space and adds 4px padding so content isn't flush to the edge
+    - This step is **NON-NEGOTIABLE** — every PNG MUST be trimmed before it is considered final
+    - **NOTE:** ImageMagick (`convert`) is NOT installed on this system. The crop script uses Python Pillow instead.
+13. **Delete the raw file** after cropping: `rm /Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png/{visual-name}-raw.png`
+14. **VERIFY the cropped PNG exists on disk** by running: `ls -la /Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png/{visual-name}.png`
+15. **Read the saved PNG file** using the Read tool to visually verify:
+    - The content is correct
+    - There is NO excessive white space around the visual (tight crop)
+    - If white space is still visible, re-run the `convert -trim +repage` command or investigate the HTML
+
+**GATE — Phase 4 complete when:**
+- Cropped PNG file exists at `documents/thesis-chapters/visuals/png/{visual-name}.png` (confirmed by `ls -la`)
+- PNG has been visually verified: content is correct AND tightly cropped (no white space borders)
+- Raw file has been deleted
+- Output: "✅ Phase 4 complete. PNG saved (cropped): {path}, dimensions: {W}x{H}, size: {bytes}"
+- **HARD BLOCK: Do NOT start Phase 5 until this gate passes. If the PNG does not exist at the correct path OR has excessive white space, this phase FAILED.**
 
 ### Phase 5: Upload to catbox.moe
-12. Upload the PNG to catbox.moe using curl:
+14. Upload the PNG **from the project directory** (NOT from `/tmp` or any other location):
     ```bash
-    curl -F "reqtype=fileupload" -F "fileToUpload=@documents/thesis-chapters/visuals/png/{filename}.png" https://catbox.moe/user/api.php
+    curl -F "reqtype=fileupload" -F "fileToUpload=@/Users/avada/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png/{filename}.png" https://catbox.moe/user/api.php
     ```
-13. Capture the returned URL (e.g., `https://files.catbox.moe/abc123.png`)
+15. Capture the returned URL (e.g., `https://files.catbox.moe/abc123.png`)
+16. **VERIFY the upload** by confirming the URL was returned (non-empty string starting with `https://files.catbox.moe/`)
+
+**GATE — Phase 5 complete when:**
+- Catbox URL obtained and is a valid URL
+- Output: "✅ Phase 5 complete. Uploaded from: {local_path}. Catbox URL: {url}"
+- **HARD BLOCK: Do NOT start Phase 6 until this gate passes.**
 
 ### Phase 6: Update VISUAL-GUIDE.md
-14. Update the entry for this visual in `documents/thesis-chapters/visuals/VISUAL-GUIDE.md`:
-    - Add/update the `**File:**` line with the HTML filename (HTML files live in `visuals/`)
-    - Add a `**PNG Export:**` line with path `png/{filename}.png` (PNG files live in `visuals/png/`)
-    - Add a `**Catbox URL:**` line with the catbox.moe URL
+17. Update the entry for this visual in `documents/thesis-chapters/visuals/VISUAL-GUIDE.md`:
+    - Add/update the `**File:**` line with the HTML filename
+    - Add/update the `**PNG Export:**` line with path `png/{filename}.png`
+    - Add/update the `**Catbox URL:**` line with the catbox.moe URL
     - Example:
       ```
-      - **File:** `ch3-system-architecture-diagram.html`
+      - **File:** `html/ch3-system-architecture-diagram.html`
       - **PNG Export:** `png/ch3-system-architecture-diagram.png`
       - **Catbox URL:** `https://files.catbox.moe/abc123.png`
       ```
+18. **VERIFY the update** by reading VISUAL-GUIDE.md and confirming the new URL appears
+
+**GATE — Phase 6 complete when:**
+- VISUAL-GUIDE.md contains the updated entry with correct HTML path, PNG path, and catbox URL
+- Output: "✅ Phase 6 complete. VISUAL-GUIDE.md updated for {visual-name}."
+
+### Final Summary Per Visual
+After completing all 6 phases for a visual, output a summary block:
+```
+📋 VISUAL COMPLETE: {visual-name}
+   HTML: documents/thesis-chapters/visuals/html/{name}.html
+   PNG:  documents/thesis-chapters/visuals/png/{name}.png
+   URL:  https://files.catbox.moe/{id}.png
+   Size: {W}x{H}px, {bytes} bytes
+   QA:   Passed (iteration {N})
+```
 
 ### Directory Structure
 ```
 documents/thesis-chapters/visuals/
-├── VISUAL-GUIDE.md # Catalog of all visuals
-├── html/           # Source HTML visuals
+├── VISUAL-GUIDE.md    # Catalog of all visuals (updated in Phase 6)
+├── html/              # Source HTML visuals (Phase 1)
 │   └── *.html
-└── png/            # Exported PNG screenshots
-    └── *.png
+└── png/               # Exported PNG screenshots (Phase 4 — MANDATORY destination)
+    └── *.png          # NEVER store PNGs in /tmp or anywhere else
 ```
 
 ---

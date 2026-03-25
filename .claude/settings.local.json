@@ -67,7 +67,23 @@
       "mcp__chrome-devtools__fill",
       "Bash(find /Users/avada/WebstormProjects/Thesis -name infra-inkwell-465003-f2-369235afe5ac.json -o -name *service*account*)",
       "Read(//private/tmp/**)",
-      "Bash(sips -g all /tmp/table33_original.png)"
+      "Bash(sips -g all /tmp/table33_original.png)",
+      "Bash(convert /tmp/ch1-platform-comparison-table.png -trim +repage /tmp/ch1-platform-comparison-table-cropped.png)",
+      "Bash(identify /tmp/ch1-platform-comparison-table-cropped.png)",
+      "Bash(brew list:*)",
+      "Bash(pip3 install:*)",
+      "Bash(convert /tmp/ch2-kt-evolution-timeline.png -trim +repage /tmp/ch2-kt-evolution-timeline-cropped.png)",
+      "Bash(identify /tmp/ch2-kt-evolution-timeline-cropped.png)",
+      "Bash(convert /tmp/ch3-system-architecture-diagram.png -trim +repage /tmp/ch3-system-architecture-diagram-cropped.png)",
+      "Bash(identify /tmp/ch3-system-architecture-diagram-cropped.png)",
+      "Bash(convert ch4-tech-stack-table.png -trim +repage ch4-tech-stack-table.png)",
+      "Bash(identify ch4-tech-stack-table.png)",
+      "Bash(pip3 list:*)",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__get_console_message",
+      "mcp__chrome-devtools__type_text",
+      "mcp__plugin_playwright_playwright__browser_navigate"
     ]
   }
 }
