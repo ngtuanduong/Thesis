@@ -12,6 +12,13 @@
   - 5 tables (Table 3.1: design principles/decisions, Table 3.2: traceability matrix, Table 3.3: hyperparameter summary, Table 3.4: new DB tables, Table 3.5: caching config)
   - 4 figures (Fig 3.1: architecture, Fig 3.2: KG, Fig 3.3: sequence diagram, Fig 3.4: ER diagram)
   - New references: [56] pyBKT, [57] Csikszentmihalyi Flow, [58] Agrawal & Goyal Thompson Sampling
+- **Chapter 5 (Evaluation)**: Sections 5.1-5.3 complete (2026-03-26), ~4286 total words (~3500 prose)
+  - Structure: Opening paragraph, 5.1 Research Methodology, 5.2 Experiment Design (5.2.1 Participants, 5.2.2 Protocol, 5.2.3 Variables), 5.3 Evaluation Metrics (5.3.1 Learning Effectiveness, 5.3.2 Recommendation Quality, 5.3.3 Engagement, 5.3.4 Usability) + Group Comparison Analysis Plan
+  - 8 numbered equations (5.1-5.8)
+  - 3 tables (Table 5.1: RQ summary, Table 5.2: group feature comparison, Table 5.3: complete metrics summary)
+  - 1 figure (Fig 5.1: experiment timeline, ASCII)
+  - References used from existing pool: [13], [25], [38], [51]-[55] (no new references introduced)
+  - Sections 5.4 (Results) and 5.5 (Discussion) NOT yet written — require experimental data
 
 ## Architecture Framing (confirmed 2026-03-18)
 - System is described as NEW, purpose-built — NOT as improvement of old system
@@ -24,6 +31,7 @@
 - Chapter 1 uses [1]-[21] (defined in chapter1-introduction.md)
 - Chapter 2 introduces [22]-[55] (new references listed at end of chapter2)
 - Chapter 3 introduces [56]-[58] (pyBKT, Csikszentmihalyi, Agrawal & Goyal)
+- Chapter 5 uses refs from existing pool only: [13], [25], [38], [51]-[55]; no new refs introduced
 - Next chapter should continue from [59] onwards if new refs needed
 - Several [CITE: ...] placeholders remain for papers needing author verification (refs 36, 37, 38, 40, 41, 47-54)
 

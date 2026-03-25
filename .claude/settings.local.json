@@ -83,7 +83,23 @@
       "mcp__chrome-devtools__list_console_messages",
       "mcp__chrome-devtools__get_console_message",
       "mcp__chrome-devtools__type_text",
-      "mcp__plugin_playwright_playwright__browser_navigate"
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "Bash(find C:Usersduong.claude -name *.json -type f)",
+      "Bash(find C:Usersduong.claude -name mcp* -type f)",
+      "Bash(find C:Usersduong.claudeplugins -path *chrome* -type f)",
+      "Bash(npx chrome-devtools-mcp@latest --help)",
+      "Bash(find /c/Users/duong/WebstormProjects/Thesis -maxdepth 2 -type f \\\\\\(-name *.json -o -name *.yaml -o -name *.yml \\\\\\))",
+      "Bash(find /c/Users/duong/WebstormProjects/Thesis -type f \\\\\\(-name *humaniz* -o -name *human* -o -name *publish* \\\\\\))",
+      "Bash(pip install:*)",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "Bash(magick identify:*)",
+      "Bash(where convert:*)",
+      "Bash(where magick:*)",
+      "Bash(where /R 'C:/Program Files' magick.exe)",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "Bash(pkill -f \"python -m http.server 8765\")"
     ]
   }
 }

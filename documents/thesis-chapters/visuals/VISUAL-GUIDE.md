@@ -272,6 +272,46 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ---
 
+## Chapter 5: Evaluation and Experiments
+
+### Visual 5.1 -- Research Questions Mapping Table (Table 5.1)
+- **File:** `html/ch5-research-questions-table.html`
+- **PNG Export:** `png/ch5-research-questions-table.png`
+- **Catbox URL:** https://files.catbox.moe/2llwwm.png
+- **Type:** Formatted HTML table (APA style)
+- **Section:** 5.1 Research Methodology -- Research Questions and Measurements
+- **Why table:** Maps 4 research questions to their measurements and analysis types. Color-coded type badges (Primary/Secondary/Qualitative) enable quick scanning.
+- **Integration:** Reference as Table 5.1. Place after the research questions discussion.
+
+### Visual 5.2 -- Eight-Week Experiment Protocol Timeline (Figure 5.1)
+- **File:** `html/ch5-experiment-timeline.html`
+- **PNG Export:** `png/ch5-experiment-timeline.png`
+- **Catbox URL:** https://files.catbox.moe/xaopkb.png
+- **Type:** SVG timeline with phase boxes, arrows, and RQ mapping
+- **Section:** 5.2.2 Protocol
+- **Why timeline:** The 8-week experiment has 5 distinct phases (Baseline, Intervention, Post-Assessment, Washout, Retention) with specific activities in each. A timeline with phase boxes, group labels, and RQ data collection mapping communicates the temporal structure at a glance.
+- **Integration:** Reference as Figure 5.1. Place at the beginning of the Protocol section.
+
+### Visual 5.3 -- Group Feature Comparison Table (Table 5.2)
+- **File:** `html/ch5-group-comparison-table.html`
+- **PNG Export:** `png/ch5-group-comparison-table.png`
+- **Catbox URL:** https://files.catbox.moe/wjmwg9.png
+- **Type:** Formatted HTML table with color-coded group badges
+- **Section:** 5.2.2 Protocol
+- **Why table:** 8 features compared between Experimental and Control groups. Orange/green color coding for adaptive vs. non-adaptive, with blue italic for identical features. A table enables precise cross-referencing of what each group receives.
+- **Integration:** Reference as Table 5.2. Place after the intervention description.
+
+### Visual 5.4 -- Complete Evaluation Metrics Summary (Table 5.3)
+- **File:** `html/ch5-evaluation-metrics-table.html`
+- **PNG Export:** `png/ch5-evaluation-metrics-table.png`
+- **Catbox URL:** https://files.catbox.moe/ukyi05.png
+- **Type:** Formatted HTML table with category badges and math formulas
+- **Section:** 5.3.4 Usability Metrics -- Summary of All Metrics
+- **Why table:** 18 metrics across 5 categories (Learning Effectiveness, Recommendation Quality, Retention, Engagement, Usability) with definitions, targets, and RQ mappings. Color-coded category badges enable scanning by category. Math formulas use Cambria Math styling.
+- **Integration:** Reference as Table 5.3. Place at the end of the metrics section as a comprehensive summary.
+
+---
+
 ## Summary Statistics
 
 | Chapter | Tables Generated | Figures Generated | Total |
@@ -280,7 +320,8 @@ No visuals required. The cover page is text-only per university formatting stand
 | Chapter 2 | 2 | 3 | 5 |
 | Chapter 3 | 4 | 5 | 9 |
 | Chapter 4 | 2 | 5 | 7 |
-| **Total** | **9** | **17** | **26** |
+| Chapter 5 | 3 | 1 | 4 |
+| **Total** | **12** | **18** | **30** |
 ---
 
 ## File Listing
@@ -307,6 +348,10 @@ No visuals required. The cover page is text-only per university formatting stand
 | 18 | `html/ch3-layer-interaction-matrix.html` | Figure (Matrix) | Ch.3 |
 | 19 | `html/ch3-cold-start-flowchart.html` | Figure (Flowchart) | Ch.3 |
 | 20 | `html/ch3-caching-strategy-table.html` | Table | Ch.3 |
+| 21 | `html/ch5-research-questions-table.html` | Table | Ch.5 |
+| 22 | `html/ch5-experiment-timeline.html` | Figure (Timeline) | Ch.5 |
+| 23 | `html/ch5-group-comparison-table.html` | Table | Ch.5 |
+| 24 | `html/ch5-evaluation-metrics-table.html` | Table | Ch.5 |
 
 ---
 
