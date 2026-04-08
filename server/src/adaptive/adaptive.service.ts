@@ -7,6 +7,7 @@ export class AdaptiveService {
 
   constructor(private aiService: AiService) {}
 
+  /** Get adaptive problem recommendations for a student based on BKT/Elo/MAB state. */
   async getRecommendations(userId: string, limit = 5) {
     try {
       return await this.aiService.getAdaptiveRecommendations(userId, limit);
@@ -16,6 +17,7 @@ export class AdaptiveService {
     }
   }
 
+  /** Retrieve the student's BKT knowledge state across all concepts. */
   async getKnowledgeState(userId: string) {
     try {
       return await this.aiService.getKnowledgeState(userId);
@@ -25,6 +27,7 @@ export class AdaptiveService {
     }
   }
 
+  /** Get the FSRS spaced-repetition review queue (due now + upcoming). */
   async getReviewQueue(userId: string) {
     try {
       return await this.aiService.getReviewQueue(userId);
@@ -34,6 +37,7 @@ export class AdaptiveService {
     }
   }
 
+  /** Update all adaptive layers (BKT, Elo, MAB, FSRS) after a submission is graded. */
   async updateAfterSubmission(data: {
     studentId: string;
     problemId: string;
@@ -49,6 +53,7 @@ export class AdaptiveService {
     }
   }
 
+  /** Generate an LLM-powered Socratic hint for a student's current attempt. */
   async generateHint(data: {
     studentId: string;
     problemId: string;
@@ -61,6 +66,31 @@ export class AdaptiveService {
     } catch (error) {
       this.logger.error(`Failed to generate hint: ${error}`);
       return { hint: null, error: 'AI service unavailable' };
+    }
+  }
+
+  /** Log a frontend user interaction event for evaluation tracking. */
+  async logEvent(data: {
+    userId: string;
+    event: string;
+    data?: Record<string, unknown>;
+    sessionId?: string;
+  }) {
+    try {
+      return await this.aiService.logEvent(data);
+    } catch (error) {
+      this.logger.warn(`Failed to log event: ${error}`);
+      return { logged: false };
+    }
+  }
+
+  /** Get Elo rating history for a student to display trajectory chart. */
+  async getEloHistory(userId: string) {
+    try {
+      return await this.aiService.getEloHistory(userId);
+    } catch (error) {
+      this.logger.error(`Failed to get Elo history: ${error}`);
+      return { rating: 1200, rating_history: [], error: 'AI service unavailable' };
     }
   }
 }

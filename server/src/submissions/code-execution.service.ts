@@ -33,6 +33,7 @@ export class CodeExecutionService {
     return { ...process.env as Record<string, string> };
   }
 
+  /** Verify Docker is available and build the sandbox image if it doesn't exist. */
   async ensureSandboxImage(): Promise<void> {
     try {
       // Verify Docker is available and responsive
@@ -71,6 +72,18 @@ export class CodeExecutionService {
     }
   }
 
+  /**
+   * Execute student code against test cases in an isolated Docker container.
+   *
+   * Flow: ensure sandbox image -> iterate test cases -> for each test, write code
+   * to a temp file, run it in a memory/CPU-limited container with no network,
+   * compare output to expected. Stops on first failure.
+   *
+   * @param code - The student's source code.
+   * @param language - Programming language (currently only "python" supported).
+   * @param testCases - Array of input/expected-output pairs.
+   * @returns Execution result with status, output, runtime, and optional error.
+   */
   async executeCode(
     code: string,
     language: string,

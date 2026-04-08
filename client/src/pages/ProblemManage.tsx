@@ -1,0 +1,374 @@
+import { useState, useCallback } from 'react';
+import {
+  Table,
+  Modal,
+  Form,
+  Input,
+  Select,
+  Button,
+  Tag,
+  Popconfirm,
+  Space,
+  Typography,
+  message,
+  Row,
+  Col,
+  Checkbox,
+} from 'antd';
+import {
+  PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  MinusCircleOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import type { ColumnsType } from 'antd/es/table';
+import type { Problem } from '../types';
+import {
+  useProblems,
+  useCreateProblem,
+  useUpdateProblem,
+  useDeleteProblem,
+} from '../api/queries/useProblemManage';
+
+const { Title } = Typography;
+const { TextArea } = Input;
+
+const difficultyColors: Record<string, string> = {
+  EASY: 'green',
+  MEDIUM: 'orange',
+  HARD: 'red',
+};
+
+interface ProblemFormValues {
+  title: string;
+  description: string;
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  tags?: string[];
+  testCases?: { input: string; expected: string; isHidden: boolean }[];
+}
+
+function ProblemManage() {
+  const [form] = Form.useForm<ProblemFormValues>();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editingProblem, setEditingProblem] = useState<Problem | null>(null);
+  const [searchText, setSearchText] = useState('');
+
+  const { data: problems, isLoading } = useProblems();
+  const createProblem = useCreateProblem();
+  const updateProblem = useUpdateProblem();
+  const deleteProblem = useDeleteProblem();
+
+  const filteredProblems = problems?.filter((p) =>
+    p.title.toLowerCase().includes(searchText.toLowerCase()),
+  );
+
+  const openCreateModal = useCallback(() => {
+    setEditingProblem(null);
+    form.resetFields();
+    form.setFieldsValue({
+      difficulty: 'EASY',
+      testCases: [{ input: '', expected: '', isHidden: false }],
+    });
+    setModalOpen(true);
+  }, [form]);
+
+  const openEditModal = useCallback(
+    (problem: Problem) => {
+      setEditingProblem(problem);
+      form.setFieldsValue({
+        title: problem.title,
+        description: problem.description,
+        difficulty: problem.difficulty,
+        tags: problem.tags ?? [],
+        testCases:
+          problem.testCases && problem.testCases.length > 0
+            ? problem.testCases.map((tc) => ({
+                input: tc.input,
+                expected: tc.expected,
+                isHidden: tc.isHidden,
+              }))
+            : [{ input: '', expected: '', isHidden: false }],
+      });
+      setModalOpen(true);
+    },
+    [form],
+  );
+
+  const closeModal = useCallback(() => {
+    setModalOpen(false);
+    setEditingProblem(null);
+    form.resetFields();
+  }, [form]);
+
+  const handleSubmit = useCallback(async () => {
+    try {
+      const values = await form.validateFields();
+      const payload = {
+        title: values.title,
+        description: values.description,
+        difficulty: values.difficulty,
+        tags: values.tags,
+        testCases: values.testCases?.filter(
+          (tc) => tc.input.trim() !== '' || tc.expected.trim() !== '',
+        ),
+      };
+
+      if (editingProblem) {
+        await updateProblem.mutateAsync({ id: editingProblem.id, ...payload });
+        message.success('Problem updated successfully');
+      } else {
+        await createProblem.mutateAsync(payload);
+        message.success('Problem created successfully');
+      }
+      closeModal();
+    } catch (err) {
+      if (err && typeof err === 'object' && 'errorFields' in err) {
+        return; // validation error, form will show messages
+      }
+      message.error('Failed to save problem');
+    }
+  }, [form, editingProblem, createProblem, updateProblem, closeModal]);
+
+  const handleDelete = useCallback(
+    async (id: string) => {
+      try {
+        await deleteProblem.mutateAsync(id);
+        message.success('Problem deleted successfully');
+      } catch {
+        message.error('Failed to delete problem');
+      }
+    },
+    [deleteProblem],
+  );
+
+  const columns: ColumnsType<Problem> = [
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      sorter: (a, b) => a.title.localeCompare(b.title),
+    },
+    {
+      title: 'Difficulty',
+      dataIndex: 'difficulty',
+      key: 'difficulty',
+      width: 120,
+      render: (difficulty: string) => (
+        <Tag color={difficultyColors[difficulty]}>{difficulty}</Tag>
+      ),
+      filters: [
+        { text: 'Easy', value: 'EASY' },
+        { text: 'Medium', value: 'MEDIUM' },
+        { text: 'Hard', value: 'HARD' },
+      ],
+      onFilter: (value, record) => record.difficulty === value,
+    },
+    {
+      title: 'Tags',
+      dataIndex: 'tags',
+      key: 'tags',
+      render: (tags: string[]) => (
+        <Space size={[0, 4]} wrap>
+          {tags?.map((tag) => (
+            <Tag key={tag}>{tag}</Tag>
+          ))}
+        </Space>
+      ),
+    },
+    {
+      title: 'Test Cases',
+      key: 'testCases',
+      width: 110,
+      render: (_: unknown, record: Problem) => record.testCases?.length ?? 0,
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      width: 150,
+      render: (_: unknown, record: Problem) => (
+        <Space>
+          <Button
+            type="link"
+            icon={<EditOutlined />}
+            onClick={() => openEditModal(record)}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            title="Delete problem"
+            description="Are you sure you want to delete this problem?"
+            onConfirm={() => handleDelete(record.id)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="link" danger icon={<DeleteOutlined />}>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
+  const isSubmitting = createProblem.isPending || updateProblem.isPending;
+
+  return (
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+        }}
+      >
+        <Title level={3} style={{ margin: 0 }}>
+          Problem Management
+        </Title>
+        <Space>
+          <Input
+            placeholder="Search by title..."
+            prefix={<SearchOutlined />}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            style={{ width: 250 }}
+            allowClear
+          />
+          <Button type="primary" icon={<PlusOutlined />} onClick={openCreateModal}>
+            Create Problem
+          </Button>
+        </Space>
+      </div>
+
+      <Table
+        columns={columns}
+        dataSource={filteredProblems}
+        rowKey="id"
+        loading={isLoading}
+      />
+
+      <Modal
+        title={editingProblem ? 'Edit Problem' : 'Create Problem'}
+        open={modalOpen}
+        onCancel={closeModal}
+        onOk={handleSubmit}
+        confirmLoading={isSubmitting}
+        width={720}
+        destroyOnClose
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{
+            difficulty: 'EASY',
+            testCases: [{ input: '', expected: '', isHidden: false }],
+          }}
+        >
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[{ required: true, message: 'Please enter a title' }]}
+          >
+            <Input placeholder="Problem title" />
+          </Form.Item>
+
+          <Form.Item
+            name="description"
+            label="Description"
+            rules={[{ required: true, message: 'Please enter a description' }]}
+          >
+            <TextArea rows={6} placeholder="Problem description (supports markdown)" />
+          </Form.Item>
+
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item
+                name="difficulty"
+                label="Difficulty"
+                rules={[{ required: true, message: 'Please select difficulty' }]}
+              >
+                <Select>
+                  <Select.Option value="EASY">Easy</Select.Option>
+                  <Select.Option value="MEDIUM">Medium</Select.Option>
+                  <Select.Option value="HARD">Hard</Select.Option>
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="tags" label="Tags">
+                <Select
+                  mode="tags"
+                  placeholder="Type and press Enter to add tags"
+                  tokenSeparators={[',']}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Typography.Text strong style={{ display: 'block', marginBottom: 8 }}>
+            Test Cases
+          </Typography.Text>
+          <Form.List name="testCases">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map(({ key, name, ...restField }) => (
+                  <Row key={key} gutter={8} align="middle" style={{ marginBottom: 8 }}>
+                    <Col span={9}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'input']}
+                        style={{ marginBottom: 0 }}
+                      >
+                        <Input placeholder="Input" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={9}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'expected']}
+                        style={{ marginBottom: 0 }}
+                      >
+                        <Input placeholder="Expected Output" />
+                      </Form.Item>
+                    </Col>
+                    <Col span={4}>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'isHidden']}
+                        valuePropName="checked"
+                        style={{ marginBottom: 0 }}
+                      >
+                        <Checkbox>Hidden</Checkbox>
+                      </Form.Item>
+                    </Col>
+                    <Col span={2}>
+                      {fields.length > 1 && (
+                        <MinusCircleOutlined
+                          style={{ color: '#ff4d4f', fontSize: 18, cursor: 'pointer' }}
+                          onClick={() => remove(name)}
+                        />
+                      )}
+                    </Col>
+                  </Row>
+                ))}
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => add({ input: '', expected: '', isHidden: false })}
+                    block
+                    icon={<PlusOutlined />}
+                  >
+                    Add Test Case
+                  </Button>
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        </Form>
+      </Modal>
+    </div>
+  );
+}
+
+export default ProblemManage;

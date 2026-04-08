@@ -71,50 +71,72 @@ interface EdgeDef {
 
 const PREREQUISITE_EDGES: EdgeDef[] = [
   // Within Tier 1 (intra-tier, pedagogical order)
+  { from: 'variables', to: 'data_types' },
+  { from: 'variables', to: 'operators' },
+  { from: 'data_types', to: 'operators' },
   { from: 'operators', to: 'conditionals' },
   { from: 'conditionals', to: 'loops' },
   { from: 'data_types', to: 'strings' },
+  { from: 'variables', to: 'io' },
+  { from: 'strings', to: 'io' },
 
   // Tier 1 → Tier 2
   { from: 'loops', to: 'nested_loops' },
   { from: 'loops', to: 'functions' },
   { from: 'loops', to: 'lists' },
   { from: 'loops', to: 'searching' },
+  { from: 'strings', to: 'lists' },
   { from: 'functions', to: 'parameters' },
   { from: 'functions', to: 'return_values' },
+  { from: 'conditionals', to: 'functions' },
 
   // Tier 2 → Tier 2 (intra-tier)
   { from: 'lists', to: 'tuples' },
   { from: 'lists', to: 'dictionaries' },
+  { from: 'return_values', to: 'searching' },
+  { from: 'parameters', to: 'return_values' },
 
   // Tier 2 → Tier 3
   { from: 'functions', to: 'scope' },
+  { from: 'return_values', to: 'recursion' },
   { from: 'functions', to: 'recursion' },
   { from: 'functions', to: 'classes' },
+  { from: 'dictionaries', to: 'classes' },
   { from: 'lists', to: 'sets' },
+  { from: 'dictionaries', to: 'sets' },
   { from: 'lists', to: 'stacks' },
   { from: 'lists', to: 'queues' },
   { from: 'lists', to: 'sorting' },
+  { from: 'searching', to: 'sorting' },
   { from: 'lists', to: 'sliding_window' },
+  { from: 'nested_loops', to: 'sorting' },
 
   // Tier 3 → Tier 4
   { from: 'classes', to: 'inheritance' },
   { from: 'classes', to: 'encapsulation' },
   { from: 'sorting', to: 'two_pointers' },
+  { from: 'searching', to: 'two_pointers' },
   { from: 'recursion', to: 'divide_and_conquer' },
+  { from: 'sorting', to: 'divide_and_conquer' },
   { from: 'sorting', to: 'greedy' },
 
   // Tier 4 → Tier 4 (intra-tier)
   { from: 'inheritance', to: 'polymorphism' },
+  { from: 'encapsulation', to: 'polymorphism' },
 
-  // Tier 3 → Tier 5
+  // Tier 3/4 → Tier 5
   { from: 'recursion', to: 'dynamic_programming' },
   { from: 'recursion', to: 'backtracking' },
   { from: 'recursion', to: 'trees' },
+  { from: 'stacks', to: 'trees' },
   { from: 'recursion', to: 'graphs' },
+  { from: 'queues', to: 'graphs' },
+  { from: 'divide_and_conquer', to: 'dynamic_programming' },
+  { from: 'greedy', to: 'dynamic_programming' },
 
   // Cross-tier long edge (T1 → T5)
   { from: 'operators', to: 'bit_manipulation' },
+  { from: 'conditionals', to: 'bit_manipulation' },
 ];
 
 // ============================================================

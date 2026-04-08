@@ -22,6 +22,10 @@ export class SubmissionsService {
     this.aiServiceKey = this.configService.get<string>('AI_SERVICE_KEY') || 'dev-secret-key';
   }
 
+  /** Create a new submission and trigger asynchronous code execution in the Docker sandbox.
+   * @param dto - Code, language, and problem ID.
+   * @param userId - The submitting user's ID.
+   * @returns The created submission (status will be PENDING). */
   async create(dto: CreateSubmissionDto, userId: string) {
     // Create submission with PENDING status
     const submission = await this.prisma.submission.create({
@@ -129,6 +133,7 @@ export class SubmissionsService {
     }
   }
 
+  /** Retrieve all submissions for a specific problem by a specific user, newest first. */
   async findByProblem(problemId: string, userId: string) {
     return this.prisma.submission.findMany({
       where: { problemId, userId },
@@ -136,6 +141,8 @@ export class SubmissionsService {
     });
   }
 
+  /** Find a single submission by ID.
+   * @throws NotFoundException if the submission does not exist. */
   async findById(id: string) {
     const submission = await this.prisma.submission.findUnique({ where: { id } });
     if (!submission) {
@@ -144,6 +151,7 @@ export class SubmissionsService {
     return submission;
   }
 
+  /** Retrieve all submissions by a user with associated problem metadata, newest first. */
   async findByUser(userId: string) {
     return this.prisma.submission.findMany({
       where: { userId },

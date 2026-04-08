@@ -25,7 +25,9 @@ export function useLogin() {
     },
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
-      queryClient.invalidateQueries({ queryKey: ['me'] });
+      // Set user data immediately so route guard sees isAuthenticated=true
+      // before navigate('/') runs — avoids race condition with async refetch
+      queryClient.setQueryData(['me'], data.user);
     },
   });
 }
@@ -40,7 +42,7 @@ export function useRegister() {
     },
     onSuccess: (data) => {
       localStorage.setItem('token', data.token);
-      queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.setQueryData(['me'], data.user);
     },
   });
 }

@@ -47,4 +47,28 @@ export class ProblemsService {
     }
     return problem;
   }
+
+  async update(id: string, dto: Partial<CreateProblemDto>) {
+    await this.findById(id); // throws NotFoundException if not found
+    const { testCases, ...problemData } = dto;
+    return this.prisma.problem.update({
+      where: { id },
+      data: {
+        ...problemData,
+        ...(testCases !== undefined && {
+          testCases: {
+            deleteMany: {},
+            create: testCases,
+          },
+        }),
+      },
+      include: { testCases: true },
+    });
+  }
+
+  async remove(id: string) {
+    await this.findById(id);
+    await this.prisma.problem.delete({ where: { id } });
+    return { deleted: true };
+  }
 }

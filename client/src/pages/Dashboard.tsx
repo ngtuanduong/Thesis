@@ -12,6 +12,7 @@ import { useDashboardStats, useRecentSubmissions, useRecommendations } from '../
 import { useKnowledgeState, useReviewQueue, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
 import { useMe } from '../api/queries/useAuth';
 import { useNavigate } from 'react-router-dom';
+import OnboardingModal from '../components/OnboardingModal';
 
 const { Title, Text } = Typography;
 
@@ -42,6 +43,7 @@ function Dashboard() {
 
   return (
     <div>
+      <OnboardingModal />
       <Title level={3}>Dashboard</Title>
 
       {/* Statistics Cards */}

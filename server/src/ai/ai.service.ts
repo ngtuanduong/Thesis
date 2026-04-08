@@ -41,6 +41,7 @@ export class AiService {
     return res.json() as Promise<T>;
   }
 
+  /** Generate and store a vector embedding for a single problem. */
   async embedProblem(problem: {
     id: string;
     title: string;
@@ -55,6 +56,7 @@ export class AiService {
     });
   }
 
+  /** Generate and store vector embeddings for multiple problems in a single request. */
   async embedBatch(
     problems: {
       id: string;
@@ -73,10 +75,12 @@ export class AiService {
     });
   }
 
+  /** Recompute the user's skill profile based on their submission history. */
   async computeProfile(userId: string) {
     return this.request('POST', `/profile/${userId}`, {});
   }
 
+  /** Get content-based problem recommendations using embedding similarity. */
   async getRecommendations(userId: string, limit = 10) {
     return this.request<{
       user_id: string;
@@ -89,6 +93,7 @@ export class AiService {
     }>('GET', `/recommend/${userId}?limit=${limit}`);
   }
 
+  /** Analyze the gap between a user's current skills and target proficiency. */
   async analyzeSkillGap(userId: string) {
     return this.request<{
       user_id: string;
@@ -103,6 +108,7 @@ export class AiService {
 
   // === Adaptive Learning Layer Methods ===
 
+  /** Send a submission result to the AI service to update BKT, Elo, MAB, and FSRS models. */
   async updateAdaptiveLayers(data: {
     studentId: string;
     problemId: string;
@@ -119,20 +125,24 @@ export class AiService {
     });
   }
 
+  /** Get adaptive recommendations combining all five learning layers. */
   async getAdaptiveRecommendations(userId: string, limit = 5) {
     return this.request('GET', `/adaptive/recommend/${userId}?limit=${limit}`);
   }
 
+  /** Retrieve the student's BKT knowledge state for all tracked concepts. */
   async getKnowledgeState(userId: string) {
     return this.request('GET', `/adaptive/knowledge-state/${userId}`);
   }
 
+  /** Get the FSRS spaced-repetition review queue for a student. */
   async getReviewQueue(userId: string) {
     return this.request('GET', `/adaptive/review-queue/${userId}`);
   }
 
   // === Evaluation Methods ===
 
+  /** Log a user interaction event for A/B testing and experiment tracking. */
   async logEvent(data: {
     userId: string;
     event: string;
@@ -147,6 +157,7 @@ export class AiService {
     });
   }
 
+  /** Get the A/B experiment group assignment for a user. */
   async getUserGroup(userId: string) {
     return this.request<{ user_id: string; group: string | null }>(
       'GET',
@@ -154,6 +165,7 @@ export class AiService {
     );
   }
 
+  /** Assign a user to an A/B experiment group (experimental or control). */
   async assignGroup(userId: string, group: 'experimental' | 'control') {
     return this.request('POST', '/evaluation/assign-group', {
       user_id: userId,
@@ -161,6 +173,7 @@ export class AiService {
     });
   }
 
+  /** Generate a Socratic hint using the LLM, considering the student's code and knowledge state. */
   async generateHint(data: {
     studentId: string;
     problemId: string;
@@ -180,5 +193,23 @@ export class AiService {
       error_message: data.errorMessage || null,
       hint_level: data.hintLevel || 1,
     });
+  }
+
+  /** Retrieve aggregate statistics for the A/B experiment. */
+  async getExperimentStats() {
+    return this.request('GET', '/evaluation/stats');
+  }
+
+  /** Export evaluation events, optionally filtered by event type. */
+  async exportEvents(event?: string) {
+    const path = event
+      ? `/evaluation/export/events?event=${encodeURIComponent(event)}`
+      : '/evaluation/export/events';
+    return this.request('GET', path);
+  }
+
+  /** Get the Elo rating history for a student over time. */
+  async getEloHistory(userId: string) {
+    return this.request('GET', `/elo/student/${userId}`);
   }
 }

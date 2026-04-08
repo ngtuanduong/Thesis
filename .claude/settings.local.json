@@ -99,7 +99,18 @@
       "Bash(where /R 'C:/Program Files' magick.exe)",
       "mcp__plugin_playwright_playwright__browser_click",
       "mcp__plugin_playwright_playwright__browser_evaluate",
-      "Bash(pkill -f \"python -m http.server 8765\")"
+      "Bash(pkill -f \"python -m http.server 8765\")",
+      "Bash(find /c/Users/duong/WebstormProjects/Thesis/ai-service -name \"*.py\" -exec wc -l {} +)",
+      "Bash(git -C /c/Users/duong/WebstormProjects/Thesis log --oneline -20)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(PLAYWRIGHT_HTML_REPORT=/tmp/pw-report npx playwright test e2e/auth.spec.ts --reporter=json)",
+      "Bash(echo \"EXIT_CODE: $?\")",
+      "Bash(taskkill //F //IM chromium.exe)",
+      "Bash(taskkill //F //IM chrome.exe)",
+      "Bash(pkill -f playwright)",
+      "Bash(tee /tmp/pw-out.json)",
+      "Bash(tee /tmp/pw-auth.json)",
+      "Bash(echo \"EXIT: $?\")"
     ]
   }
 }

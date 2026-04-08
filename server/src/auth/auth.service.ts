@@ -12,6 +12,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+  /** Register a new user, hash their password, and return a JWT token. */
   async register(dto: RegisterDto) {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const user = await this.usersService.create({
@@ -23,6 +24,8 @@ export class AuthService {
     return { user: { id: user.id, email: user.email, name: user.name, role: user.role }, token };
   }
 
+  /** Authenticate a user by email/password and return a JWT token.
+   * @throws UnauthorizedException if credentials are invalid. */
   async login(dto: LoginDto) {
     const user = await this.usersService.findByEmail(dto.email);
     if (!user) {
