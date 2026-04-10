@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Row,
   Col,
@@ -28,6 +28,7 @@ import {
   useAssignGroup,
   useExperimentStats,
 } from '../api/queries/useAdmin';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -54,21 +55,37 @@ const groupOptions = [
 ];
 
 function AdminDashboard() {
+  const { isMobile } = useResponsive();
   const [searchText, setSearchText] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [pendingGroup, setPendingGroup] = useState<Record<string, string>>({});
 
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  // Reset page on filter change
+  useEffect(() => {
+    setPage(1);
+  }, [roleFilter]);
+
   const { data: stats, isLoading: statsLoading } = useAdminStats();
-  const { data: users, isLoading: usersLoading } = useAdminUsers();
+  const { data: usersData, isLoading: usersLoading, isFetching } = useAdminUsers({
+    page,
+    pageSize,
+    search: debouncedSearch || undefined,
+    role: roleFilter.length ? roleFilter : undefined,
+  });
   const { data: experimentStats } = useExperimentStats();
   const assignGroup = useAssignGroup();
-
-  const filteredUsers = users?.filter((user: AdminUser) => {
-    const query = searchText.toLowerCase();
-    return (
-      user.name?.toLowerCase().includes(query) ||
-      user.email?.toLowerCase().includes(query)
-    );
-  });
 
   const handleAssignGroup = (userId: string) => {
     const groupName = pendingGroup[userId];
@@ -105,6 +122,7 @@ function AdminDashboard() {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      responsive: ['md'] as any,
     },
     {
       title: 'Role',
@@ -114,18 +132,13 @@ function AdminDashboard() {
       render: (role: string) => (
         <Tag color={roleColors[role] || 'default'}>{role}</Tag>
       ),
-      filters: [
-        { text: 'Admin', value: 'ADMIN' },
-        { text: 'Instructor', value: 'INSTRUCTOR' },
-        { text: 'Student', value: 'STUDENT' },
-      ],
-      onFilter: (value, record) => record.role === value,
     },
     {
       title: 'Submissions',
       key: 'submissions',
       width: 120,
       align: 'center',
+      responsive: ['lg'] as any,
       render: (_: unknown, record: AdminUser) => record._count?.submissions ?? 0,
       sorter: (a, b) => (a._count?.submissions ?? 0) - (b._count?.submissions ?? 0),
     },
@@ -133,6 +146,7 @@ function AdminDashboard() {
       title: 'Experiment Group',
       key: 'experimentGroup',
       width: 200,
+      responsive: ['md'] as any,
       render: (_: unknown, record: AdminUser) =>
         record.experimentGroup ? (
           <Tag color="purple">{record.experimentGroup.groupName}</Tag>
@@ -145,6 +159,7 @@ function AdminDashboard() {
       dataIndex: 'createdAt',
       key: 'createdAt',
       width: 120,
+      responsive: ['lg'] as any,
       render: (date: string) => new Date(date).toLocaleDateString(),
       sorter: (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
@@ -153,6 +168,7 @@ function AdminDashboard() {
       title: 'Assign Group',
       key: 'action',
       width: 260,
+      responsive: ['md'] as any,
       render: (_: unknown, record: AdminUser) => (
         <Space>
           <Select
@@ -247,20 +263,47 @@ function AdminDashboard() {
 
       {/* User Management */}
       <Card title="User Management" style={{ marginTop: 24 }}>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 16, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           <Search
             placeholder="Search by name or email..."
             allowClear
+            value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 320 }}
+            style={{ width: isMobile ? '100%' : 280 }}
+          />
+          <Select
+            mode="multiple"
+            placeholder="Filter by role"
+            allowClear
+            value={roleFilter}
+            onChange={setRoleFilter}
+            style={{ minWidth: 180 }}
+            options={[
+              { label: <Tag color="red">ADMIN</Tag>, value: 'ADMIN' },
+              { label: <Tag color="blue">INSTRUCTOR</Tag>, value: 'INSTRUCTOR' },
+              { label: <Tag color="green">STUDENT</Tag>, value: 'STUDENT' },
+            ]}
           />
         </div>
         <Table
           columns={columns}
-          dataSource={filteredUsers}
+          dataSource={usersData?.data}
           rowKey="id"
-          loading={usersLoading}
-          pagination={{ pageSize: 10, showSizeChanger: true }}
+          loading={usersLoading || isFetching}
+          pagination={{
+            current: page,
+            pageSize,
+            total: usersData?.total ?? 0,
+            showSizeChanger: true,
+            onChange: (p, s) => {
+              if (s !== pageSize) {
+                setPageSize(s);
+                setPage(1);
+              } else {
+                setPage(p);
+              }
+            },
+          }}
           scroll={{ x: 900 }}
         />
       </Card>

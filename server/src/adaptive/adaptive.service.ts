@@ -53,6 +53,16 @@ export class AdaptiveService {
     }
   }
 
+  /** Select the best practice problem for a specific concept using MAB Thompson Sampling. */
+  async getPracticeForConcept(userId: string, conceptId: number) {
+    try {
+      return await this.aiService.getPracticeForConcept(userId, conceptId);
+    } catch (error) {
+      this.logger.error(`Failed to get practice for concept: ${error}`);
+      return { problem_id: null, title: null, error: 'AI service unavailable' };
+    }
+  }
+
   /** Generate an LLM-powered Socratic hint for a student's current attempt. */
   async generateHint(data: {
     studentId: string;

@@ -6,8 +6,9 @@ import {
   TrophyOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+import { useResponsive } from '../hooks/useResponsive';
 
-const { Title, Paragraph } = Typography;
+const { Title, Paragraph, Text } = Typography;
 
 const ONBOARDING_KEY = 'adaptlearn_onboarding_done';
 
@@ -61,6 +62,7 @@ function OnboardingModal() {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
 
   useEffect(() => {
     const done = localStorage.getItem(ONBOARDING_KEY);
@@ -86,15 +88,21 @@ function OnboardingModal() {
       open={open}
       onCancel={handleClose}
       footer={null}
-      width={560}
+      width={isMobile ? '100%' : 560}
       closable
     >
-      <Steps
-        current={current}
-        items={steps.map((s) => ({ title: s.title, icon: s.icon }))}
-        size="small"
-        style={{ marginBottom: 24 }}
-      />
+      {isMobile ? (
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <Text type="secondary">Step {current + 1} of {steps.length}</Text>
+        </div>
+      ) : (
+        <Steps
+          current={current}
+          items={steps.map((s) => ({ title: s.title, icon: s.icon }))}
+          size="small"
+          style={{ marginBottom: 24 }}
+        />
+      )}
 
       {steps[current]?.content}
 

@@ -140,4 +140,61 @@ describe('SubmissionsService', () => {
       expect(result).toEqual(submissions);
     });
   });
+
+  describe('create — async execution', () => {
+    it('should trigger async executeSubmission after creating submission', async () => {
+      prisma.submission.create.mockResolvedValue(mockSubmission);
+      // The executeSubmission runs async, mock the chain so it doesn't error
+      prisma.submission.update.mockResolvedValue(mockSubmission);
+      prisma.testCase.findMany.mockResolvedValue([]);
+
+      const dto = {
+        problemId: 'problem-1',
+        code: 'def solution(): pass',
+        language: 'python',
+      };
+
+      const result = await service.create(dto, 'user-1');
+
+      // Create should be called immediately with PENDING status
+      expect(result.status).toBe('PENDING');
+      expect(prisma.submission.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ status: 'PENDING' }),
+      });
+    });
+  });
+
+  describe('executeSubmission — status transitions', () => {
+    it('should set RUNTIME_ERROR when no test cases found', async () => {
+      prisma.submission.create.mockResolvedValue(mockSubmission);
+      prisma.submission.update.mockResolvedValue(mockSubmission);
+      prisma.testCase.findMany.mockResolvedValue([]);
+
+      const dto = {
+        problemId: 'problem-1',
+        code: 'def solution(): pass',
+        language: 'python',
+      };
+
+      await service.create(dto, 'user-1');
+
+      // Wait for async execution
+      await new Promise((resolve) => setTimeout(resolve, 50));
+
+      // First update: RUNNING, second update: RUNTIME_ERROR
+      expect(prisma.submission.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({ status: 'RUNNING' }),
+        }),
+      );
+      expect(prisma.submission.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            status: 'RUNTIME_ERROR',
+            output: 'No test cases found for this problem',
+          }),
+        }),
+      );
+    });
+  });
 });

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Card,
   Statistic,
@@ -30,6 +30,7 @@ import {
   useInstructorProblems,
   useCourses,
 } from '../api/queries/useInstructor';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
 
@@ -70,26 +71,34 @@ interface ProblemRow {
 
 function InstructorDashboard() {
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
   const { data: courses, isLoading: coursesLoading } = useCourses();
   const [selectedCourseId, setSelectedCourseId] = useState<string>('');
   const [problemSearch, setProblemSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [problemPage, setProblemPage] = useState(1);
+  const [problemPageSize, setProblemPageSize] = useState(10);
 
   // Auto-select first course when courses load
   const activeCourseId = selectedCourseId || courses?.[0]?.id || '';
 
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(problemSearch);
+      setProblemPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [problemSearch]);
+
   const { data: dashboard, isLoading: dashboardLoading } =
     useInstructorDashboard(activeCourseId);
-  const { data: problems, isLoading: problemsLoading } =
-    useInstructorProblems();
-
-  const filteredProblems = useMemo(() => {
-    if (!problems) return [];
-    if (!problemSearch) return problems;
-    const lower = problemSearch.toLowerCase();
-    return problems.filter((p: ProblemRow) =>
-      p.title.toLowerCase().includes(lower),
-    );
-  }, [problems, problemSearch]);
+  const { data: problemsData, isLoading: problemsLoading, isFetching: problemsFetching } =
+    useInstructorProblems({
+      page: problemPage,
+      pageSize: problemPageSize,
+      search: debouncedSearch || undefined,
+    });
 
   const strugglingColumns: ColumnsType<StrugglingStudentRow> = [
     {
@@ -102,6 +111,7 @@ function InstructorDashboard() {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      responsive: ['md'] as any,
     },
     {
       title: 'Average Mastery',
@@ -131,12 +141,6 @@ function InstructorDashboard() {
       dataIndex: 'difficulty',
       key: 'difficulty',
       width: 110,
-      filters: [
-        { text: 'Easy', value: 'EASY' },
-        { text: 'Medium', value: 'MEDIUM' },
-        { text: 'Hard', value: 'HARD' },
-      ],
-      onFilter: (value, record) => record.difficulty === value,
       render: (difficulty: string) => (
         <Tag color={difficultyColors[difficulty]}>{difficulty}</Tag>
       ),
@@ -146,6 +150,7 @@ function InstructorDashboard() {
       dataIndex: 'concepts',
       key: 'concepts',
       width: 220,
+      responsive: ['lg'] as any,
       render: (concepts: ProblemConcept[]) =>
         concepts && concepts.length > 0 ? (
           <Space size={[4, 4]} wrap>
@@ -164,6 +169,7 @@ function InstructorDashboard() {
       dataIndex: 'submissionCount',
       key: 'submissionCount',
       width: 110,
+      responsive: ['md'] as any,
       sorter: (a, b) => a.submissionCount - b.submissionCount,
       align: 'right',
     },
@@ -172,6 +178,7 @@ function InstructorDashboard() {
       dataIndex: 'acceptanceRate',
       key: 'acceptanceRate',
       width: 150,
+      responsive: ['md'] as any,
       sorter: (a, b) => a.acceptanceRate - b.acceptanceRate,
       render: (rate: number) => (
         <Progress
@@ -187,6 +194,7 @@ function InstructorDashboard() {
       key: 'testCaseCount',
       width: 100,
       align: 'right',
+      responsive: ['lg'] as any,
     },
   ];
 
@@ -210,18 +218,18 @@ function InstructorDashboard() {
     <div>
       {/* Header */}
       <Row justify="space-between" align="middle" style={{ marginBottom: 24 }}>
-        <Col>
+        <Col xs={24} sm={10}>
           <Title level={3} style={{ margin: 0 }}>
             Instructor Dashboard
           </Title>
         </Col>
-        <Col>
+        <Col xs={24} sm={14}>
           <Space>
             <Text type="secondary">Course:</Text>
             <Select
               value={activeCourseId}
               onChange={(value) => setSelectedCourseId(value)}
-              style={{ minWidth: 240 }}
+              style={{ width: '100%' }}
               placeholder="Select a course"
             >
               {courses.map((course) => (
@@ -333,6 +341,7 @@ function InstructorDashboard() {
             rowKey="id"
             pagination={false}
             size="middle"
+            scroll={{ x: 500 }}
           />
         )}
       </Card>
@@ -349,7 +358,7 @@ function InstructorDashboard() {
               value={problemSearch}
               onChange={(e) => setProblemSearch(e.target.value)}
               allowClear
-              style={{ width: 240 }}
+              style={{ width: isMobile ? '100%' : 240 }}
             />
             <Button
               type="primary"
@@ -362,13 +371,27 @@ function InstructorDashboard() {
         }
       >
         <Table
-          dataSource={filteredProblems}
+          dataSource={problemsData?.data}
           columns={problemColumns}
           rowKey="id"
-          loading={problemsLoading}
-          pagination={{ pageSize: 10, showSizeChanger: true }}
+          loading={problemsLoading || problemsFetching}
+          pagination={{
+            current: problemPage,
+            pageSize: problemPageSize,
+            total: problemsData?.total ?? 0,
+            showSizeChanger: true,
+            onChange: (p, s) => {
+              if (s !== problemPageSize) {
+                setProblemPageSize(s);
+                setProblemPage(1);
+              } else {
+                setProblemPage(p);
+              }
+            },
+          }}
           size="middle"
           locale={{ emptyText: <Empty description="No problems found" /> }}
+          scroll={{ x: 500 }}
         />
       </Card>
     </div>

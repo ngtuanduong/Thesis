@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom';
 import { Layout, Typography } from 'antd';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 function AuthLayout() {
+  const { isMobile } = useResponsive();
+
   return (
     <Layout
       style={{
@@ -19,7 +22,7 @@ function AuthLayout() {
         style={{
           width: '100%',
           maxWidth: 420,
-          padding: '40px 24px',
+          padding: isMobile ? '24px 16px' : '40px 24px',
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: 32 }}>

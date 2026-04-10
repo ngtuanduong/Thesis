@@ -1,5 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import api from '../axios';
+import type { PaginatedResponse } from '../../types';
 
 interface AdminStats {
   totalUsers: number;
@@ -39,13 +40,25 @@ export function useAdminStats() {
   });
 }
 
-export function useAdminUsers() {
+export function useAdminUsers(params: {
+  page: number;
+  pageSize: number;
+  search?: string;
+  role?: string[];
+}) {
   return useQuery({
-    queryKey: ['admin-users'],
+    queryKey: ['admin-users', params],
     queryFn: async () => {
-      const res = await api.get<AdminUser[]>('/admin/users');
+      const query: Record<string, string> = {
+        page: String(params.page),
+        pageSize: String(params.pageSize),
+      };
+      if (params.search) query.search = params.search;
+      if (params.role?.length) query.role = params.role.join(',');
+      const res = await api.get<PaginatedResponse<AdminUser>>('/admin/users', { params: query });
       return res.data;
     },
+    placeholderData: keepPreviousData,
   });
 }
 

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Table,
   Modal,
@@ -25,11 +25,12 @@ import {
 import type { ColumnsType } from 'antd/es/table';
 import type { Problem } from '../types';
 import {
-  useProblems,
+  useProblemsPaginated,
   useCreateProblem,
   useUpdateProblem,
   useDeleteProblem,
 } from '../api/queries/useProblemManage';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -45,6 +46,7 @@ interface ProblemFormValues {
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   tags?: string[];
+  starterCode?: string;
   testCases?: { input: string; expected: string; isHidden: boolean }[];
 }
 
@@ -53,15 +55,28 @@ function ProblemManage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProblem, setEditingProblem] = useState<Problem | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
+  const { isMobile } = useResponsive();
 
-  const { data: problems, isLoading } = useProblems();
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  const { data, isLoading, isFetching } = useProblemsPaginated({
+    page,
+    pageSize,
+    search: debouncedSearch || undefined,
+  });
   const createProblem = useCreateProblem();
   const updateProblem = useUpdateProblem();
   const deleteProblem = useDeleteProblem();
-
-  const filteredProblems = problems?.filter((p) =>
-    p.title.toLowerCase().includes(searchText.toLowerCase()),
-  );
 
   const openCreateModal = useCallback(() => {
     setEditingProblem(null);
@@ -81,6 +96,7 @@ function ProblemManage() {
         description: problem.description,
         difficulty: problem.difficulty,
         tags: problem.tags ?? [],
+        starterCode: problem.starterCode ?? '',
         testCases:
           problem.testCases && problem.testCases.length > 0
             ? problem.testCases.map((tc) => ({
@@ -109,6 +125,7 @@ function ProblemManage() {
         description: values.description,
         difficulty: values.difficulty,
         tags: values.tags,
+        starterCode: values.starterCode?.trim() || undefined,
         testCases: values.testCases?.filter(
           (tc) => tc.input.trim() !== '' || tc.expected.trim() !== '',
         ),
@@ -168,6 +185,7 @@ function ProblemManage() {
       title: 'Tags',
       dataIndex: 'tags',
       key: 'tags',
+      responsive: ['md'] as any,
       render: (tags: string[]) => (
         <Space size={[0, 4]} wrap>
           {tags?.map((tag) => (
@@ -180,6 +198,7 @@ function ProblemManage() {
       title: 'Test Cases',
       key: 'testCases',
       width: 110,
+      responsive: ['md'] as any,
       render: (_: unknown, record: Problem) => record.testCases?.length ?? 0,
     },
     {
@@ -215,14 +234,7 @@ function ProblemManage() {
 
   return (
     <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 16,
-        }}
-      >
+      <div className="responsive-page-header">
         <Title level={3} style={{ margin: 0 }}>
           Problem Management
         </Title>
@@ -232,7 +244,7 @@ function ProblemManage() {
             prefix={<SearchOutlined />}
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ width: 250 }}
+            style={{ width: isMobile ? '100%' : 250 }}
             allowClear
           />
           <Button type="primary" icon={<PlusOutlined />} onClick={openCreateModal}>
@@ -243,9 +255,23 @@ function ProblemManage() {
 
       <Table
         columns={columns}
-        dataSource={filteredProblems}
+        dataSource={data?.data}
         rowKey="id"
-        loading={isLoading}
+        loading={isLoading || isFetching}
+        pagination={{
+          current: page,
+          pageSize,
+          total: data?.total ?? 0,
+          showSizeChanger: true,
+          onChange: (p, s) => {
+            if (s !== pageSize) {
+              setPageSize(s);
+              setPage(1);
+            } else {
+              setPage(p);
+            }
+          },
+        }}
       />
 
       <Modal
@@ -254,7 +280,7 @@ function ProblemManage() {
         onCancel={closeModal}
         onOk={handleSubmit}
         confirmLoading={isSubmitting}
-        width={720}
+        width={isMobile ? '100%' : 720}
         destroyOnClose
       >
         <Form
@@ -282,7 +308,7 @@ function ProblemManage() {
           </Form.Item>
 
           <Row gutter={16}>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item
                 name="difficulty"
                 label="Difficulty"
@@ -295,7 +321,7 @@ function ProblemManage() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={12}>
+            <Col xs={24} sm={12}>
               <Form.Item name="tags" label="Tags">
                 <Select
                   mode="tags"
@@ -306,6 +332,18 @@ function ProblemManage() {
             </Col>
           </Row>
 
+          <Form.Item
+            name="starterCode"
+            label="Starter Code"
+            extra="Leave empty to auto-generate from test cases. Function must be named 'solution'."
+          >
+            <TextArea
+              rows={4}
+              placeholder={'def solution(nums, target):\n    # Write your code here\n    pass'}
+              style={{ fontFamily: 'monospace', fontSize: 13 }}
+            />
+          </Form.Item>
+
           <Typography.Text strong style={{ display: 'block', marginBottom: 8 }}>
             Test Cases
           </Typography.Text>
@@ -314,7 +352,7 @@ function ProblemManage() {
               <>
                 {fields.map(({ key, name, ...restField }) => (
                   <Row key={key} gutter={8} align="middle" style={{ marginBottom: 8 }}>
-                    <Col span={9}>
+                    <Col xs={24} sm={9}>
                       <Form.Item
                         {...restField}
                         name={[name, 'input']}
@@ -323,7 +361,7 @@ function ProblemManage() {
                         <Input placeholder="Input" />
                       </Form.Item>
                     </Col>
-                    <Col span={9}>
+                    <Col xs={24} sm={9}>
                       <Form.Item
                         {...restField}
                         name={[name, 'expected']}
@@ -332,7 +370,7 @@ function ProblemManage() {
                         <Input placeholder="Expected Output" />
                       </Form.Item>
                     </Col>
-                    <Col span={4}>
+                    <Col xs={12} sm={4}>
                       <Form.Item
                         {...restField}
                         name={[name, 'isHidden']}
@@ -342,7 +380,7 @@ function ProblemManage() {
                         <Checkbox>Hidden</Checkbox>
                       </Form.Item>
                     </Col>
-                    <Col span={2}>
+                    <Col xs={12} sm={2}>
                       {fields.length > 1 && (
                         <MinusCircleOutlined
                           style={{ color: '#ff4d4f', fontSize: 18, cursor: 'pointer' }}

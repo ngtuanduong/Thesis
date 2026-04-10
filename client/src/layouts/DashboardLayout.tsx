@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Layout, Menu, theme, Avatar, Dropdown } from 'antd';
+import { Layout, Menu, theme, Avatar, Dropdown, Drawer } from 'antd';
 import type { MenuProps } from 'antd';
 import {
   DashboardOutlined,
@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  MenuOutlined,
   NodeIndexOutlined,
   CalendarOutlined,
   TeamOutlined,
@@ -16,15 +17,22 @@ import {
 } from '@ant-design/icons';
 import { useMe } from '../api/queries/useAuth';
 import ErrorBoundary from '../components/ErrorBoundary';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Header, Sider, Content } = Layout;
 
 function DashboardLayout() {
   const [collapsed, setCollapsed] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { token: themeToken } = theme.useToken();
   const { data: user } = useMe();
+  const { isMobile } = useResponsive();
+
+  useEffect(() => {
+    if (isMobile) setDrawerOpen(false);
+  }, [location.pathname, isMobile]);
 
   const menuItems: MenuProps['items'] = useMemo(() => {
     const items: MenuProps['items'] = [
@@ -68,39 +76,75 @@ function DashboardLayout() {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div
-          style={{
-            height: 64,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#fff',
-            fontSize: collapsed ? 16 : 20,
-            fontWeight: 700,
-          }}
+      {isMobile ? (
+        <Drawer
+          placement="left"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          width={256}
+          styles={{ body: { padding: 0, background: '#001529' } }}
         >
-          {collapsed ? 'AL' : 'AdaptLearn'}
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[location.pathname]}
-          items={menuItems}
-          onClick={({ key }) => navigate(key)}
-        />
-      </Sider>
+          <div
+            style={{
+              height: 64,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontSize: 20,
+              fontWeight: 700,
+            }}
+          >
+            AdaptLearn
+          </div>
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[location.pathname]}
+            items={menuItems}
+            onClick={({ key }) => {
+              navigate(key);
+              setDrawerOpen(false);
+            }}
+          />
+        </Drawer>
+      ) : (
+        <Sider trigger={null} collapsible collapsed={collapsed}>
+          <div
+            style={{
+              height: 64,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontSize: collapsed ? 16 : 20,
+              fontWeight: 700,
+            }}
+          >
+            {collapsed ? 'AL' : 'AdaptLearn'}
+          </div>
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[location.pathname]}
+            items={menuItems}
+            onClick={({ key }) => navigate(key)}
+          />
+        </Sider>
+      )}
       <Layout>
         <Header
           style={{
-            padding: '0 24px',
+            padding: isMobile ? '0 12px' : '0 24px',
             background: themeToken.colorBgContainer,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          {collapsed ? (
+          {isMobile ? (
+            <MenuOutlined onClick={() => setDrawerOpen(true)} style={{ fontSize: 18 }} />
+          ) : collapsed ? (
             <MenuUnfoldOutlined onClick={() => setCollapsed(false)} style={{ fontSize: 18 }} />
           ) : (
             <MenuFoldOutlined onClick={() => setCollapsed(true)} style={{ fontSize: 18 }} />
@@ -111,8 +155,8 @@ function DashboardLayout() {
         </Header>
         <Content
           style={{
-            margin: 24,
-            padding: 24,
+            margin: isMobile ? 8 : 24,
+            padding: isMobile ? 12 : 24,
             background: themeToken.colorBgContainer,
             borderRadius: themeToken.borderRadiusLG,
             minHeight: 280,

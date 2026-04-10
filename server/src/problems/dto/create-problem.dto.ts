@@ -34,6 +34,11 @@ export class CreateProblemDto {
   @IsString()
   description: string;
 
+  @ApiPropertyOptional({ example: '- 2 ≤ nums.length ≤ 10⁴\n- -10⁹ ≤ nums[i] ≤ 10⁹', description: 'Input constraints' })
+  @IsString()
+  @IsOptional()
+  constraints?: string;
+
   @ApiPropertyOptional({ enum: Difficulty, default: Difficulty.EASY })
   @IsEnum(Difficulty)
   @IsOptional()
@@ -49,6 +54,14 @@ export class CreateProblemDto {
   @IsString({ each: true })
   @IsOptional()
   tags?: string[];
+
+  @ApiPropertyOptional({
+    example: 'def solution(nums, target):\n    # Write your code here\n    pass\n',
+    description: 'Starter code template. Auto-generated from test cases if not provided.',
+  })
+  @IsString()
+  @IsOptional()
+  starterCode?: string;
 
   @ApiPropertyOptional({ type: [CreateTestCaseDto], description: 'Test cases for validation' })
   @IsArray()

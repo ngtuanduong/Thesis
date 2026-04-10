@@ -71,6 +71,17 @@ export function useKnowledgeGraph() {
   });
 }
 
+export function usePracticeForConcept() {
+  return useMutation({
+    mutationFn: async ({ userId, conceptId }: { userId: string; conceptId: number }) => {
+      const res = await api.get<{ problem_id: string | null; title: string | null }>(
+        `/adaptive/practice/${userId}/${conceptId}`,
+      );
+      return res.data;
+    },
+  });
+}
+
 export function useGenerateHint() {
   return useMutation({
     mutationFn: async (data: {

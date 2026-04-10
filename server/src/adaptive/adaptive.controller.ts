@@ -1,23 +1,31 @@
 import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery, ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 import { AdaptiveService } from './adaptive.service';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
 class GenerateHintDto {
   @ApiProperty({ description: 'Student user ID' })
+  @IsString()
   studentId: string;
 
   @ApiProperty({ description: 'Problem ID' })
+  @IsString()
   problemId: string;
 
   @ApiProperty({ description: 'Current student code' })
+  @IsString()
   code: string;
 
   @ApiPropertyOptional({ description: 'Error message from last execution' })
+  @IsString()
+  @IsOptional()
   errorMessage?: string;
 
   @ApiPropertyOptional({ description: 'Hint level (1=gentle, 2=specific, 3=detailed)', default: 1 })
+  @IsNumber()
+  @IsOptional()
   hintLevel?: number;
 }
 
@@ -48,6 +56,15 @@ export class AdaptiveController {
   @ApiOperation({ summary: 'Get FSRS spaced repetition review queue' })
   getReviewQueue(@Param('userId') userId: string) {
     return this.adaptiveService.getReviewQueue(userId);
+  }
+
+  @Get('practice/:userId/:conceptId')
+  @ApiOperation({ summary: 'Get best practice problem for a concept via MAB' })
+  getPracticeForConcept(
+    @Param('userId') userId: string,
+    @Param('conceptId') conceptId: string,
+  ) {
+    return this.adaptiveService.getPracticeForConcept(userId, parseInt(conceptId));
   }
 
   @Post('hints')

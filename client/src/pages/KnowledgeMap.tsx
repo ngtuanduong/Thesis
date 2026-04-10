@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   ReactFlow,
   Background,
   Controls,
+  Panel,
   Handle,
   Position,
   MarkerType,
@@ -23,7 +24,7 @@ import {
   Empty,
   Tag,
   Statistic,
-  Tooltip,
+  Popover,
   Tabs,
   Table,
 } from 'antd';
@@ -33,10 +34,16 @@ import {
   BookOutlined,
   RocketOutlined,
   NodeIndexOutlined,
+  InfoCircleOutlined,
+  CloseOutlined,
+  ThunderboltOutlined,
+  LoadingOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { useMe } from '../api/queries/useAuth';
-import { useKnowledgeState } from '../api/queries/useAdaptive';
+import { useKnowledgeState, usePracticeForConcept } from '../api/queries/useAdaptive';
 import type { ConceptState, KnowledgeGraphNode, KnowledgeGraphEdge } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
 
@@ -69,16 +76,64 @@ const statusConfig = {
 // ─── Custom ReactFlow Node ──────────────────────────────────────────────
 
 type ConceptNodeData = {
+  concept_id: number;
+  concept_name: string;
   display_name: string;
   topic_group: string;
   difficulty_tier: number;
   p_mastery: number;
   status: string;
+  _dimmed?: boolean;
 };
 
 type ConceptNodeType = Node<ConceptNodeData, 'concept'>;
 
+function PracticeButton({ conceptId, conceptName }: { conceptId: number; conceptName: string }) {
+  const navigate = useNavigate();
+  const { data: user } = useMe();
+  const practice = usePracticeForConcept();
+
+  const handlePractice = () => {
+    if (!user?.id) return;
+    practice.mutate(
+      { userId: user.id, conceptId },
+      {
+        onSuccess: (result) => {
+          if (result.problem_id) {
+            navigate(`/problems/${result.problem_id}`);
+          } else {
+            navigate(`/problems?tag=${encodeURIComponent(conceptName)}`);
+          }
+        },
+        onError: () => {
+          navigate(`/problems?tag=${encodeURIComponent(conceptName)}`);
+        },
+      },
+    );
+  };
+
+  return (
+    <div
+      onClick={handlePractice}
+      style={{
+        marginTop: 4,
+        padding: '4px 0',
+        color: '#52c41a',
+        cursor: practice.isPending ? 'wait' : 'pointer',
+        fontWeight: 500,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 4,
+      }}
+    >
+      {practice.isPending ? <LoadingOutlined /> : <ThunderboltOutlined />}
+      {practice.isPending ? 'Loading...' : 'Practice'}
+    </div>
+  );
+}
+
 function ConceptNodeComponent({ data }: NodeProps<ConceptNodeType>) {
+  const navigate = useNavigate();
   const topicColor = topicColors[data.topic_group] || '#666';
   const statusCfg =
     statusConfig[data.status as keyof typeof statusConfig] || statusConfig.not_started;
@@ -91,18 +146,40 @@ function ConceptNodeComponent({ data }: NodeProps<ConceptNodeType>) {
         position={Position.Top}
         style={{ background: 'transparent', border: 'none' }}
       />
-      <Tooltip
-        title={
-          <div>
-            <div style={{ fontWeight: 600 }}>{data.display_name}</div>
+      <Popover
+        trigger="click"
+        content={
+          <div style={{ fontSize: 13 }}>
+            <div style={{ fontWeight: 600, marginBottom: 4 }}>{data.display_name}</div>
             <div>Topic: {topicLabels[data.topic_group] || data.topic_group}</div>
             <div>Tier: {data.difficulty_tier}</div>
             <div>Mastery: {pct}%</div>
             <div>Status: {statusCfg.label}</div>
+            <PracticeButton conceptId={data.concept_id} conceptName={data.concept_name} />
+            <div
+              onClick={() => navigate(`/problems?tag=${encodeURIComponent(data.concept_name)}`)}
+              style={{
+                marginTop: 4,
+                padding: '4px 0',
+                color: '#1890ff',
+                cursor: 'pointer',
+                fontWeight: 500,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+              }}
+            >
+              <RocketOutlined /> View Problems
+            </div>
           </div>
         }
       >
-        <div style={{ textAlign: 'center', cursor: 'default' }}>
+        <div style={{
+          textAlign: 'center',
+          cursor: 'pointer',
+          opacity: data._dimmed ? 0.15 : 1,
+          transition: 'opacity 0.2s ease',
+        }}>
           <div style={{ position: 'relative', width: 50, height: 50, margin: '0 auto' }}>
             {/* Outer ring — topic group color */}
             <div
@@ -155,7 +232,7 @@ function ConceptNodeComponent({ data }: NodeProps<ConceptNodeType>) {
             {data.display_name}
           </div>
         </div>
-      </Tooltip>
+      </Popover>
       <Handle
         type="source"
         position={Position.Bottom}
@@ -173,6 +250,9 @@ const nodeTypes = { concept: ConceptNodeComponent };
 function buildGraphLayout(
   apiNodes: KnowledgeGraphNode[] | undefined,
   apiEdges: KnowledgeGraphEdge[] | undefined,
+  graphWidth = 1100,
+  nodesep = 70,
+  ranksep = 120,
 ): { nodes: Node[]; edges: Edge[] } {
   if (!apiNodes?.length) return { nodes: [], edges: [] };
   const safeEdges = apiEdges ?? [];
@@ -180,7 +260,7 @@ function buildGraphLayout(
 
   // 1. Run dagre to get optimal X ordering that minimizes edge crossings
   const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: 'TB', nodesep: 70, ranksep: 120 });
+  g.setGraph({ rankdir: 'TB', nodesep: nodesep, ranksep: ranksep });
 
   apiNodes.forEach((n) => {
     g.setNode(String(n.id), { width: 110, height: 85 });
@@ -194,7 +274,6 @@ function buildGraphLayout(
 
   // 2. Constrain Y to tier bands but keep dagre's X ordering
   //    This preserves dagre's crossing-minimization while enforcing our tier structure
-  const graphWidth = 1100;
   const tierGap = 140;
 
   const tierGroups = new Map<number, { id: number; dagreX: number }[]>();
@@ -226,6 +305,8 @@ function buildGraphLayout(
     type: 'concept' as const,
     position: positions.get(n.id) || { x: 0, y: 0 },
     data: {
+      concept_id: n.id,
+      concept_name: n.name,
       display_name: n.display_name,
       topic_group: n.topic_group,
       difficulty_tier: n.difficulty_tier,
@@ -268,14 +349,77 @@ function buildGraphLayout(
 function KnowledgeGraphViz({
   nodes: graphNodes,
   edges: graphEdges,
+  graphWidth,
+  nodesep,
+  ranksep,
 }: {
   nodes: KnowledgeGraphNode[];
   edges: KnowledgeGraphEdge[];
+  graphWidth: number;
+  nodesep: number;
+  ranksep: number;
 }) {
-  const { nodes, edges } = useMemo(
-    () => buildGraphLayout(graphNodes, graphEdges),
-    [graphNodes, graphEdges],
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [showHint, setShowHint] = useState(true);
+
+  const { nodes: baseNodes, edges: baseEdges } = useMemo(
+    () => buildGraphLayout(graphNodes, graphEdges, graphWidth, nodesep, ranksep),
+    [graphNodes, graphEdges, graphWidth, nodesep, ranksep],
   );
+
+  // Pre-compute adjacency: for each node, which other nodes are its direct neighbors
+  const adjacency = useMemo(() => {
+    const neighbors = new Map<string, Set<string>>();
+    for (const edge of baseEdges) {
+      if (!neighbors.has(edge.source)) neighbors.set(edge.source, new Set());
+      if (!neighbors.has(edge.target)) neighbors.set(edge.target, new Set());
+      neighbors.get(edge.source)!.add(edge.target);
+      neighbors.get(edge.target)!.add(edge.source);
+    }
+    return neighbors;
+  }, [baseEdges]);
+
+  // Apply dimming to nodes when a node is hovered
+  const displayNodes = useMemo(() => {
+    if (!hoveredNodeId) return baseNodes;
+    const connected = adjacency.get(hoveredNodeId) || new Set();
+    return baseNodes.map((n) => ({
+      ...n,
+      data: {
+        ...n.data,
+        _dimmed: n.id !== hoveredNodeId && !connected.has(n.id),
+      },
+    }));
+  }, [baseNodes, hoveredNodeId, adjacency]);
+
+  // Hide all edges by default; only show edges connected to hovered node
+  const displayEdges = useMemo(() => {
+    if (!hoveredNodeId) {
+      return baseEdges.map((e) => ({ ...e, hidden: true }));
+    }
+    return baseEdges.map((e) => {
+      const isConnected = e.source === hoveredNodeId || e.target === hoveredNodeId;
+      return {
+        ...e,
+        hidden: !isConnected,
+        animated: isConnected,
+        style: isConnected
+          ? { stroke: '#1890ff', strokeWidth: 2 }
+          : e.style,
+        markerEnd: isConnected
+          ? { type: MarkerType.ArrowClosed, color: '#1890ff', width: 15, height: 12 }
+          : e.markerEnd,
+      };
+    });
+  }, [baseEdges, hoveredNodeId]);
+
+  const onNodeMouseEnter = useCallback((_: React.MouseEvent, node: Node) => {
+    setHoveredNodeId(node.id);
+  }, []);
+
+  const onNodeMouseLeave = useCallback(() => {
+    setHoveredNodeId(null);
+  }, []);
 
   if (graphNodes.length === 0) {
     return <Empty description="No concepts found" />;
@@ -295,9 +439,11 @@ function KnowledgeGraphViz({
         }}
       >
         <ReactFlow
-          nodes={nodes}
-          edges={edges}
+          nodes={displayNodes}
+          edges={displayEdges}
           nodeTypes={nodeTypes}
+          onNodeMouseEnter={onNodeMouseEnter}
+          onNodeMouseLeave={onNodeMouseLeave}
           fitView
           fitViewOptions={{ padding: 0.15 }}
           nodesDraggable={false}
@@ -308,6 +454,59 @@ function KnowledgeGraphViz({
         >
           <Background color="#f5f5f5" gap={20} />
           <Controls showInteractive={false} />
+          <Panel position="top-left">
+            {showHint ? (
+              <div
+                style={{
+                  background: '#fff',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: 8,
+                  padding: '8px 12px',
+                  fontSize: 12,
+                  color: '#555',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                  maxWidth: 220,
+                  position: 'relative',
+                }}
+              >
+                <CloseOutlined
+                  onClick={() => setShowHint(false)}
+                  style={{
+                    position: 'absolute',
+                    top: 6,
+                    right: 8,
+                    cursor: 'pointer',
+                    fontSize: 10,
+                    color: '#999',
+                  }}
+                />
+                <div style={{ marginBottom: 4 }}>
+                  <InfoCircleOutlined style={{ marginRight: 4, color: '#1890ff' }} />
+                  <strong>Guidance</strong>
+                </div>
+                <div><strong>Hover</strong> over a node to see related topics</div>
+                <div><strong>Click</strong> on a node to view details</div>
+              </div>
+            ) : (
+              <div
+                onClick={() => setShowHint(true)}
+                style={{
+                  background: '#fff',
+                  border: '1px solid #d9d9d9',
+                  borderRadius: '50%',
+                  width: 28,
+                  height: 28,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+                }}
+              >
+                <InfoCircleOutlined style={{ fontSize: 14, color: '#1890ff' }} />
+              </div>
+            )}
+          </Panel>
         </ReactFlow>
       </div>
       {/* Topic color legend */}
@@ -346,6 +545,7 @@ function KnowledgeGraphViz({
 function KnowledgeMap() {
   const { data: user } = useMe();
   const { data: knowledgeState, isLoading } = useKnowledgeState(user?.id);
+  const { isMobile, isTablet } = useResponsive();
 
   if (isLoading) {
     return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />;
@@ -429,6 +629,7 @@ function KnowledgeMap() {
       dataIndex: 'n_attempts',
       key: 'n_attempts',
       width: 90,
+      responsive: ['md'] as any,
       sorter: (a: ConceptState, b: ConceptState) => a.n_attempts - b.n_attempts,
     },
     {
@@ -436,6 +637,7 @@ function KnowledgeMap() {
       dataIndex: 'n_correct',
       key: 'n_correct',
       width: 90,
+      responsive: ['md'] as any,
       sorter: (a: ConceptState, b: ConceptState) => a.n_correct - b.n_correct,
     },
   ];
@@ -506,6 +708,9 @@ function KnowledgeMap() {
                 <KnowledgeGraphViz
                   nodes={knowledge_graph?.nodes ?? []}
                   edges={knowledge_graph?.edges ?? []}
+                  graphWidth={isMobile ? 400 : isTablet ? 700 : 1100}
+                  nodesep={isMobile ? 30 : 70}
+                  ranksep={isMobile ? 80 : 120}
                 />
               ),
             },

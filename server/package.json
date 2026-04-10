@@ -12,6 +12,11 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:seed": "ts-node prisma/seed.ts",
+    "seed:verify": "ts-node scripts/verify-problems.ts",
+    "seed:verify:data": "ts-node scripts/verify-problem-data.ts",
+    "seed:verify:negative": "ts-node scripts/verify-negative-paths.ts",
+    "seed:verify:all": "npm run seed:verify:data && npm run seed:verify && npm run seed:verify:negative",
+    "seed:embed": "ts-node scripts/embed-all.ts",
     "test": "jest --passWithNoTests",
     "test:cov": "jest --coverage --passWithNoTests"
   },

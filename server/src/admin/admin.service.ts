@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { AiService } from '../ai/ai.service';
+import { PaginatedResponse } from '../common/pagination';
 
 @Injectable()
 export class AdminService {
@@ -39,21 +40,49 @@ export class AdminService {
     };
   }
 
-  async getUsers() {
-    return this.prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        createdAt: true,
-        _count: { select: { submissions: true } },
-        experimentGroup: {
-          select: { groupName: true, assignedAt: true },
-        },
+  async getUsers(params: {
+    page: number;
+    pageSize: number;
+    search?: string;
+    role?: string[];
+  }): Promise<PaginatedResponse<any>> {
+    const { page, pageSize, search, role } = params;
+
+    const where: any = {};
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+    if (role?.length) {
+      where.role = { in: role };
+    }
+
+    const selectFields = {
+      id: true,
+      email: true,
+      name: true,
+      role: true,
+      createdAt: true,
+      _count: { select: { submissions: true } },
+      experimentGroup: {
+        select: { groupName: true, assignedAt: true },
       },
-      orderBy: { createdAt: 'desc' },
-    });
+    };
+
+    const [data, total] = await Promise.all([
+      this.prisma.user.findMany({
+        where,
+        select: selectFields,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.user.count({ where }),
+    ]);
+
+    return { data, total, page, pageSize };
   }
 
   async assignGroup(userId: string, groupName: string) {

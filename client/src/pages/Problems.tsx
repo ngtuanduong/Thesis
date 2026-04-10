@@ -1,9 +1,10 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Table, Tag, Typography, Input, Space } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Table, Tag, Typography, Input, Space, Select } from 'antd';
+import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { useProblems } from '../api/queries/useProblems';
+import { useProblemsPaginated, useProblemTags } from '../api/queries/useProblems';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
 
@@ -24,32 +25,61 @@ const difficultyColors: Record<string, string> = {
 
 function Problems() {
   const navigate = useNavigate();
-  const [searchText, setSearchText] = useState('');
-  const { data: problems, isLoading } = useProblems();
+  const [params] = useSearchParams();
+  const initialSearch = params.get('search') || '';
+  const initialTag = params.get('tag') || '';
 
-  const filteredProblems = useMemo(() => {
-    if (!problems) return [];
-    let result = problems;
+  const [searchText, setSearchText] = useState(initialSearch);
+  const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
+  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
+    if (initialTag) return [initialTag.replace(/_/g, '-')];
+    return [];
+  });
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(15);
 
-    // Search filter
-    if (searchText) {
-      const lower = searchText.toLowerCase();
-      result = result.filter(
-        (p: ProblemRow) =>
-          p.title.toLowerCase().includes(lower) ||
-          p.tags?.some((t) => t.toLowerCase().includes(lower)),
-      );
-    }
+  const { isMobile } = useResponsive();
+  const { data: allTags } = useProblemTags();
 
-    return result;
-  }, [problems, searchText]);
+  // Debounce search text
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+      setPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [selectedDifficulties, selectedTags]);
+
+  const { data, isLoading, isFetching } = useProblemsPaginated({
+    page,
+    pageSize,
+    search: debouncedSearch || undefined,
+    difficulty: selectedDifficulties.length ? selectedDifficulties : undefined,
+    tags: selectedTags.length ? selectedTags : undefined,
+  });
+
+  const hasActiveFilters = selectedTags.length > 0 || selectedDifficulties.length > 0;
+
+  const clearAll = () => {
+    setSearchText('');
+    setDebouncedSearch('');
+    setSelectedTags([]);
+    setSelectedDifficulties([]);
+  };
 
   const columns: ColumnsType<ProblemRow> = [
     {
       title: '#',
       key: 'index',
       width: 50,
-      render: (_: unknown, __: ProblemRow, index: number) => index + 1,
+      responsive: ['md'] as any,
+      render: (_: unknown, __: ProblemRow, index: number) => (page - 1) * pageSize + index + 1,
     },
     {
       title: 'Title',
@@ -70,17 +100,12 @@ function Problems() {
       render: (difficulty: string) => (
         <Tag color={difficultyColors[difficulty]}>{difficulty}</Tag>
       ),
-      filters: [
-        { text: 'Easy', value: 'EASY' },
-        { text: 'Medium', value: 'MEDIUM' },
-        { text: 'Hard', value: 'HARD' },
-      ],
-      onFilter: (value, record) => record.difficulty === value,
     },
     {
       title: 'Concepts',
       key: 'concepts',
       width: 200,
+      responsive: ['lg'] as any,
       render: (_: unknown, record: ProblemRow) => {
         const concepts = record.problemConcepts;
         if (!concepts || concepts.length === 0) return <Text type="secondary">--</Text>;
@@ -99,9 +124,21 @@ function Problems() {
       title: 'Tags',
       dataIndex: 'tags',
       key: 'tags',
+      responsive: ['md'] as any,
       render: (tags: string[]) => (
         <Space size={[0, 4]} wrap>
-          {tags?.map((tag) => <Tag key={tag}>{tag}</Tag>)}
+          {tags?.map((tag) => (
+            <Tag
+              key={tag}
+              style={{ cursor: 'pointer' }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (!selectedTags.includes(tag)) setSelectedTags((prev) => [...prev, tag]);
+              }}
+            >
+              {tag}
+            </Tag>
+          ))}
         </Space>
       ),
     },
@@ -109,26 +146,94 @@ function Problems() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+      <div className="responsive-page-header">
         <Title level={3} style={{ margin: 0 }}>Problems</Title>
-        <Space>
-          <Input
-            placeholder="Search by title or tag..."
-            prefix={<SearchOutlined />}
-            style={{ width: 280 }}
-            allowClear
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          />
-        </Space>
       </div>
+
+      {/* Unified search & filter bar */}
+      <div style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: 8,
+        marginTop: 12,
+        alignItems: 'center',
+      }}>
+        <Input
+          placeholder="Search by title..."
+          prefix={<SearchOutlined />}
+          style={{ width: isMobile ? '100%' : 220, flexShrink: 0 }}
+          allowClear
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+        />
+
+        <Select
+          mode="multiple"
+          placeholder="Difficulty"
+          style={{ minWidth: 140 }}
+          maxTagCount="responsive"
+          allowClear
+          value={selectedDifficulties}
+          onChange={setSelectedDifficulties}
+          options={[
+            { label: <Tag color="green">EASY</Tag>, value: 'EASY' },
+            { label: <Tag color="orange">MEDIUM</Tag>, value: 'MEDIUM' },
+            { label: <Tag color="red">HARD</Tag>, value: 'HARD' },
+          ]}
+        />
+
+        <Select
+          mode="multiple"
+          placeholder="Tags"
+          style={{ minWidth: 160, flex: 1, maxWidth: 360 }}
+          maxTagCount="responsive"
+          allowClear
+          showSearch
+          value={selectedTags}
+          onChange={setSelectedTags}
+          options={(allTags ?? []).map((t) => ({ label: t, value: t }))}
+          filterOption={(input, option) =>
+            (option?.label as string)?.toLowerCase().replace(/[_-]/g, '').includes(
+              input.toLowerCase().replace(/[_-]/g, ''),
+            ) ?? false
+          }
+        />
+
+        {hasActiveFilters && (
+          <a onClick={clearAll} style={{ fontSize: 12, whiteSpace: 'nowrap' }}>
+            <FilterOutlined /> Clear filters
+          </a>
+        )}
+      </div>
+
+      {/* Result count */}
+      <div style={{ marginTop: 8, marginBottom: 4 }}>
+        <Text type="secondary" style={{ fontSize: 12 }}>
+          {data?.total ?? 0} problem{(data?.total ?? 0) !== 1 ? 's' : ''}
+          {hasActiveFilters || debouncedSearch ? ' found' : ''}
+        </Text>
+      </div>
+
       <Table
         columns={columns}
-        dataSource={filteredProblems}
+        dataSource={data?.data}
         rowKey="id"
-        loading={isLoading}
-        style={{ marginTop: 16 }}
-        pagination={{ pageSize: 15, showSizeChanger: true }}
+        loading={isLoading || isFetching}
+        pagination={{
+          current: page,
+          pageSize,
+          total: data?.total ?? 0,
+          showSizeChanger: true,
+          onChange: (p, s) => {
+            if (s !== pageSize) {
+              setPageSize(s);
+              setPage(1);
+            } else {
+              setPage(p);
+            }
+          },
+        }}
+        scroll={{ x: 500 }}
       />
     </div>
   );

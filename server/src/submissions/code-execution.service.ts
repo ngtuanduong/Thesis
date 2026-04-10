@@ -28,6 +28,13 @@ export class CodeExecutionService {
   private readonly timeoutMs = 5000; // 5 seconds
   private readonly memoryLimit = '256m';
   private readonly cpuLimit = '0.5';
+  // Cache the sandbox-image check so we don't invoke `docker info` + `docker
+  // images -q` on every submission. On Windows each Docker CLI call is
+  // ~1-2s, and doing 2 extra calls per submission × 170 problems adds ~10min
+  // of overhead and pushes some submissions past the verify script's poll
+  // timeout. Memoizing keeps the first call correct and all subsequent calls
+  // effectively free.
+  private sandboxReady: Promise<void> | null = null;
 
   private get execEnv(): Record<string, string> {
     return { ...process.env as Record<string, string> };
@@ -35,6 +42,16 @@ export class CodeExecutionService {
 
   /** Verify Docker is available and build the sandbox image if it doesn't exist. */
   async ensureSandboxImage(): Promise<void> {
+    if (this.sandboxReady) return this.sandboxReady;
+    this.sandboxReady = this.checkSandboxImage().catch((e) => {
+      // Clear cache on failure so a retry can re-check.
+      this.sandboxReady = null;
+      throw e;
+    });
+    return this.sandboxReady;
+  }
+
+  private async checkSandboxImage(): Promise<void> {
     try {
       // Verify Docker is available and responsive
       await execAsync('docker info', { env: this.execEnv });
@@ -182,7 +199,19 @@ export class CodeExecutionService {
         runtime,
       };
     } catch (error: any) {
-      if (error.killed || error.signal === 'SIGTERM') {
+      // Detect timeout/killed scenarios. On Linux error.killed is true and
+      // error.signal is 'SIGTERM'. On Windows (Docker Desktop / WSL2) the
+      // signal may not propagate, so also check:
+      //   - exit code 124 (from `timeout` command inside the container)
+      //   - exit code 137 (SIGKILL / OOM-killer)
+      //   - Node's execAsync timeout sets error.killed
+      const isTimeout =
+        error.killed ||
+        error.signal === 'SIGTERM' ||
+        error.signal === 'SIGKILL' ||
+        error.code === 124 ||
+        error.code === 137;
+      if (isTimeout) {
         return {
           status: SubmissionStatus.TIME_LIMIT,
           output: '',
@@ -210,16 +239,16 @@ export class CodeExecutionService {
   }
 
   private prepareCode(code: string, input: string): string {
-    // For simple problems, we'll parse the input and inject it
-    // This is a simplified approach - in production, you'd want more sophisticated handling
-    let parsedInput: any;
-    try {
-      parsedInput = JSON.parse(input);
-    } catch {
-      parsedInput = input;
-    }
+    // Embed the raw test-case input as a Python string literal and let Python
+    // parse it with json.loads. This avoids two bugs from the previous approach
+    // (JSON.stringify the parsed value into Python source):
+    //   1. JS booleans/null serialize as `true`/`false`/`null` which are not
+    //      Python literals → NameError.
+    //   2. Round-tripping through JS JSON loses type info for some edge cases.
+    // Using json.loads also means the output is always JSON-encoded, so string
+    // results come back as `"hello"` matching JSON-stringified expected values.
+    const rawInputLiteral = JSON.stringify(input);
 
-    // Wrap the user's code to provide input
     return `
 import json
 import sys
@@ -227,10 +256,14 @@ import sys
 # User's solution
 ${code}
 
-# Test input
-test_input = ${JSON.stringify(parsedInput)}
+# Test input — parse the raw JSON string; fall back to the raw string for bare scalars
+_raw_input = ${rawInputLiteral}
+try:
+    test_input = json.loads(_raw_input)
+except (json.JSONDecodeError, ValueError):
+    test_input = _raw_input
 
-# Execute and print result
+# Execute and print result (always json.dumps for consistent comparison)
 try:
     if isinstance(test_input, dict):
         result = solution(**test_input)
@@ -239,7 +272,7 @@ try:
     else:
         result = solution(test_input)
 
-    print(json.dumps(result) if not isinstance(result, str) else result)
+    print(json.dumps(result))
 except Exception as e:
     print(f"Error: {e}", file=sys.stderr)
     sys.exit(1)

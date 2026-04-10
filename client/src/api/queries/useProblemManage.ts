@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '../axios';
 import type { Problem } from '../../types';
 
-export { useProblems } from './useProblems';
+export { useProblemsPaginated } from './useProblems';
 export { useConcepts } from './useAdaptive';
 
 interface CreateProblemData {
@@ -11,6 +11,7 @@ interface CreateProblemData {
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   courseId?: string;
   tags?: string[];
+  starterCode?: string;
   testCases?: { input: string; expected: string; isHidden: boolean }[];
 }
 
@@ -28,6 +29,7 @@ export function useCreateProblem() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['problems'] });
+      queryClient.invalidateQueries({ queryKey: ['problems-paginated'] });
       queryClient.invalidateQueries({ queryKey: ['instructor-problems'] });
     },
   });
@@ -43,6 +45,7 @@ export function useUpdateProblem() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['problems'] });
+      queryClient.invalidateQueries({ queryKey: ['problems-paginated'] });
       queryClient.invalidateQueries({ queryKey: ['instructor-problems'] });
     },
   });
@@ -58,6 +61,7 @@ export function useDeleteProblem() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['problems'] });
+      queryClient.invalidateQueries({ queryKey: ['problems-paginated'] });
       queryClient.invalidateQueries({ queryKey: ['instructor-problems'] });
     },
   });

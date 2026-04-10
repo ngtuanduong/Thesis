@@ -3,6 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { ProblemsService } from './problems.service';
 import { CreateProblemDto, UpdateProblemDto } from './dto/create-problem.dto';
+import { FindProblemsQueryDto } from './dto/find-problems-query.dto';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Role } from '@prisma/client';
@@ -27,6 +28,25 @@ export class ProblemsController {
   @ApiQuery({ name: 'courseId', required: false })
   findAll(@Query('courseId') courseId?: string) {
     return this.problemsService.findAll(courseId);
+  }
+
+  @Get('paginated')
+  @ApiOperation({ summary: 'List problems with offset-based pagination' })
+  findPaginated(@Query() query: FindProblemsQueryDto) {
+    return this.problemsService.findPaginated({
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 15,
+      courseId: query.courseId || undefined,
+      search: query.search || undefined,
+      difficulty: query.difficulty ? query.difficulty.split(',') : undefined,
+      tags: query.tags ? query.tags.split(',') : undefined,
+    });
+  }
+
+  @Get('tags')
+  @ApiOperation({ summary: 'Get all distinct problem tags' })
+  getDistinctTags() {
+    return this.problemsService.getDistinctTags();
   }
 
   @Get(':id')

@@ -135,6 +135,14 @@ export class AiService {
     return this.request('GET', `/adaptive/knowledge-state/${userId}`);
   }
 
+  /** Select the best practice problem for a specific concept using MAB. */
+  async getPracticeForConcept(userId: string, conceptId: number) {
+    return this.request<{ problem_id: string | null; title: string | null }>(
+      'GET',
+      `/mab/practice?student_id=${userId}&concept_id=${conceptId}`,
+    );
+  }
+
   /** Get the FSRS spaced-repetition review queue for a student. */
   async getReviewQueue(userId: string) {
     return this.request('GET', `/adaptive/review-queue/${userId}`);

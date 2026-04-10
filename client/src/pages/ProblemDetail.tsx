@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
 import {
   Typography,
   Tag,
@@ -13,6 +14,7 @@ import {
   message,
   Splitter,
 } from 'antd';
+import { useResponsive } from '../hooks/useResponsive';
 import {
   PlayCircleOutlined,
   SendOutlined,
@@ -30,7 +32,7 @@ import { useProblemSubmissions, useSubmission } from '../api/queries/useSubmissi
 import HintPanel from '../components/HintPanel';
 import type { Submission } from '../types';
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const difficultyColors: Record<string, string> = {
   EASY: 'green',
@@ -48,7 +50,7 @@ const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
   RUNNING: { color: '#1677ff', icon: <LoadingOutlined /> },
 };
 
-const DEFAULT_CODE = `def solution():
+const FALLBACK_CODE = `def solution():
     # Write your code here
     pass
 `;
@@ -56,14 +58,25 @@ const DEFAULT_CODE = `def solution():
 function ProblemDetail() {
   const { id } = useParams<{ id: string }>();
   const { token: themeToken } = theme.useToken();
+  const { isMobile } = useResponsive();
   const { data: problem, isLoading } = useProblem(id!);
   const submitCode = useSubmitCode();
   const { data: submissions, refetch: refetchSubmissions } = useProblemSubmissions(id!);
 
-  const [code, setCode] = useState(DEFAULT_CODE);
+  const effectiveStarterCode = problem?.starterCode || FALLBACK_CODE;
+  const [code, setCode] = useState(FALLBACK_CODE);
   const [language, setLanguage] = useState('python');
+
+  // Load problem-specific starter code when problem data arrives
+  useEffect(() => {
+    if (problem?.starterCode) {
+      setCode(problem.starterCode);
+    }
+  }, [problem?.starterCode]);
   const [activeTab, setActiveTab] = useState('description');
+  const [mobileTab, setMobileTab] = useState<'problem' | 'code'>('problem');
   const [pollingId, setPollingId] = useState<string | undefined>(undefined);
+  const [lastResult, setLastResult] = useState<Submission | null>(null);
   // Ref tracks the last submission we already notified about so StrictMode's
   // double-invoke of effects doesn't fire duplicate toasts.
   const notifiedSubmissionRef = useRef<string | undefined>(undefined);
@@ -72,6 +85,13 @@ function ProblemDetail() {
   const { data: polledSubmission } = useSubmission(pollingId, {
     refetchInterval: pollingId ? 1000 : false,
   });
+
+  // Preserve the polled submission in state so it persists after polling stops
+  useEffect(() => {
+    if (polledSubmission) {
+      setLastResult(polledSubmission);
+    }
+  }, [polledSubmission]);
 
   // Stop polling once we get a terminal status
   useEffect(() => {
@@ -93,7 +113,7 @@ function ProblemDetail() {
     }
   }, [polledSubmission?.status, polledSubmission?.id, pollingId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const latestResult = polledSubmission ?? null;
+  const latestResult = polledSubmission ?? lastResult;
   const isRunning =
     submitCode.isPending ||
     latestResult?.status === 'RUNNING' ||
@@ -122,7 +142,7 @@ function ProblemDetail() {
   };
 
   const handleReset = () => {
-    setCode(DEFAULT_CODE);
+    setCode(effectiveStarterCode);
   };
 
   const submissionColumns = [
@@ -194,10 +214,13 @@ function ProblemDetail() {
                   ))}
                 </Space>
 
-                <Paragraph style={{ whiteSpace: 'pre-wrap', fontSize: 14, lineHeight: 1.8 }}>
-                  {problem.description}
-                </Paragraph>
+                {/* Description — rendered as markdown */}
+                <Title level={5}>Description</Title>
+                <div style={{ fontSize: 14, lineHeight: 1.8 }}>
+                  <ReactMarkdown>{problem.description}</ReactMarkdown>
+                </div>
 
+                {/* Examples — from visible test cases */}
                 {visibleTestCases.length > 0 && (
                   <div style={{ marginTop: 24 }}>
                     <Title level={5}>Examples</Title>
@@ -224,6 +247,16 @@ function ProblemDetail() {
                         </div>
                       </div>
                     ))}
+                  </div>
+                )}
+
+                {/* Constraints */}
+                {problem.constraints && (
+                  <div style={{ marginTop: 24 }}>
+                    <Title level={5}>Constraints</Title>
+                    <div style={{ fontSize: 14, lineHeight: 1.8 }}>
+                      <ReactMarkdown>{problem.constraints}</ReactMarkdown>
+                    </div>
                   </div>
                 )}
               </div>
@@ -410,6 +443,86 @@ function ProblemDetail() {
       </Splitter.Panel>
     </Splitter>
   );
+
+  if (isMobile) {
+    return (
+      <div style={{ height: 'calc(100vh - 120px)', margin: -12, display: 'flex', flexDirection: 'column' }}>
+        <Tabs
+          activeKey={mobileTab}
+          onChange={(key) => setMobileTab(key as 'problem' | 'code')}
+          style={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+          items={[
+            {
+              key: 'problem',
+              label: 'Problem',
+              children: (
+                <div style={{ overflow: 'auto', height: 'calc(100vh - 180px)', padding: '0 4px' }}>
+                  {leftPanel}
+                </div>
+              ),
+            },
+            {
+              key: 'code',
+              label: 'Code',
+              children: (
+                <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 180px)' }}>
+                  {editorToolbar}
+                  <div style={{ flex: 1, overflow: 'hidden' }}>
+                    <CodeMirror
+                      value={code}
+                      onChange={setCode}
+                      extensions={[python()]}
+                      theme={oneDark}
+                      height="100%"
+                      style={{ height: '100%' }}
+                      basicSetup={{
+                        lineNumbers: true,
+                        bracketMatching: true,
+                        foldGutter: true,
+                        highlightActiveLine: true,
+                        autocompletion: true,
+                      }}
+                    />
+                  </div>
+                  {latestResult && (
+                    <div style={{ maxHeight: 100, overflow: 'auto', borderTop: '1px solid #f0f0f0', padding: 8 }}>
+                      {resultDisplay}
+                    </div>
+                  )}
+                  <div style={{ padding: '8px 12px', borderTop: `1px solid ${themeToken.colorBorderSecondary}`, display: 'flex', gap: 8 }}>
+                    <Button
+                      block
+                      icon={<PlayCircleOutlined />}
+                      onClick={handleSubmit}
+                      loading={isRunning}
+                    >
+                      Run
+                    </Button>
+                    <Button
+                      block
+                      type="primary"
+                      icon={<SendOutlined />}
+                      onClick={handleSubmit}
+                      loading={isRunning}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                  <div style={{ padding: '0 12px 8px' }}>
+                    <HintPanel
+                      problemId={id!}
+                      code={code}
+                      errorMessage={latestResult?.output || undefined}
+                    />
+                  </div>
+                </div>
+              ),
+            },
+          ]}
+        />
+      </div>
+    );
+  }
 
   return (
     <div style={{ height: 'calc(100vh - 160px)', margin: -24 }}>

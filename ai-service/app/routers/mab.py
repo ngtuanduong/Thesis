@@ -44,6 +44,19 @@ async def update_mab(
     )
 
 
+@router.get("/practice")
+async def select_practice_problem(
+    student_id: str = Query(...),
+    concept_id: int = Query(...),
+    session: AsyncSession = Depends(get_db_session),
+):
+    """Select the best problem for a specific concept using MAB Thompson Sampling."""
+    result = await mab_service._select_problem_for_concept(session, student_id, concept_id)
+    if result is None:
+        return {"problem_id": None, "title": None, "message": "No eligible problems for this concept"}
+    return result
+
+
 @router.get("/state/{student_id}")
 async def get_mab_state(
     student_id: str,

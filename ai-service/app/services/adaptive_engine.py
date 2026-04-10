@@ -71,7 +71,8 @@ class AdaptiveEngine:
         prob_result = await session.execute(
             select(Problem.difficulty).where(Problem.id == problem_id)
         )
-        problem_difficulty = prob_result.scalar_one_or_none() or "MEDIUM"
+        raw_diff = prob_result.scalar_one_or_none()
+        problem_difficulty = raw_diff.value if hasattr(raw_diff, 'value') else str(raw_diff or "MEDIUM")
 
         # --- Layer 1: Update BKT ---
         bkt_result = {}

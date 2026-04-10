@@ -39,6 +39,13 @@ docker/data/
 # Coverage
 coverage/
 
+# Python
+__pycache__/
+*.pyc
+
 # Temp
 tmp/
 .tmp/
+
+# PLaywright
+playwright-report/

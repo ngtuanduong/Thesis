@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PaginatedResponse } from '../common/pagination';
 
 @Injectable()
 export class InstructorService {
@@ -172,39 +173,59 @@ export class InstructorService {
     });
   }
 
-  async getProblemsManage() {
-    const problems = await this.prisma.problem.findMany({
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        difficulty: true,
-        tags: true,
-        courseId: true,
-        createdAt: true,
-        _count: { select: { submissions: true, testCases: true } },
-        problemConcepts: {
-          include: {
-            concept: { select: { id: true, name: true, displayName: true } },
-          },
+  async getProblemsManage(params: {
+    page: number;
+    pageSize: number;
+    search?: string;
+  }): Promise<PaginatedResponse<any>> {
+    const { page, pageSize, search } = params;
+
+    const where: any = {};
+    if (search) where.title = { contains: search, mode: 'insensitive' };
+
+    const selectFields = {
+      id: true,
+      title: true,
+      description: true,
+      difficulty: true,
+      tags: true,
+      courseId: true,
+      createdAt: true,
+      _count: { select: { submissions: true, testCases: true } },
+      problemConcepts: {
+        include: {
+          concept: { select: { id: true, name: true, displayName: true } },
         },
       },
-      orderBy: { createdAt: 'desc' },
-    });
+    };
 
-    // Get accepted submission counts for acceptance rate calculation
-    const acceptedCounts = await this.prisma.submission.groupBy({
-      by: ['problemId'],
-      where: { status: 'ACCEPTED' },
-      _count: { id: true },
-    });
+    const [problems, total] = await Promise.all([
+      this.prisma.problem.findMany({
+        where,
+        select: selectFields,
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      this.prisma.problem.count({ where }),
+    ]);
+
+    // Get accepted submission counts only for this page's problems
+    const ids = problems.map((p) => p.id);
+    const acceptedCounts = ids.length
+      ? await this.prisma.submission.groupBy({
+          by: ['problemId'],
+          where: { problemId: { in: ids }, status: 'ACCEPTED' },
+          _count: { id: true },
+        })
+      : [];
 
     const acceptedMap = new Map<string, number>();
     for (const ac of acceptedCounts) {
       acceptedMap.set(ac.problemId, ac._count.id);
     }
 
-    return problems.map((problem) => {
+    const data = problems.map((problem) => {
       const totalSubmissions = problem._count.submissions;
       const accepted = acceptedMap.get(problem.id) || 0;
       const acceptanceRate =
@@ -232,5 +253,7 @@ export class InstructorService {
         })),
       };
     });
+
+    return { data, total, page, pageSize };
   }
 }

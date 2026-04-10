@@ -14,8 +14,13 @@ class Settings(BaseSettings):
     enable_fsrs: bool = True
     enable_llm: bool = False
 
-    # LLM configuration
+    # MAB recommendation thresholds
+    prereq_mastery_threshold: float = 0.6   # min mastery to unlock dependent concepts
+    mastered_threshold: float = 0.95        # concept considered fully mastered
+
+    # LLM configuration (OpenAI-compatible: works with OpenAI, Gemini, etc.)
     openai_api_key: str = ""
+    llm_base_url: str = ""  # Override for non-OpenAI providers (e.g. Gemini)
     llm_model: str = "gpt-4o-mini"
     llm_max_tokens: int = 500
     llm_rate_limit_per_minute: int = 30

@@ -36,7 +36,7 @@ class RecommendationService:
                 {"user_id": user_id, "limit": limit},
             )
             return [
-                {"problem_id": r[0], "title": r[1], "difficulty": r[2], "score": 0.0}
+                {"problem_id": str(r[0]), "title": r[1], "difficulty": str(r[2]), "score": 0.0}
                 for r in fallback.fetchall()
             ]
 
@@ -66,9 +66,9 @@ class RecommendationService:
         )
         return [
             {
-                "problem_id": r[0],
+                "problem_id": str(r[0]),
                 "title": r[1],
-                "difficulty": r[2],
+                "difficulty": str(r[2]),
                 "score": round(float(r[3]), 4),
             }
             for r in result.fetchall()

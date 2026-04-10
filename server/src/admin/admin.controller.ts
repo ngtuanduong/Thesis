@@ -16,6 +16,7 @@ import {
 } from '@nestjs/swagger';
 import { AdminService } from './admin.service';
 import { AssignGroupDto } from './dto/assign-group.dto';
+import { FindUsersQueryDto } from './dto/find-users-query.dto';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Role } from '@prisma/client';
@@ -35,9 +36,14 @@ export class AdminController {
   }
 
   @Get('users')
-  @ApiOperation({ summary: 'List all users with submission counts (Admin only)' })
-  getUsers() {
-    return this.adminService.getUsers();
+  @ApiOperation({ summary: 'List users with pagination, search, and role filter (Admin only)' })
+  getUsers(@Query() query: FindUsersQueryDto) {
+    return this.adminService.getUsers({
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 15,
+      search: query.search || undefined,
+      role: query.role ? query.role.split(',') : undefined,
+    });
   }
 
   @Post('users/:id/assign-group')

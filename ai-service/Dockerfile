@@ -7,15 +7,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
+# Install Python dependencies with pip cache for faster rebuilds.
+# torch CPU-only (~200MB) instead of full torch with CUDA (~2GB).
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install torch --index-url https://download.pytorch.org/whl/cpu && \
+    pip install -r requirements.txt
 
 # Pre-download the embedding model at build time
 ENV SENTENCE_TRANSFORMERS_HOME=/app/model_cache
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
 
-# Copy application code
+# Copy application code (skipped at runtime when volume-mounted in dev)
 COPY . .
 
 EXPOSE 8000

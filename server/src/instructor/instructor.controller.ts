@@ -1,7 +1,8 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { InstructorService } from './instructor.service';
+import { FindProblemsManageQueryDto } from './dto/find-problems-manage-query.dto';
 import { Roles } from '../common/decorators/roles.decorator';
 import { RolesGuard } from '../common/guards/roles.guard';
 import { Role } from '@prisma/client';
@@ -27,8 +28,12 @@ export class InstructorController {
   }
 
   @Get('problems/manage')
-  @ApiOperation({ summary: 'List all problems with submission stats and concepts (Instructor/Admin)' })
-  getProblemsManage() {
-    return this.instructorService.getProblemsManage();
+  @ApiOperation({ summary: 'List problems with submission stats, concepts, and pagination (Instructor/Admin)' })
+  getProblemsManage(@Query() query: FindProblemsManageQueryDto) {
+    return this.instructorService.getProblemsManage({
+      page: query.page ?? 1,
+      pageSize: query.pageSize ?? 10,
+      search: query.search || undefined,
+    });
   }
 }

@@ -14,6 +14,14 @@ DIFFICULTY_WEIGHTS = {
     "HARD": 3.0,
 }
 
+# Saturation cap: accumulated difficulty points needed for score = 1.0.
+# ~5 medium problems (5 * 2.0 = 10.0) or ~3-4 hard problems before a skill
+# is considered fully exercised by this heuristic.
+# Note: the authoritative mastery metric is the BKT p_mastery from
+# bkt_service.py / KnowledgeState. This score is kept only for legacy
+# callers and as an auxiliary signal for embeddings.
+SKILL_SATURATION_POINTS = 10.0
+
 
 class ProfileService:
     def __init__(self, model: SentenceTransformer):
@@ -51,11 +59,14 @@ class ProfileService:
                 skill_scores[tag] += weight
                 skill_counts[tag] += 1
 
-        # Normalize scores (0-1 range based on max possible)
-        if skill_scores:
-            max_score = max(skill_scores.values())
-            for skill in skill_scores:
-                skill_scores[skill] = round(skill_scores[skill] / max_score, 4)
+        # Normalize scores to a 0-1 range against a fixed saturation cap
+        # (NOT against the max of the user's own scores — that produced
+        # spurious 100% mastery from a single submission).
+        for skill in skill_scores:
+            skill_scores[skill] = round(
+                min(skill_scores[skill] / SKILL_SATURATION_POINTS, 1.0),
+                4,
+            )
 
         # Generate embeddings for each skill and upsert
         skills = []

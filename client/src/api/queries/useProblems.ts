@@ -1,6 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import api from '../axios';
-import type { Problem } from '../../types';
+import type { Problem, PaginatedResponse } from '../../types';
 
 export function useProblems(courseId?: string) {
   return useQuery({
@@ -10,6 +10,43 @@ export function useProblems(courseId?: string) {
       const res = await api.get<Problem[]>('/problems', { params });
       return res.data;
     },
+  });
+}
+
+export function useProblemsPaginated(params: {
+  page: number;
+  pageSize: number;
+  search?: string;
+  difficulty?: string[];
+  tags?: string[];
+  courseId?: string;
+}) {
+  return useQuery({
+    queryKey: ['problems-paginated', params],
+    queryFn: async () => {
+      const query: Record<string, string> = {
+        page: String(params.page),
+        pageSize: String(params.pageSize),
+      };
+      if (params.search) query.search = params.search;
+      if (params.difficulty?.length) query.difficulty = params.difficulty.join(',');
+      if (params.tags?.length) query.tags = params.tags.join(',');
+      if (params.courseId) query.courseId = params.courseId;
+      const res = await api.get<PaginatedResponse<Problem>>('/problems/paginated', { params: query });
+      return res.data;
+    },
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useProblemTags() {
+  return useQuery({
+    queryKey: ['problem-tags'],
+    queryFn: async () => {
+      const res = await api.get<string[]>('/problems/tags');
+      return res.data;
+    },
+    staleTime: 5 * 60 * 1000, // tags rarely change
   });
 }
 

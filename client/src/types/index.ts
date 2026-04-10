@@ -17,9 +17,11 @@ export interface Problem {
   id: string;
   title: string;
   description: string;
+  constraints?: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   tags: string[];
   courseId?: string;
+  starterCode?: string;
   testCases?: TestCase[];
 }
 
@@ -107,14 +109,20 @@ export interface AdaptiveRecommendation {
   elo_gap?: number;
 }
 
+export interface KnowledgeSummary {
+  mastered_concepts: number;
+  in_progress_concepts: number;
+  locked_concepts: number;
+  total_concepts: number;
+  student_elo: number;
+  elo_trend: 'IMPROVING' | 'DECLINING' | 'STABLE';
+  due_reviews: number;
+}
+
 export interface AdaptiveRecommendationsResponse {
-  student_id: string;
+  student_id?: string;
   recommendations: AdaptiveRecommendation[];
-  knowledge_summary: {
-    overall_mastery: number;
-    weakest_concepts: string[];
-    strongest_concepts: string[];
-  } | null;
+  knowledge_summary: KnowledgeSummary | null;
 }
 
 export interface ReviewItem {
@@ -139,6 +147,13 @@ export interface HintResponse {
   hint_level: number;
   concepts_referenced: string[];
   error: string | null;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
 export interface Concept {

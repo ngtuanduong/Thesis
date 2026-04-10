@@ -1,6 +1,7 @@
 import { PrismaClient, Role, Difficulty } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { seedAdaptive } from './seed-adaptive';
+import { generateStarterCode } from '../src/problems/starter-code.util';
 
 const prisma = new PrismaClient();
 
@@ -122,6 +123,7 @@ Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
       difficulty: Difficulty.EASY,
       courseId: course1.id,
       tags: ['array', 'hash-table'],
+      starterCode: generateStarterCode([{ input: JSON.stringify({ nums: [2, 7, 11, 15], target: 9 }) }]),
       testCases: {
         create: [
           {
@@ -169,6 +171,7 @@ Explanation: From left to right, it reads -121. From right to left, it becomes 1
       difficulty: Difficulty.EASY,
       courseId: course1.id,
       tags: ['math'],
+      starterCode: generateStarterCode([{ input: '121' }]),
       testCases: {
         create: [
           { input: '121', expected: 'true', isHidden: false },
@@ -204,6 +207,7 @@ Output: [2,1]
       difficulty: Difficulty.MEDIUM,
       courseId: course2.id,
       tags: ['linked-list', 'recursion'],
+      starterCode: generateStarterCode([{ input: JSON.stringify([1, 2, 3, 4, 5]) }]),
       testCases: {
         create: [
           {
@@ -252,6 +256,7 @@ Explanation: The subarray [1] has the largest sum 1.
       difficulty: Difficulty.MEDIUM,
       courseId: course2.id,
       tags: ['array', 'dynamic-programming', 'divide-and-conquer'],
+      starterCode: generateStarterCode([{ input: JSON.stringify([-2, 1, -3, 4, -1, 2, 1, -5, 4]) }]),
       testCases: {
         create: [
           {
@@ -300,6 +305,7 @@ merging them into one sorted list:
       difficulty: Difficulty.HARD,
       courseId: course2.id,
       tags: ['linked-list', 'divide-and-conquer', 'heap', 'merge-sort'],
+      starterCode: generateStarterCode([{ input: JSON.stringify([[1, 4, 5], [1, 3, 4], [2, 6]]) }]),
       testCases: {
         create: [
           {
@@ -324,15 +330,18 @@ merging them into one sorted list:
 
   console.log(`✅ Created ${5} problems with test cases`);
 
-  // Seed adaptive learning data (concepts, KG edges, new problems, Elo)
-  await seedAdaptive(course1.id);
+  // Seed adaptive learning data (concepts, KG edges, new problems, Elo, embeddings).
+  // course1 receives T1/T2 (Python Intro), course2 receives T3/T4/T5 (DSA).
+  await seedAdaptive(course1.id, course2.id);
+
+  const finalCount = await prisma.problem.count();
 
   console.log('\n✨ Database seeding completed successfully!');
   console.log('\n📊 Summary:');
   console.log(`   - Users: 4 (1 admin, 1 instructor, 2 students)`);
   console.log(`   - Courses: 2`);
   console.log(`   - Enrollments: 3`);
-  console.log(`   - Problems: 30 (5 original + 25 new)`);
+  console.log(`   - Problems: ${finalCount} total`);
   console.log('\n🔑 Login Credentials (all users):');
   console.log(`   - Email: admin@example.com | student1@example.com | student2@example.com`);
   console.log(`   - Password: password123`);

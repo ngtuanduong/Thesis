@@ -39,7 +39,7 @@ function Dashboard() {
   const { data: recommendations, isLoading: recommendationsLoading } = useRecommendations(5);
   const { data: knowledgeState } = useKnowledgeState(user?.id);
   const { data: reviewData } = useReviewQueue(user?.id);
-  const { data: adaptiveRecs } = useAdaptiveRecommendations(user?.id, 3);
+  const { data: adaptiveRecs } = useAdaptiveRecommendations(user?.id, 5);
 
   return (
     <div>

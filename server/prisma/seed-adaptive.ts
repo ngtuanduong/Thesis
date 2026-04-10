@@ -1,6 +1,11 @@
 import { PrismaClient, Difficulty } from '@prisma/client';
+import { generateStarterCode } from '../src/problems/starter-code.util';
+import { TIER1, TIER2, TIER3, TIER4, TIER5 } from './problems';
+import type { ProblemDef } from './problems/types';
 
 const prisma = new PrismaClient();
+
+const AI_SERVICE_URL = process.env.AI_SERVICE_URL || 'http://localhost:8000';
 
 // ============================================================
 // Concept Taxonomy (~35 concepts, organized by tier)
@@ -140,18 +145,9 @@ const PREREQUISITE_EDGES: EdgeDef[] = [
 ];
 
 // ============================================================
-// New Problems (25 problems covering the concept taxonomy)
+// Legacy Problems (25 problems covering the concept taxonomy)
+// Kept inline during migration; will be moved into ./problems/tier*-*.ts in later phases.
 // ============================================================
-
-interface ProblemDef {
-  title: string;
-  description: string;
-  difficulty: Difficulty;
-  tags: string[];
-  primaryConcept: string;
-  secondaryConcepts: string[];
-  testCases: { input: string; expected: string; isHidden: boolean }[];
-}
 
 const NEW_PROBLEMS: ProblemDef[] = [
   // === Tier 1: Basics ===
@@ -667,33 +663,10 @@ Output: [11, 12, 22, 25, 34, 64, 90]
       { input: JSON.stringify([1, 2, 3, 4, 5]), expected: JSON.stringify([1, 2, 3, 4, 5]), isHidden: true },
     ],
   },
-  {
-    title: 'Container With Most Water',
-    description: `Given an array of integers \`height\` where each element represents the height of a vertical line, find two lines that together with the x-axis form a container that holds the most water.
-
-Write a function \`max_area(height)\` that returns the maximum amount of water a container can store.
-
-**Example:**
-\`\`\`
-Input: height = [1, 8, 6, 2, 5, 4, 8, 3, 7]
-Output: 49
-\`\`\`
-
-**Constraints:**
-- 2 <= height.length <= 10^5
-- 0 <= height[i] <= 10^4`,
-    difficulty: Difficulty.MEDIUM,
-    tags: ['two-pointers', 'greedy'],
-    primaryConcept: 'two_pointers',
-    secondaryConcepts: ['greedy'],
-    testCases: [
-      { input: JSON.stringify([1, 8, 6, 2, 5, 4, 8, 3, 7]), expected: '49', isHidden: false },
-      { input: JSON.stringify([1, 1]), expected: '1', isHidden: false },
-      { input: JSON.stringify([4, 3, 2, 1, 4]), expected: '16', isHidden: true },
-      { input: JSON.stringify([1, 2, 1]), expected: '2', isHidden: true },
-      { input: JSON.stringify([2, 3, 10, 5, 7, 8, 9]), expected: '36', isHidden: true },
-    ],
-  },
+  // 'Container With Most Water' — REMOVED: duplicate of tier4-advanced.ts entry.
+  // The tier4 version uses dict-style input { heights: [...] } which matches
+  // the reference solution def solution(heights). Keeping both caused findFirst
+  // to pick this legacy version (list-style input) → RUNTIME_ERROR.
   {
     title: 'Maximum Sum Subarray of Size K',
     description: `Write a function \`max_sum_subarray(nums, k)\` that finds the maximum sum of any contiguous subarray of size k.
@@ -853,7 +826,7 @@ const EXISTING_PROBLEM_MAPPINGS: ExistingProblemMapping[] = [
 // Main Seeder Function
 // ============================================================
 
-export async function seedAdaptive(courseId: string) {
+export async function seedAdaptive(course1Id: string, course2Id: string) {
   console.log('\n🧠 Seeding adaptive learning data...');
 
   // Clean adaptive data first
@@ -911,30 +884,54 @@ export async function seedAdaptive(courseId: string) {
   console.log(`   ✅ Created ${edgeCount} prerequisite edges`);
 
   // --- 3. Seed New Problems ---
+  // Problems are sourced from:
+  //   (a) The legacy inline NEW_PROBLEMS array below (kept during migration, all on course1)
+  //   (b) The tier bank files in ./problems/tier{1..5}-*.ts
+  //       - TIER1/TIER2 → course1 (Python Intro)
+  //       - TIER3/TIER4/TIER5 → course2 (DSA)
+  // As problems are migrated from NEW_PROBLEMS into tier files, the legacy array shrinks.
   console.log('   ❓ Creating new problems...');
   const problemConceptData: { problemId: string; conceptName: string; isPrimary: boolean }[] = [];
 
-  for (const p of NEW_PROBLEMS) {
-    const problem = await prisma.problem.create({
-      data: {
-        title: p.title,
-        description: p.description,
-        difficulty: p.difficulty,
-        courseId: courseId,
-        tags: p.tags,
-        testCases: {
-          create: p.testCases,
-        },
-      },
-    });
+  const problemBatches: { items: ProblemDef[]; courseId: string; label: string }[] = [
+    { items: NEW_PROBLEMS, courseId: course1Id, label: 'legacy' },
+    { items: TIER1, courseId: course1Id, label: 'T1' },
+    { items: TIER2, courseId: course1Id, label: 'T2' },
+    { items: TIER3, courseId: course2Id, label: 'T3' },
+    { items: TIER4, courseId: course2Id, label: 'T4' },
+    { items: TIER5, courseId: course2Id, label: 'T5' },
+  ];
 
-    // Track for concept mapping
-    problemConceptData.push({ problemId: problem.id, conceptName: p.primaryConcept, isPrimary: true });
-    for (const sc of p.secondaryConcepts) {
-      problemConceptData.push({ problemId: problem.id, conceptName: sc, isPrimary: false });
+  let newProblemTotal = 0;
+  for (const batch of problemBatches) {
+    for (const p of batch.items) {
+      const problem = await prisma.problem.create({
+        data: {
+          title: p.title,
+          description: p.description,
+          difficulty: p.difficulty,
+          constraints: p.constraints || null,
+          courseId: batch.courseId,
+          tags: p.tags,
+          starterCode: generateStarterCode(p.testCases),
+          testCases: {
+            create: p.testCases,
+          },
+        },
+      });
+
+      // Track for concept mapping
+      problemConceptData.push({ problemId: problem.id, conceptName: p.primaryConcept, isPrimary: true });
+      for (const sc of p.secondaryConcepts) {
+        problemConceptData.push({ problemId: problem.id, conceptName: sc, isPrimary: false });
+      }
+      newProblemTotal++;
+    }
+    if (batch.items.length > 0) {
+      console.log(`      • ${batch.label}: ${batch.items.length} problems`);
     }
   }
-  console.log(`   ✅ Created ${NEW_PROBLEMS.length} new problems`);
+  console.log(`   ✅ Created ${newProblemTotal} new problems`);
 
   // --- 4. Map Existing Problems to Concepts ---
   console.log('   🗺️  Mapping existing problems to concepts...');
@@ -992,11 +989,37 @@ export async function seedAdaptive(courseId: string) {
   }
   console.log(`   ✅ Initialized Elo for ${allProblems.length} problems`);
 
+  // --- 7. Generate Embeddings via AI Service (batch) ---
+  // Non-fatal: if ai-service is down, log a warning and continue.
+  // Re-run later with `npm run seed:embed` once ai-service is up.
+  console.log('   🧠 Triggering batch embedding via ai-service...');
+  try {
+    const problemIds = allProblems.map((p) => p.id);
+    const res = await fetch(`${AI_SERVICE_URL}/embed/batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ problem_ids: problemIds }),
+    });
+    if (!res.ok) {
+      throw new Error(`ai-service returned HTTP ${res.status}`);
+    }
+    console.log(`   ✅ Embedded ${problemIds.length} problems`);
+  } catch (e) {
+    console.warn(`   ⚠️  Embedding skipped: ${(e as Error).message}`);
+    console.warn('   → Run `npm run seed:embed` later when ai-service is up.');
+  }
+
   // Print summary
+  const totalBankProblems =
+    NEW_PROBLEMS.length + TIER1.length + TIER2.length + TIER3.length + TIER4.length + TIER5.length;
   console.log('\n📊 Adaptive Learning Data Summary:');
-  console.log(`   - Concepts: ${CONCEPTS.length} (T1:${CONCEPTS.filter(c => c.difficultyTier === 1).length}, T2:${CONCEPTS.filter(c => c.difficultyTier === 2).length}, T3:${CONCEPTS.filter(c => c.difficultyTier === 3).length}, T4:${CONCEPTS.filter(c => c.difficultyTier === 4).length}, T5:${CONCEPTS.filter(c => c.difficultyTier === 5).length})`);
+  console.log(
+    `   - Concepts: ${CONCEPTS.length} (T1:${CONCEPTS.filter((c) => c.difficultyTier === 1).length}, T2:${CONCEPTS.filter((c) => c.difficultyTier === 2).length}, T3:${CONCEPTS.filter((c) => c.difficultyTier === 3).length}, T4:${CONCEPTS.filter((c) => c.difficultyTier === 4).length}, T5:${CONCEPTS.filter((c) => c.difficultyTier === 5).length})`,
+  );
   console.log(`   - Prerequisite edges: ${edgeCount}`);
-  console.log(`   - New problems: ${NEW_PROBLEMS.length}`);
+  console.log(
+    `   - New problems: ${totalBankProblems} (legacy:${NEW_PROBLEMS.length}, T1:${TIER1.length}, T2:${TIER2.length}, T3:${TIER3.length}, T4:${TIER4.length}, T5:${TIER5.length})`,
+  );
   console.log(`   - Total problems: ${allProblems.length}`);
   console.log(`   - Problem-concept mappings: ${mappingCount}`);
   console.log(`   - Problem Elo ratings initialized: ${allProblems.length}`);

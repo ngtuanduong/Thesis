@@ -65,17 +65,19 @@ describe('ProblemsService', () => {
 
       const result = await service.create(dto);
 
-      expect(prisma.problem.create).toHaveBeenCalledWith({
-        data: {
-          title: dto.title,
-          description: dto.description,
-          difficulty: dto.difficulty,
-          tags: dto.tags,
-          courseId: dto.courseId,
-          testCases: { create: dto.testCases },
-        },
-        include: { testCases: true },
-      });
+      expect(prisma.problem.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            title: dto.title,
+            description: dto.description,
+            difficulty: dto.difficulty,
+            tags: dto.tags,
+            courseId: dto.courseId,
+            testCases: { create: dto.testCases },
+          }),
+          include: { testCases: true },
+        }),
+      );
       expect(result).toEqual(mockProblem);
       // embedProblem is fire-and-forget, just verify it was called
       expect(aiService.embedProblem).toHaveBeenCalledWith(mockProblem);
@@ -160,6 +162,111 @@ describe('ProblemsService', () => {
         where: { id: 'problem-1' },
       });
       expect(result).toEqual({ deleted: true });
+    });
+  });
+
+  describe('create — starterCode generation', () => {
+    it('should auto-generate starterCode from test cases when not provided', async () => {
+      prisma.problem.create.mockResolvedValue(mockProblem);
+
+      const dto = {
+        title: 'Two Sum',
+        description: 'Find two numbers',
+        testCases: [{ input: '{"nums":[2,7], "target":9}', expected: '[0,1]', isHidden: false }],
+      };
+
+      await service.create(dto as any);
+
+      expect(prisma.problem.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            starterCode: expect.stringContaining('def solution(nums, target):'),
+          }),
+        }),
+      );
+    });
+
+    it('should NOT overwrite explicit starterCode', async () => {
+      prisma.problem.create.mockResolvedValue(mockProblem);
+
+      const dto = {
+        title: 'Two Sum',
+        description: 'Find two numbers',
+        starterCode: 'def my_solution():\n    pass',
+        testCases: [{ input: '{"nums":[2,7], "target":9}', expected: '[0,1]', isHidden: false }],
+      };
+
+      await service.create(dto as any);
+
+      expect(prisma.problem.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            starterCode: 'def my_solution():\n    pass',
+          }),
+        }),
+      );
+    });
+
+    it('should handle embedding failure gracefully (fire-and-forget)', async () => {
+      prisma.problem.create.mockResolvedValue(mockProblem);
+      aiService.embedProblem.mockRejectedValue(new Error('AI down'));
+
+      const dto = {
+        title: 'Test',
+        description: 'Desc',
+        testCases: [],
+      };
+
+      // Should not throw even though embedding fails
+      const result = await service.create(dto as any);
+      expect(result).toEqual(mockProblem);
+    });
+  });
+
+  describe('update — enhanced', () => {
+    it('should replace testCases with deleteMany+create when testCases provided', async () => {
+      prisma.problem.findUnique.mockResolvedValue(mockProblem);
+      prisma.problem.update.mockResolvedValue(mockProblem);
+
+      await service.update('problem-1', {
+        testCases: [{ input: '1', expected: '2', isHidden: false }],
+      } as any);
+
+      expect(prisma.problem.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            testCases: {
+              deleteMany: {},
+              create: [{ input: '1', expected: '2', isHidden: false }],
+            },
+          }),
+        }),
+      );
+    });
+
+    it('should regenerate starterCode when test cases change and no explicit starterCode', async () => {
+      prisma.problem.findUnique.mockResolvedValue(mockProblem);
+      prisma.problem.update.mockResolvedValue(mockProblem);
+
+      await service.update('problem-1', {
+        testCases: [{ input: '{"x":1}', expected: '2', isHidden: false }],
+      } as any);
+
+      expect(prisma.problem.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            starterCode: expect.stringContaining('def solution(x):'),
+          }),
+        }),
+      );
+    });
+
+    it('should throw NotFoundException for non-existent problem', async () => {
+      prisma.problem.findUnique.mockResolvedValue(null);
+
+      await expect(service.update('nonexistent', { title: 'X' })).rejects.toThrow(
+        NotFoundException,
+      );
     });
   });
 });

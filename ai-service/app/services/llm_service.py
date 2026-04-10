@@ -198,7 +198,7 @@ async def generate_hint(
         return {"error": "LLM hints are disabled", "hint": None}
 
     if not settings.openai_api_key:
-        return {"error": "OpenAI API key not configured", "hint": None}
+        return {"error": "LLM API key not configured", "hint": None}
 
     if not _check_rate_limit():
         return {"error": "Rate limit exceeded. Please try again in a minute.", "hint": None}
@@ -207,7 +207,11 @@ async def generate_hint(
         # Lazy import to avoid startup dependency if LLM is disabled
         import openai
 
-        client = openai.AsyncOpenAI(api_key=settings.openai_api_key)
+        # Supports OpenAI, Gemini, or any OpenAI-compatible provider via base_url
+        client_kwargs: dict = {"api_key": settings.openai_api_key}
+        if settings.llm_base_url:
+            client_kwargs["base_url"] = settings.llm_base_url
+        client = openai.AsyncOpenAI(**client_kwargs)
 
         # Build context from knowledge graph
         context = await _build_context(session, student_id, problem_id)

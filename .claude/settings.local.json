@@ -110,7 +110,13 @@
       "Bash(pkill -f playwright)",
       "Bash(tee /tmp/pw-out.json)",
       "Bash(tee /tmp/pw-auth.json)",
-      "Bash(echo \"EXIT: $?\")"
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(node_modules/.bin/playwright --version)",
+      "Bash(node_modules/.bin/playwright test:*)",
+      "Bash(find /c/Users/duong/WebstormProjects/Thesis -name \"*.ts\" -type f -exec grep -l \"embedProblem\\\\|ai.service\" {} \\\\;)",
+      "Bash(find /c/Users/duong/WebstormProjects/Thesis/server/src -name \"ai.service.ts\" -exec head -100 {} \\\\;)",
+      "Bash(npm run:*)",
+      "Bash(docker start:*)"
     ]
   }
 }

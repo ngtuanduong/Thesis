@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMe } from '../api/queries/useAuth';
 import { useReviewQueue, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
 import type { ReviewItem } from '../types';
+import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
 
@@ -57,6 +58,7 @@ function formatDueDate(dateStr: string): string {
 
 function ReviewItemCard({ item, showActions = true }: { item: ReviewItem; showActions?: boolean }) {
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
   const rColor = getRetrievabilityColor(item.retrievability);
   const rLabel = getRetrievabilityLabel(item.retrievability);
 
@@ -110,7 +112,7 @@ function ReviewItemCard({ item, showActions = true }: { item: ReviewItem; showAc
           </Row>
         }
       />
-      <div style={{ width: 60 }}>
+      <div style={{ width: isMobile ? 48 : 60 }}>
         <Progress
           type="circle"
           percent={Math.round(item.retrievability * 100)}

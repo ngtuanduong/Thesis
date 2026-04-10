@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import api from '../axios';
+import type { PaginatedResponse } from '../../types';
 
 interface StrugglingStudent {
   id: string;
@@ -81,15 +82,26 @@ export function useInstructorStudents(courseId: string) {
   });
 }
 
-export function useInstructorProblems() {
+export function useInstructorProblems(params: {
+  page: number;
+  pageSize: number;
+  search?: string;
+}) {
   return useQuery({
-    queryKey: ['instructor-problems'],
+    queryKey: ['instructor-problems', params],
     queryFn: async () => {
-      const res = await api.get<InstructorProblem[]>(
+      const query: Record<string, string> = {
+        page: String(params.page),
+        pageSize: String(params.pageSize),
+      };
+      if (params.search) query.search = params.search;
+      const res = await api.get<PaginatedResponse<InstructorProblem>>(
         '/instructor/problems/manage',
+        { params: query },
       );
       return res.data;
     },
+    placeholderData: keepPreviousData,
   });
 }
 

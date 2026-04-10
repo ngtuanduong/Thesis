@@ -23,6 +23,7 @@ from app.models.tables import (
     Problem,
     Submission,
 )
+from app.config import settings
 from app.services.elo_service import EloService
 
 logger = logging.getLogger(__name__)
@@ -162,11 +163,12 @@ class MABService:
         for concept in all_concepts:
             prereqs = prereq_map.get(concept.id, [])
             all_prereqs_met = all(
-                knowledge_states.get(p_id, 0) >= 0.85 for p_id in prereqs
+                knowledge_states.get(p_id, 0) >= settings.prereq_mastery_threshold
+                for p_id in prereqs
             )
 
             mastery = knowledge_states.get(concept.id, 0.0)
-            is_mastered = mastery >= 0.95
+            is_mastered = mastery >= settings.mastered_threshold
             is_due_review = concept.id in due_concept_ids
 
             if all_prereqs_met and (not is_mastered or is_due_review):
