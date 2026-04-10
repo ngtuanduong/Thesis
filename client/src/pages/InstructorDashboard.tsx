@@ -59,7 +59,6 @@ interface ProblemRow {
   title: string;
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  tags: string[];
   courseId: string;
   createdAt: string;
   submissionCount: number;
@@ -244,7 +243,7 @@ function InstructorDashboard() {
 
       {/* Stats Row */}
       <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Enrolled Students"
@@ -255,7 +254,7 @@ function InstructorDashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Total Submissions"
@@ -265,7 +264,7 @@ function InstructorDashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             {dashboardLoading ? (
               <Spin />
@@ -299,7 +298,7 @@ function InstructorDashboard() {
             )}
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Struggling Students"

@@ -18,7 +18,7 @@ export function useProblemsPaginated(params: {
   pageSize: number;
   search?: string;
   difficulty?: string[];
-  tags?: string[];
+  concepts?: number[];
   courseId?: string;
 }) {
   return useQuery({
@@ -30,23 +30,12 @@ export function useProblemsPaginated(params: {
       };
       if (params.search) query.search = params.search;
       if (params.difficulty?.length) query.difficulty = params.difficulty.join(',');
-      if (params.tags?.length) query.tags = params.tags.join(',');
+      if (params.concepts?.length) query.concepts = params.concepts.join(',');
       if (params.courseId) query.courseId = params.courseId;
       const res = await api.get<PaginatedResponse<Problem>>('/problems/paginated', { params: query });
       return res.data;
     },
     placeholderData: keepPreviousData,
-  });
-}
-
-export function useProblemTags() {
-  return useQuery({
-    queryKey: ['problem-tags'],
-    queryFn: async () => {
-      const res = await api.get<string[]>('/problems/tags');
-      return res.data;
-    },
-    staleTime: 5 * 60 * 1000, // tags rarely change
   });
 }
 

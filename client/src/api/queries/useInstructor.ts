@@ -39,7 +39,6 @@ interface InstructorProblem {
   title: string;
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  tags: string[];
   courseId: string;
   createdAt: string;
   submissionCount: number;

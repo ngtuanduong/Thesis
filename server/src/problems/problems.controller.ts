@@ -39,14 +39,8 @@ export class ProblemsController {
       courseId: query.courseId || undefined,
       search: query.search || undefined,
       difficulty: query.difficulty ? query.difficulty.split(',') : undefined,
-      tags: query.tags ? query.tags.split(',') : undefined,
+      conceptIds: query.concepts ? query.concepts.split(',').map(Number) : undefined,
     });
-  }
-
-  @Get('tags')
-  @ApiOperation({ summary: 'Get all distinct problem tags' })
-  getDistinctTags() {
-    return this.problemsService.getDistinctTags();
   }
 
   @Get(':id')

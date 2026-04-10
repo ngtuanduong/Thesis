@@ -17,7 +17,6 @@ Shape spec format:
     
     constraints: `- 0 ≤ len(shapes) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['inheritance', 'oop', 'polymorphism'],
     primaryConcept: 'inheritance',
     secondaryConcepts: ['polymorphism', 'classes'],
     testCases: [
@@ -38,7 +37,6 @@ Spec format:
     
     constraints: `- 0 ≤ len(staff) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['inheritance', 'oop'],
     primaryConcept: 'inheritance',
     secondaryConcepts: ['classes'],
     testCases: [
@@ -55,7 +53,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(animals) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['inheritance', 'oop'],
     primaryConcept: 'inheritance',
     secondaryConcepts: ['polymorphism'],
     testCases: [
@@ -72,7 +69,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(vehicles) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['inheritance', 'oop'],
     primaryConcept: 'inheritance',
     secondaryConcepts: ['classes'],
     testCases: [
@@ -93,7 +89,6 @@ Ops: \`["deposit", amt]\`, \`["withdraw", amt]\`. Ignore deposits ≤ 0.`,
     
     constraints: `- 0 ≤ len(ops) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['encapsulation', 'oop'],
     primaryConcept: 'encapsulation',
     secondaryConcepts: ['classes'],
     testCases: [
@@ -110,7 +105,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(readings) ≤ 100\n- -10⁴ ≤ readings[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['encapsulation', 'oop'],
     primaryConcept: 'encapsulation',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -127,7 +121,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(passwords) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['encapsulation', 'strings'],
     primaryConcept: 'encapsulation',
     secondaryConcepts: ['strings', 'conditionals'],
     testCases: [
@@ -146,7 +139,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(txs) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['polymorphism', 'oop'],
     primaryConcept: 'polymorphism',
     secondaryConcepts: ['inheritance'],
     testCases: [
@@ -163,7 +155,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(items) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['polymorphism', 'oop'],
     primaryConcept: 'polymorphism',
     secondaryConcepts: ['inheritance'],
     testCases: [
@@ -182,7 +173,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ target ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['two-pointers', 'searching'],
     primaryConcept: 'two_pointers',
     secondaryConcepts: ['searching'],
     testCases: [
@@ -199,7 +189,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['two-pointers', 'strings'],
     primaryConcept: 'two_pointers',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -216,7 +205,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ target ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['two-pointers', 'lists'],
     primaryConcept: 'two_pointers',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -233,7 +221,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(heights) ≤ 10⁴\n- -10⁵ ≤ heights[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['two-pointers', 'greedy'],
     primaryConcept: 'two_pointers',
     secondaryConcepts: ['greedy'],
     testCases: [
@@ -250,7 +237,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['two-pointers', 'lists'],
     primaryConcept: 'two_pointers',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -267,7 +253,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['two-pointers', 'sorting'],
     primaryConcept: 'two_pointers',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -286,7 +271,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(greed) ≤ 10⁴\n- -10⁵ ≤ greed[i] ≤ 10⁵\n- 0 ≤ len(cookies) ≤ 10⁴\n- -10⁵ ≤ cookies[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['greedy', 'sorting'],
     primaryConcept: 'greedy',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -303,7 +287,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['greedy'],
     primaryConcept: 'greedy',
     secondaryConcepts: [],
     testCases: [
@@ -320,7 +303,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(gas) ≤ 10⁵\n- -10⁹ ≤ gas[i] ≤ 10⁹\n- 0 ≤ len(cost) ≤ 10⁵\n- -10⁹ ≤ cost[i] ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['greedy'],
     primaryConcept: 'greedy',
     secondaryConcepts: [],
     testCases: [
@@ -337,7 +319,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(activities) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['greedy', 'sorting'],
     primaryConcept: 'greedy',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -354,7 +335,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['greedy'],
     primaryConcept: 'greedy',
     secondaryConcepts: [],
     testCases: [
@@ -373,7 +353,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['divide-and-conquer', 'sorting'],
     primaryConcept: 'divide_and_conquer',
     secondaryConcepts: ['sorting', 'recursion'],
     testCases: [
@@ -390,7 +369,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['divide-and-conquer', 'sorting'],
     primaryConcept: 'divide_and_conquer',
     secondaryConcepts: ['sorting', 'recursion'],
     testCases: [
@@ -407,7 +385,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁵\n- -10⁹ ≤ nums[i] ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['divide-and-conquer'],
     primaryConcept: 'divide_and_conquer',
     secondaryConcepts: [],
     testCases: [
@@ -424,7 +401,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁵\n- -10⁹ ≤ nums[i] ≤ 10⁹\n- -10⁹ ≤ k ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['divide-and-conquer', 'quickselect'],
     primaryConcept: 'divide_and_conquer',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -441,7 +417,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- -10⁵ ≤ base ≤ 10⁵\n- -10⁵ ≤ exp ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['divide-and-conquer', 'math'],
     primaryConcept: 'divide_and_conquer',
     secondaryConcepts: ['recursion'],
     testCases: [

@@ -14,7 +14,6 @@ export const TIER2: ProblemDef[] = [
     
     constraints: `- 0 ≤ len(matrix) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['nested-loops', 'lists'],
     primaryConcept: 'nested_loops',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -31,7 +30,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['nested-loops', 'lists'],
     primaryConcept: 'nested_loops',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -48,7 +46,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ target ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['nested-loops', 'lists'],
     primaryConcept: 'nested_loops',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -65,7 +62,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(matrix) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['nested-loops', 'lists'],
     primaryConcept: 'nested_loops',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -82,7 +78,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(matrix) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['nested-loops', 'lists'],
     primaryConcept: 'nested_loops',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -101,7 +96,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['functions', 'return-values'],
     primaryConcept: 'return_values',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -118,7 +112,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['functions', 'return-values'],
     primaryConcept: 'return_values',
     secondaryConcepts: [],
     testCases: [
@@ -135,7 +128,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ price ≤ 10⁴\n- -10⁴ ≤ discount_percent ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['functions', 'parameters'],
     primaryConcept: 'parameters',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -154,7 +146,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ weight_kg ≤ 10⁴\n- -10⁴ ≤ height_m ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['functions', 'parameters'],
     primaryConcept: 'parameters',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -173,7 +164,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ principal ≤ 10⁴\n- -10⁴ ≤ rate ≤ 10⁴\n- -10⁴ ≤ years ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['functions', 'parameters', 'math'],
     primaryConcept: 'parameters',
     secondaryConcepts: ['return_values', 'operators'],
     testCases: [
@@ -192,7 +182,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -209,7 +198,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -226,7 +214,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -243,7 +230,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ target ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'loops'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -260,7 +246,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'loops'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -277,7 +262,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(matrix) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'nested-loops'],
     primaryConcept: 'lists',
     secondaryConcepts: ['nested_loops'],
     testCases: [
@@ -294,7 +278,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ k ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['lists', 'rotation'],
     primaryConcept: 'lists',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -311,7 +294,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -328,7 +310,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'loops'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -345,7 +326,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'filter'],
     primaryConcept: 'lists',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -362,7 +342,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'map'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -379,7 +358,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(a) ≤ 100\n- -10⁴ ≤ a[i] ≤ 10⁴\n- 0 ≤ len(b) ≤ 100\n- -10⁴ ≤ b[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: [],
     testCases: [
@@ -398,7 +376,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(pair) ≤ 100\n- -10⁴ ≤ pair[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['tuples', 'lists'],
     primaryConcept: 'tuples',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -415,7 +392,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['tuples', 'lists'],
     primaryConcept: 'tuples',
     secondaryConcepts: ['lists', 'conditionals'],
     testCases: [
@@ -432,7 +408,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(p1) ≤ 100\n- -10⁴ ≤ p1[i] ≤ 10⁴\n- 0 ≤ len(p2) ≤ 100\n- -10⁴ ≤ p2[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['tuples', 'math'],
     primaryConcept: 'tuples',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -451,7 +426,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(pairs) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['dictionaries', 'lists'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -468,7 +442,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['dictionaries', 'strings'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['strings', 'loops'],
     testCases: [
@@ -485,7 +458,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['dictionaries', 'strings'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -500,7 +472,6 @@ difficulty: Difficulty.EASY,
     title: 'Merge Two Dicts',
     description: `Write a function \`solution(a, b)\` that merges two dictionaries. On key conflict, values from \`b\` win.`,
     difficulty: Difficulty.EASY,
-    tags: ['dictionaries'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: [],
     testCases: [
@@ -515,7 +486,6 @@ difficulty: Difficulty.EASY,
     title: 'Invert Dict',
     description: `Write a function \`solution(d)\` that swaps keys and values in a dictionary. Assume values are unique and hashable.`,
     difficulty: Difficulty.EASY,
-    tags: ['dictionaries'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: [],
     testCases: [
@@ -532,7 +502,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['dictionaries', 'lists'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -547,7 +516,6 @@ difficulty: Difficulty.MEDIUM,
     title: 'Dict Key Sum',
     description: `Write a function \`solution(d)\` that returns the sum of all numeric values in a dictionary.`,
     difficulty: Difficulty.EASY,
-    tags: ['dictionaries'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -564,7 +532,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁴ ≤ target ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['dictionaries'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: [],
     testCases: [
@@ -583,7 +550,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ target ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['searching', 'loops'],
     primaryConcept: 'searching',
     secondaryConcepts: ['lists', 'loops'],
     testCases: [
@@ -600,7 +566,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ target ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['searching', 'binary-search'],
     primaryConcept: 'searching',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -617,7 +582,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['searching', 'lists'],
     primaryConcept: 'searching',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -634,7 +598,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ threshold ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['searching', 'loops'],
     primaryConcept: 'searching',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -651,7 +614,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ target ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['searching', 'nested-loops'],
     primaryConcept: 'searching',
     secondaryConcepts: ['nested_loops'],
     testCases: [
@@ -668,7 +630,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['searching', 'dictionaries'],
     primaryConcept: 'searching',
     secondaryConcepts: ['dictionaries'],
     testCases: [
@@ -685,7 +646,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ lo ≤ 10⁴\n- -10⁴ ≤ hi ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['searching', 'lists'],
     primaryConcept: 'searching',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -704,7 +664,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'loops'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -721,7 +680,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'loops'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -738,7 +696,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -755,7 +712,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(words) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['lists', 'strings', 'filter'],
     primaryConcept: 'lists',
     secondaryConcepts: ['strings', 'conditionals'],
     testCases: [
@@ -772,7 +728,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(keys) ≤ 100\n- -10⁴ ≤ default_value ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['dictionaries'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['lists'],
     testCases: [

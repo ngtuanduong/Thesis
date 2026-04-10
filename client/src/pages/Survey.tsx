@@ -3,6 +3,8 @@ import { Card, Typography, Radio, Button, Space, message, Result, Divider } from
 import type { RadioChangeEvent } from 'antd';
 import { logEvent } from '../utils/eventLogger';
 
+import styles from './Survey.module.css';
+
 const { Title, Text, Paragraph } = Typography;
 
 // System Usability Scale (SUS) — 10 standard questions
@@ -89,7 +91,7 @@ function Survey() {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: '0 auto' }}>
+    <div className={styles.page}>
       <Title level={3}>System Usability Survey</Title>
       <Paragraph type="secondary">
         Please rate the following statements about your experience with AdaptLearn.
@@ -125,7 +127,7 @@ function Survey() {
         </Card>
       ))}
 
-      <div style={{ textAlign: 'center', marginTop: 24, marginBottom: 48 }}>
+      <div className={styles.submitFooter}>
         <Button
           type="primary"
           size="large"

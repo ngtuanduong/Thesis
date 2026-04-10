@@ -208,7 +208,7 @@ function AdminDashboard() {
 
       {/* Platform Stats */}
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-        <Col xs={24} sm={12} lg={4}>
+        <Col xs={12} sm={12} lg={4}>
           <Card>
             <Statistic
               title="Total Users"
@@ -218,7 +218,7 @@ function AdminDashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={5}>
+        <Col xs={12} sm={12} lg={5}>
           <Card>
             <Statistic
               title="Total Submissions"
@@ -228,7 +228,7 @@ function AdminDashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={5}>
+        <Col xs={12} sm={12} lg={5}>
           <Card>
             <Statistic
               title="Total Problems"
@@ -238,7 +238,7 @@ function AdminDashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={5}>
+        <Col xs={12} sm={12} lg={5}>
           <Card>
             <Statistic
               title="Total Courses"
@@ -248,7 +248,7 @@ function AdminDashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={5}>
+        <Col xs={12} sm={12} lg={5}>
           <Card>
             <Statistic
               title="Active Today"
@@ -263,7 +263,7 @@ function AdminDashboard() {
 
       {/* User Management */}
       <Card title="User Management" style={{ marginTop: 24 }}>
-        <div style={{ marginBottom: 16, display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <div className="filter-bar" style={{ marginBottom: 16 }}>
           <Search
             placeholder="Search by name or email..."
             allowClear

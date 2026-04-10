@@ -5,6 +5,7 @@ import {
   IsArray,
   ValidateNested,
   IsBoolean,
+  IsInt,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
@@ -49,11 +50,11 @@ export class CreateProblemDto {
   @IsOptional()
   courseId?: string;
 
-  @ApiPropertyOptional({ example: ['arrays', 'hash-map'], description: 'Problem tags' })
+  @ApiPropertyOptional({ example: [1, 3], description: 'Concept IDs to associate (first is primary)' })
   @IsArray()
-  @IsString({ each: true })
+  @IsInt({ each: true })
   @IsOptional()
-  tags?: string[];
+  conceptIds?: number[];
 
   @ApiPropertyOptional({
     example: 'def solution(nums, target):\n    # Write your code here\n    pass\n',

@@ -4,6 +4,8 @@ import { BulbOutlined } from '@ant-design/icons';
 import { useGenerateHint } from '../api/queries/useAdaptive';
 import { useMe } from '../api/queries/useAuth';
 
+import styles from './HintPanel.module.css';
+
 const { Text, Paragraph } = Typography;
 
 interface HintPanelProps {
@@ -75,7 +77,7 @@ function HintPanel({ problemId, code, errorMessage }: HintPanelProps) {
       styles={{ body: { padding: '8px 12px', maxHeight: 250, overflow: 'auto' } }}
     >
       {generateHint.isPending && (
-        <div style={{ textAlign: 'center', padding: 12 }}>
+        <div className={styles.loadingCenter}>
           <Spin size="small" />
           <Text type="secondary" style={{ marginLeft: 8 }}>
             Thinking...
@@ -100,17 +102,8 @@ function HintPanel({ problemId, code, errorMessage }: HintPanelProps) {
       )}
 
       {hints.map((h, i) => (
-        <div
-          key={i}
-          style={{
-            marginBottom: 8,
-            padding: '8px 10px',
-            background: '#fffbe6',
-            borderRadius: 6,
-            borderLeft: '3px solid #faad14',
-          }}
-        >
-          <div style={{ marginBottom: 4 }}>
+        <div key={i} className={styles.hintCard}>
+          <div className={styles.hintCardHeader}>
             <Tag color="gold" style={{ fontSize: 10 }}>
               Level {h.level}: {levelLabels[h.level - 1]}
             </Tag>

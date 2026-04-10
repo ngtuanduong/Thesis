@@ -132,7 +132,7 @@ function ReviewQueue() {
   const navigate = useNavigate();
 
   if (reviewLoading) {
-    return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />;
+    return <Spin size="large" className="center-spin" />;
   }
 
   const dueNow = reviewData?.due_now || [];
@@ -271,7 +271,7 @@ function ReviewQueue() {
         style={{ marginTop: 16 }}
       >
         {recLoading ? (
-          <div style={{ textAlign: 'center', padding: 20 }}>
+          <div className="center-content">
             <Spin />
           </div>
         ) : !recData?.recommendations || recData.recommendations.length === 0 ? (

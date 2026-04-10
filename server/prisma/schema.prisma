@@ -88,7 +88,6 @@ model Problem {
   constraints String?
   difficulty  Difficulty @default(MEDIUM)
   courseId    String?    @db.Uuid
-  tags        String[]
   starterCode String?   @map("starter_code") @db.Text
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt

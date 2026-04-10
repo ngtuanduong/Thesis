@@ -13,7 +13,6 @@ export const TIER3: ProblemDef[] = [
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['scope', 'functions'],
     primaryConcept: 'scope',
     secondaryConcepts: ['functions'],
     testCases: [
@@ -30,7 +29,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ factor ≤ 10⁴\n- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['scope', 'closure'],
     primaryConcept: 'scope',
     secondaryConcepts: ['functions'],
     testCases: [
@@ -47,7 +45,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['scope', 'lists'],
     primaryConcept: 'scope',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -66,7 +63,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁵ ≤ n ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'math'],
     primaryConcept: 'recursion',
     secondaryConcepts: [],
     testCases: [
@@ -83,7 +79,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁵ ≤ n ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'math'],
     primaryConcept: 'recursion',
     secondaryConcepts: [],
     testCases: [
@@ -100,7 +95,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁵ ≤ n ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'math'],
     primaryConcept: 'recursion',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -117,7 +111,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁵ ≤ base ≤ 10⁵\n- -10⁵ ≤ exp ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'math'],
     primaryConcept: 'recursion',
     secondaryConcepts: [],
     testCases: [
@@ -134,7 +127,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(s) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'strings'],
     primaryConcept: 'recursion',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -151,7 +143,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'lists'],
     primaryConcept: 'recursion',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -168,7 +159,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁵ ≤ n ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['recursion', 'math'],
     primaryConcept: 'recursion',
     secondaryConcepts: [],
     testCases: [
@@ -187,7 +177,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['sets'],
     primaryConcept: 'sets',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -204,7 +193,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(a) ≤ 100\n- -10⁴ ≤ a[i] ≤ 10⁴\n- 0 ≤ len(b) ≤ 100\n- -10⁴ ≤ b[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['sets', 'lists'],
     primaryConcept: 'sets',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -221,7 +209,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(a) ≤ 100\n- -10⁴ ≤ a[i] ≤ 10⁴\n- 0 ≤ len(b) ≤ 100\n- -10⁴ ≤ b[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['sets', 'lists'],
     primaryConcept: 'sets',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -238,7 +225,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(a) ≤ 10⁴\n- -10⁵ ≤ a[i] ≤ 10⁵\n- 0 ≤ len(b) ≤ 10⁴\n- -10⁵ ≤ b[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sets'],
     primaryConcept: 'sets',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -257,7 +243,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(s) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['stacks', 'strings'],
     primaryConcept: 'stacks',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -274,7 +259,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['stacks', 'lists'],
     primaryConcept: 'stacks',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -295,7 +279,6 @@ Return the final stack as a list.`,
     
     constraints: `- 0 ≤ len(ops) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['stacks'],
     primaryConcept: 'stacks',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -312,7 +295,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['stacks', 'lists'],
     primaryConcept: 'stacks',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -335,7 +317,6 @@ Return the final queue as a list from front to back.`,
     
     constraints: `- 0 ≤ len(ops) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['queues'],
     primaryConcept: 'queues',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -352,7 +333,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴\n- -10⁴ ≤ k ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['queues', 'lists'],
     primaryConcept: 'queues',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -369,7 +349,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(tree) ≤ 10⁴\n- -10⁵ ≤ tree[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['queues', 'trees'],
     primaryConcept: 'queues',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -392,7 +371,6 @@ Return the final balance.`,
     
     constraints: `- 0 ≤ len(ops) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['classes', 'oop'],
     primaryConcept: 'classes',
     secondaryConcepts: [],
     testCases: [
@@ -409,7 +387,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(ops) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['classes', 'oop'],
     primaryConcept: 'classes',
     secondaryConcepts: [],
     testCases: [
@@ -426,7 +403,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(p1) ≤ 100\n- -10⁴ ≤ p1[i] ≤ 10⁴\n- 0 ≤ len(p2) ≤ 100\n- -10⁴ ≤ p2[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['classes', 'oop'],
     primaryConcept: 'classes',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -447,7 +423,6 @@ Ops:
     
     constraints: `- 0 ≤ len(ops) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['classes', 'dictionaries'],
     primaryConcept: 'classes',
     secondaryConcepts: ['dictionaries'],
     testCases: [
@@ -464,7 +439,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(intervals) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['classes'],
     primaryConcept: 'classes',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -483,7 +457,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sorting', 'bubble-sort'],
     primaryConcept: 'sorting',
     secondaryConcepts: ['nested_loops'],
     testCases: [
@@ -500,7 +473,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sorting', 'selection-sort'],
     primaryConcept: 'sorting',
     secondaryConcepts: ['nested_loops'],
     testCases: [
@@ -517,7 +489,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sorting', 'insertion-sort'],
     primaryConcept: 'sorting',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -534,7 +505,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['sorting'],
     primaryConcept: 'sorting',
     secondaryConcepts: [],
     testCases: [
@@ -551,7 +521,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 100\n- -10⁴ ≤ nums[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['sorting'],
     primaryConcept: 'sorting',
     secondaryConcepts: [],
     testCases: [
@@ -568,7 +537,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(words) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['sorting', 'strings'],
     primaryConcept: 'sorting',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -585,7 +553,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(a) ≤ 10⁴\n- -10⁵ ≤ a[i] ≤ 10⁵\n- 0 ≤ len(b) ≤ 10⁴\n- -10⁵ ≤ b[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sorting', 'two-pointers'],
     primaryConcept: 'sorting',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -604,7 +571,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ k ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sliding-window', 'lists'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -621,7 +587,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(s) ≤ 10⁴`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sliding-window', 'strings'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['strings', 'sets'],
     testCases: [
@@ -638,7 +603,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ target ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sliding-window'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -655,7 +619,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵\n- -10⁵ ≤ k ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['sliding-window'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -672,7 +635,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁵\n- -10⁹ ≤ nums[i] ≤ 10⁹\n- -10⁹ ≤ k ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['sliding-window', 'dictionaries'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['dictionaries'],
     testCases: [
@@ -689,7 +651,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(s) ≤ 10⁵\n- -10⁹ ≤ k ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['sliding-window', 'strings'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['strings', 'dictionaries'],
     testCases: [
@@ -706,7 +667,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁵\n- -10⁹ ≤ nums[i] ≤ 10⁹\n- -10⁹ ≤ k ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['sliding-window'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['lists'],
     testCases: [

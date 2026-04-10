@@ -10,7 +10,7 @@ interface CreateProblemData {
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   courseId?: string;
-  tags?: string[];
+  conceptIds?: number[];
   starterCode?: string;
   testCases?: { input: string; expected: string; isHidden: boolean }[];
 }

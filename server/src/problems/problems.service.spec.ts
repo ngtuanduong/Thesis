@@ -14,7 +14,6 @@ describe('ProblemsService', () => {
     title: 'Two Sum',
     description: 'Find two numbers that add up to target',
     difficulty: 'EASY',
-    tags: ['array', 'hash-map'],
     courseId: 'course-1',
     starterCode: '',
     testCases: [
@@ -56,7 +55,6 @@ describe('ProblemsService', () => {
         title: 'Two Sum',
         description: 'Find two numbers that add up to target',
         difficulty: 'EASY' as any,
-        tags: ['array', 'hash-map'],
         courseId: 'course-1',
         testCases: [
           { input: '[2,7,11,15], 9', expected: '[0,1]', isHidden: false },
@@ -71,11 +69,10 @@ describe('ProblemsService', () => {
             title: dto.title,
             description: dto.description,
             difficulty: dto.difficulty,
-            tags: dto.tags,
             courseId: dto.courseId,
             testCases: { create: dto.testCases },
           }),
-          include: { testCases: true },
+          include: expect.objectContaining({ testCases: true }),
         }),
       );
       expect(result).toEqual(mockProblem);

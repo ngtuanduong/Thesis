@@ -16,7 +16,6 @@ export const TIER1: ProblemDef[] = [
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['variables', 'basics'],
     primaryConcept: 'variables',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -33,7 +32,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴\n- -10⁴ ≤ c ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['variables', 'math'],
     primaryConcept: 'variables',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -50,7 +48,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ width ≤ 10⁴\n- -10⁴ ≤ height ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['variables', 'geometry'],
     primaryConcept: 'variables',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -69,7 +66,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ radius ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['variables', 'math'],
     primaryConcept: 'variables',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -88,7 +84,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['data-types', 'conversion'],
     primaryConcept: 'data_types',
     secondaryConcepts: [],
     testCases: [
@@ -105,7 +100,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['data-types', 'conversion'],
     primaryConcept: 'data_types',
     secondaryConcepts: [],
     testCases: [
@@ -120,7 +114,6 @@ difficulty: Difficulty.EASY,
     title: 'Boolean to Integer',
     description: `Write a function \`solution(b)\` that converts a boolean to an integer: \`True\` → 1, \`False\` → 0.`,
     difficulty: Difficulty.EASY,
-    tags: ['data-types', 'conversion'],
     primaryConcept: 'data_types',
     secondaryConcepts: [],
     testCases: [
@@ -137,7 +130,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['data-types', 'math'],
     primaryConcept: 'data_types',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -156,7 +148,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['operators', 'math'],
     primaryConcept: 'operators',
     secondaryConcepts: [],
     testCases: [
@@ -173,7 +164,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['operators', 'math'],
     primaryConcept: 'operators',
     secondaryConcepts: [],
     testCases: [
@@ -190,7 +180,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['operators', 'conditionals'],
     primaryConcept: 'operators',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -207,7 +196,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['operators', 'math'],
     primaryConcept: 'operators',
     secondaryConcepts: [],
     testCases: [
@@ -224,7 +212,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['operators', 'math'],
     primaryConcept: 'operators',
     secondaryConcepts: [],
     testCases: [
@@ -241,7 +228,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ base ≤ 10⁴\n- -10⁴ ≤ exp ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['operators', 'math'],
     primaryConcept: 'operators',
     secondaryConcepts: [],
     testCases: [
@@ -260,7 +246,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(first) ≤ 100\n- 0 ≤ len(last) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings', 'io', 'formatting'],
     primaryConcept: 'io',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -277,7 +262,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['io', 'formatting', 'strings'],
     primaryConcept: 'io',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -296,7 +280,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings', 'loops'],
     primaryConcept: 'strings',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -313,7 +296,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings', 'loops'],
     primaryConcept: 'strings',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -330,7 +312,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings'],
     primaryConcept: 'strings',
     secondaryConcepts: [],
     testCases: [
@@ -347,7 +328,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings'],
     primaryConcept: 'strings',
     secondaryConcepts: [],
     testCases: [
@@ -364,7 +344,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings'],
     primaryConcept: 'strings',
     secondaryConcepts: [],
     testCases: [
@@ -381,7 +360,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100\n- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['strings', 'operators'],
     primaryConcept: 'strings',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -398,7 +376,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings', 'conditionals'],
     primaryConcept: 'strings',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -415,7 +392,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings', 'conditionals'],
     primaryConcept: 'strings',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -432,7 +408,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100\n- 0 ≤ len(sub) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings'],
     primaryConcept: 'strings',
     secondaryConcepts: [],
     testCases: [
@@ -449,7 +424,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(s) ≤ 100\n- 0 ≤ len(old) ≤ 100\n- 0 ≤ len(new_) ≤ 100`,
 difficulty: Difficulty.EASY,
-    tags: ['strings'],
     primaryConcept: 'strings',
     secondaryConcepts: [],
     testCases: [
@@ -468,7 +442,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: [],
     testCases: [
@@ -485,7 +458,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: [],
     testCases: [
@@ -502,7 +474,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴\n- -10⁴ ≤ c ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: [],
     testCases: [
@@ -519,7 +490,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -536,7 +506,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals', 'math'],
     primaryConcept: 'conditionals',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -555,7 +524,6 @@ A leap year is divisible by 4, EXCEPT if it is divisible by 100 but not by 400.`
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -572,7 +540,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: [],
     testCases: [
@@ -591,7 +558,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: [],
     testCases: [
@@ -608,7 +574,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: [],
     testCases: [
@@ -625,7 +590,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -642,7 +606,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -659,7 +622,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -676,7 +638,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ base ≤ 10⁴\n- -10⁴ ≤ exp ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -693,7 +654,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ a ≤ 10⁴\n- -10⁴ ≤ b ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['loops', 'math'],
     primaryConcept: 'loops',
     secondaryConcepts: ['operators'],
     testCases: [

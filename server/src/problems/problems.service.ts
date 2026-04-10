@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AiService } from '../ai/ai.service';
 import { CreateProblemDto } from './dto/create-problem.dto';
 import { generateStarterCode } from './starter-code.util';
-import { paginate, PaginatedResponse } from '../common/pagination';
+import { paginate } from '../common/pagination';
 
 @Injectable()
 export class ProblemsService {
@@ -15,7 +15,7 @@ export class ProblemsService {
   ) {}
 
   async create(dto: CreateProblemDto) {
-    const { testCases, ...problemData } = dto;
+    const { testCases, conceptIds, ...problemData } = dto;
 
     // Auto-generate starterCode from test cases if not provided
     if (!problemData.starterCode && testCases && testCases.length > 0) {
@@ -26,8 +26,16 @@ export class ProblemsService {
       data: {
         ...problemData,
         testCases: testCases ? { create: testCases } : undefined,
+        ...(conceptIds?.length && {
+          problemConcepts: {
+            create: conceptIds.map((cid, idx) => ({
+              conceptId: cid,
+              isPrimary: idx === 0,
+            })),
+          },
+        }),
       },
-      include: { testCases: true },
+      include: { testCases: true, problemConcepts: { include: { concept: true } } },
     });
 
     // Fire-and-forget: generate embedding for the new problem
@@ -41,7 +49,10 @@ export class ProblemsService {
   async findAll(courseId?: string) {
     return this.prisma.problem.findMany({
       where: courseId ? { courseId } : undefined,
-      include: { testCases: { where: { isHidden: false } } },
+      include: {
+        testCases: { where: { isHidden: false } },
+        problemConcepts: { include: { concept: true } },
+      },
     });
   }
 
@@ -51,15 +62,17 @@ export class ProblemsService {
     courseId?: string;
     search?: string;
     difficulty?: string[];
-    tags?: string[];
+    conceptIds?: number[];
   }) {
-    const { page, pageSize, courseId, search, difficulty, tags } = params;
+    const { page, pageSize, courseId, search, difficulty, conceptIds } = params;
 
     const where: any = {};
     if (courseId) where.courseId = courseId;
     if (search) where.title = { contains: search, mode: 'insensitive' };
     if (difficulty?.length) where.difficulty = { in: difficulty };
-    if (tags?.length) where.tags = { hasSome: tags };
+    if (conceptIds?.length) {
+      where.problemConcepts = { some: { conceptId: { in: conceptIds } } };
+    }
 
     return paginate(this.prisma.problem, {
       where,
@@ -71,21 +84,13 @@ export class ProblemsService {
     }, { page, pageSize });
   }
 
-  async getDistinctTags(): Promise<string[]> {
-    const problems = await this.prisma.problem.findMany({
-      select: { tags: true },
-    });
-    const tagSet = new Set<string>();
-    for (const p of problems) {
-      for (const t of p.tags) tagSet.add(t);
-    }
-    return Array.from(tagSet).sort();
-  }
-
   async findById(id: string) {
     const problem = await this.prisma.problem.findUnique({
       where: { id },
-      include: { testCases: true },
+      include: {
+        testCases: true,
+        problemConcepts: { include: { concept: true } },
+      },
     });
     if (!problem) {
       throw new NotFoundException('Problem not found');
@@ -95,7 +100,7 @@ export class ProblemsService {
 
   async update(id: string, dto: Partial<CreateProblemDto>) {
     await this.findById(id);
-    const { testCases, ...problemData } = dto;
+    const { testCases, conceptIds, ...problemData } = dto;
 
     // Re-generate starterCode when test cases change and no explicit starterCode provided
     if (testCases && testCases.length > 0 && !problemData.starterCode) {
@@ -112,8 +117,17 @@ export class ProblemsService {
             create: testCases,
           },
         }),
+        ...(conceptIds !== undefined && {
+          problemConcepts: {
+            deleteMany: {},
+            create: conceptIds.map((cid, idx) => ({
+              conceptId: cid,
+              isPrimary: idx === 0,
+            })),
+          },
+        }),
       },
-      include: { testCases: true },
+      include: { testCases: true, problemConcepts: { include: { concept: true } } },
     });
   }
 

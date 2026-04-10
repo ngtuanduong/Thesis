@@ -1,3 +1,58 @@
+/* ========================================
+   CSS Custom Properties
+   ======================================== */
+:root {
+  /* ── Color Palette ── */
+  --color-primary:        #1677ff;
+  --color-success:        #52c41a;
+  --color-success-dark:   #3f8600;
+  --color-error:          #ff4d4f;
+  --color-error-dark:     #cf1322;
+  --color-warning:        #faad14;
+  --color-info:           #1890ff;
+  --color-muted:          #999;
+  --color-text-dark:      #333;
+  --color-text-secondary: #555;
+  --color-border:         #d9d9d9;
+  --color-border-light:   #f0f0f0;
+  --color-bg-auth:        #f0f2f5;
+
+  /* ── Code Block ── */
+  --code-bg:    #1e1e1e;
+  --code-fg:    #d4d4d4;
+  --code-font:  'Menlo', 'Consolas', 'Courier New', monospace;
+
+  /* ── Hint Panel ── */
+  --hint-bg:     #fffbe6;
+  --hint-border: #faad14;
+
+  /* ── Spacing Scale (4px base) ── */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-20: 80px;
+
+  /* ── Typography ── */
+  --font-size-xs:   10px;
+  --font-size-sm:   12px;
+  --font-size-md:   13px;
+  --font-size-base: 14px;
+
+  /* ── Layout ── */
+  --sidebar-width:  256px;
+  --header-height:  64px;
+  --radius-sm:      6px;
+  --radius-md:      8px;
+}
+
+/* ========================================
+   Global Reset
+   ======================================== */
 * {
   margin: 0;
   padding: 0;
@@ -75,14 +130,17 @@ body {
   }
 }
 
-/* Responsive page header utility */
+/* ========================================
+   Utility Classes
+   ======================================== */
+
 .responsive-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
   flex-wrap: wrap;
-  margin-bottom: 16px;
+  margin-bottom: var(--space-4);
 }
 
 @media (max-width: 767px) {
@@ -90,4 +148,40 @@ body {
     flex-direction: column;
     align-items: stretch;
   }
+}
+
+.center-spin {
+  display: block;
+  margin: 100px auto;
+}
+
+.center-content {
+  text-align: center;
+  padding: var(--space-20);
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.section-gap {
+  margin-top: var(--space-4);
+}
+
+.section-gap-lg {
+  margin-top: var(--space-6);
 }

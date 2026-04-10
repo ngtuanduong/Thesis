@@ -25,7 +25,6 @@ interface Recommendation {
   id: string;
   title: string;
   difficulty: string;
-  tags: string[];
 }
 
 export function useDashboardStats() {

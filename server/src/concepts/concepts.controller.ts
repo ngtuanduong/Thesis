@@ -60,10 +60,18 @@ export class ConceptsController {
     return this.conceptsService.update(id, dto);
   }
 
+  @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles(Role.INSTRUCTOR, Role.ADMIN)
+  @ApiOperation({ summary: 'Delete a concept (Instructor/Admin). Blocked if students have learning data.' })
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.conceptsService.remove(id);
+  }
+
   @Post('edges')
   @UseGuards(RolesGuard)
   @Roles(Role.INSTRUCTOR, Role.ADMIN)
-  @ApiOperation({ summary: 'Create a prerequisite edge between concepts' })
+  @ApiOperation({ summary: 'Create a prerequisite edge between concepts (validates cycle, tier, self-loop)' })
   createEdge(@Body() dto: CreateEdgeDto) {
     return this.conceptsService.createEdge(dto);
   }

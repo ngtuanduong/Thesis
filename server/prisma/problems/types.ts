@@ -19,7 +19,6 @@ export interface ProblemDef {
   description: string;
   constraints?: string;
   difficulty: Difficulty;
-  tags: string[];
   primaryConcept: string;
   secondaryConcepts: string[];
   testCases: { input: string; expected: string; isHidden: boolean }[];

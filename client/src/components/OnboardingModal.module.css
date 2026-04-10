@@ -1,0 +1,14 @@
+.stepContent {
+  text-align: center;
+  padding: var(--space-6) 0;
+}
+
+.stepIndicator {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.footer {
+  text-align: right;
+  margin-top: var(--space-4);
+}

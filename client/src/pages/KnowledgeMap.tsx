@@ -44,6 +44,7 @@ import { useMe } from '../api/queries/useAuth';
 import { useKnowledgeState, usePracticeForConcept } from '../api/queries/useAdaptive';
 import type { ConceptState, KnowledgeGraphNode, KnowledgeGraphEdge } from '../types';
 import { useResponsive } from '../hooks/useResponsive';
+import styles from './KnowledgeMap.module.css';
 
 const { Title, Text } = Typography;
 
@@ -84,11 +85,13 @@ type ConceptNodeData = {
   p_mastery: number;
   status: string;
   _dimmed?: boolean;
+  _selected?: boolean;
+  _popoverOpen?: boolean;
 };
 
 type ConceptNodeType = Node<ConceptNodeData, 'concept'>;
 
-function PracticeButton({ conceptId, conceptName }: { conceptId: number; conceptName: string }) {
+function PracticeButton({ conceptId }: { conceptId: number }) {
   const navigate = useNavigate();
   const { data: user } = useMe();
   const practice = usePracticeForConcept();
@@ -102,11 +105,11 @@ function PracticeButton({ conceptId, conceptName }: { conceptId: number; concept
           if (result.problem_id) {
             navigate(`/problems/${result.problem_id}`);
           } else {
-            navigate(`/problems?tag=${encodeURIComponent(conceptName)}`);
+            navigate(`/problems?concept=${conceptId}`);
           }
         },
         onError: () => {
-          navigate(`/problems?tag=${encodeURIComponent(conceptName)}`);
+          navigate(`/problems?concept=${conceptId}`);
         },
       },
     );
@@ -115,16 +118,8 @@ function PracticeButton({ conceptId, conceptName }: { conceptId: number; concept
   return (
     <div
       onClick={handlePractice}
-      style={{
-        marginTop: 4,
-        padding: '4px 0',
-        color: '#52c41a',
-        cursor: practice.isPending ? 'wait' : 'pointer',
-        fontWeight: 500,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 4,
-      }}
+      className={styles.popoverPractice}
+      style={{ cursor: practice.isPending ? 'wait' : 'pointer' }}
     >
       {practice.isPending ? <LoadingOutlined /> : <ThunderboltOutlined />}
       {practice.isPending ? 'Loading...' : 'Practice'}
@@ -147,88 +142,47 @@ function ConceptNodeComponent({ data }: NodeProps<ConceptNodeType>) {
         style={{ background: 'transparent', border: 'none' }}
       />
       <Popover
-        trigger="click"
+        trigger={data._popoverOpen !== undefined ? [] : 'click'}
+        open={data._popoverOpen !== undefined ? data._popoverOpen : undefined}
         content={
-          <div style={{ fontSize: 13 }}>
-            <div style={{ fontWeight: 600, marginBottom: 4 }}>{data.display_name}</div>
+          <div className={styles.popoverContent}>
+            <div className={styles.popoverTitle}>{data.display_name}</div>
             <div>Topic: {topicLabels[data.topic_group] || data.topic_group}</div>
             <div>Tier: {data.difficulty_tier}</div>
             <div>Mastery: {pct}%</div>
             <div>Status: {statusCfg.label}</div>
-            <PracticeButton conceptId={data.concept_id} conceptName={data.concept_name} />
+            <PracticeButton conceptId={data.concept_id} />
             <div
-              onClick={() => navigate(`/problems?tag=${encodeURIComponent(data.concept_name)}`)}
-              style={{
-                marginTop: 4,
-                padding: '4px 0',
-                color: '#1890ff',
-                cursor: 'pointer',
-                fontWeight: 500,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 4,
-              }}
+              onClick={() => navigate(`/problems?concept=${data.concept_id}`)}
+              className={styles.popoverViewProblems}
             >
               <RocketOutlined /> View Problems
             </div>
           </div>
         }
       >
-        <div style={{
-          textAlign: 'center',
-          cursor: 'pointer',
-          opacity: data._dimmed ? 0.15 : 1,
-          transition: 'opacity 0.2s ease',
-        }}>
-          <div style={{ position: 'relative', width: 50, height: 50, margin: '0 auto' }}>
-            {/* Outer ring — topic group color */}
+        <div className={styles.nodeCenter} style={{ opacity: data._dimmed ? 0.15 : 1 }}>
+          <div className={styles.nodeRingContainer}>
             <div
-              style={{
-                position: 'absolute',
-                inset: -3,
-                borderRadius: '50%',
-                border: `2.5px solid ${topicColor}`,
-                opacity: 0.7,
-              }}
+              className={`${styles.nodeOuterRing}${data._selected ? ` ${styles.nodeSelected}` : ''}`}
+              style={{ border: `2.5px solid ${topicColor}` }}
             />
-            {/* Inner circle — mastery fill */}
             <div
+              className={styles.nodeInnerCircle}
               style={{
-                width: '100%',
-                height: '100%',
-                borderRadius: '50%',
                 backgroundColor: statusCfg.color,
                 opacity: 0.15 + data.p_mastery * 0.85,
                 border: `2px solid ${statusCfg.color}`,
               }}
             />
-            {/* Percentage overlay */}
             <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 12,
-                fontWeight: 600,
-                color: data.p_mastery > 0.5 ? '#fff' : '#333',
-              }}
+              className={styles.nodePercentage}
+              style={{ color: data.p_mastery > 0.5 ? '#fff' : '#333' }}
             >
               {pct}%
             </div>
           </div>
-          <div
-            style={{
-              fontSize: 10,
-              color: '#555',
-              marginTop: 4,
-              maxWidth: 100,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
-          >
+          <div className={styles.nodeLabel}>
             {data.display_name}
           </div>
         </div>
@@ -352,15 +306,21 @@ function KnowledgeGraphViz({
   graphWidth,
   nodesep,
   ranksep,
+  isMobile,
 }: {
   nodes: KnowledgeGraphNode[];
   edges: KnowledgeGraphEdge[];
   graphWidth: number;
   nodesep: number;
   ranksep: number;
+  isMobile: boolean;
 }) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [popoverNodeId, setPopoverNodeId] = useState<string | null>(null);
   const [showHint, setShowHint] = useState(true);
+
+  const activeNodeId = isMobile ? selectedNodeId : hoveredNodeId;
 
   const { nodes: baseNodes, edges: baseEdges } = useMemo(
     () => buildGraphLayout(graphNodes, graphEdges, graphWidth, nodesep, ranksep),
@@ -379,26 +339,28 @@ function KnowledgeGraphViz({
     return neighbors;
   }, [baseEdges]);
 
-  // Apply dimming to nodes when a node is hovered
+  // Apply dimming, selection, and popover state to nodes
   const displayNodes = useMemo(() => {
-    if (!hoveredNodeId) return baseNodes;
-    const connected = adjacency.get(hoveredNodeId) || new Set();
+    if (!activeNodeId && !isMobile) return baseNodes;
+    const connected = activeNodeId ? (adjacency.get(activeNodeId) || new Set()) : new Set();
     return baseNodes.map((n) => ({
       ...n,
       data: {
         ...n.data,
-        _dimmed: n.id !== hoveredNodeId && !connected.has(n.id),
+        _dimmed: activeNodeId ? (n.id !== activeNodeId && !connected.has(n.id)) : false,
+        _selected: n.id === activeNodeId,
+        ...(isMobile ? { _popoverOpen: n.id === popoverNodeId } : {}),
       },
     }));
-  }, [baseNodes, hoveredNodeId, adjacency]);
+  }, [baseNodes, activeNodeId, adjacency, isMobile, popoverNodeId]);
 
-  // Hide all edges by default; only show edges connected to hovered node
+  // Edge visibility: hidden until a node is active (hover on desktop, tap on mobile)
   const displayEdges = useMemo(() => {
-    if (!hoveredNodeId) {
+    if (!activeNodeId) {
       return baseEdges.map((e) => ({ ...e, hidden: true }));
     }
     return baseEdges.map((e) => {
-      const isConnected = e.source === hoveredNodeId || e.target === hoveredNodeId;
+      const isConnected = e.source === activeNodeId || e.target === activeNodeId;
       return {
         ...e,
         hidden: !isConnected,
@@ -411,7 +373,7 @@ function KnowledgeGraphViz({
           : e.markerEnd,
       };
     });
-  }, [baseEdges, hoveredNodeId]);
+  }, [baseEdges, activeNodeId]);
 
   const onNodeMouseEnter = useCallback((_: React.MouseEvent, node: Node) => {
     setHoveredNodeId(node.id);
@@ -420,6 +382,26 @@ function KnowledgeGraphViz({
   const onNodeMouseLeave = useCallback(() => {
     setHoveredNodeId(null);
   }, []);
+
+  const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
+    if (!isMobile) return;
+    setSelectedNodeId((prev) => {
+      if (prev === node.id) {
+        // Second tap on same node → open popover
+        setPopoverNodeId(node.id);
+        return prev;
+      }
+      // First tap on a node → select it (highlight edges), close any open popover
+      setPopoverNodeId(null);
+      return node.id;
+    });
+  }, [isMobile]);
+
+  const onPaneClick = useCallback(() => {
+    if (!isMobile) return;
+    setSelectedNodeId(null);
+    setPopoverNodeId(null);
+  }, [isMobile]);
 
   if (graphNodes.length === 0) {
     return <Empty description="No concepts found" />;
@@ -430,22 +412,17 @@ function KnowledgeGraphViz({
 
   return (
     <div>
-      <div
-        style={{
-          height: graphHeight,
-          width: '100%',
-          border: '1px solid #f0f0f0',
-          borderRadius: 8,
-        }}
-      >
+      <div className={styles.graphContainer} style={{ height: graphHeight }}>
         <ReactFlow
           nodes={displayNodes}
           edges={displayEdges}
           nodeTypes={nodeTypes}
-          onNodeMouseEnter={onNodeMouseEnter}
-          onNodeMouseLeave={onNodeMouseLeave}
+          onNodeMouseEnter={isMobile ? undefined : onNodeMouseEnter}
+          onNodeMouseLeave={isMobile ? undefined : onNodeMouseLeave}
+          onNodeClick={onNodeClick}
+          onPaneClick={onPaneClick}
           fitView
-          fitViewOptions={{ padding: 0.15 }}
+          fitViewOptions={{ padding: isMobile ? 0.05 : 0.15 }}
           nodesDraggable={false}
           nodesConnectable={false}
           elementsSelectable={false}
@@ -456,53 +433,20 @@ function KnowledgeGraphViz({
           <Controls showInteractive={false} />
           <Panel position="top-left">
             {showHint ? (
-              <div
-                style={{
-                  background: '#fff',
-                  border: '1px solid #d9d9d9',
-                  borderRadius: 8,
-                  padding: '8px 12px',
-                  fontSize: 12,
-                  color: '#555',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  maxWidth: 220,
-                  position: 'relative',
-                }}
-              >
+              <div className={styles.guidanceCard}>
                 <CloseOutlined
                   onClick={() => setShowHint(false)}
-                  style={{
-                    position: 'absolute',
-                    top: 6,
-                    right: 8,
-                    cursor: 'pointer',
-                    fontSize: 10,
-                    color: '#999',
-                  }}
+                  className={styles.guidanceClose}
                 />
                 <div style={{ marginBottom: 4 }}>
                   <InfoCircleOutlined style={{ marginRight: 4, color: '#1890ff' }} />
                   <strong>Guidance</strong>
                 </div>
-                <div><strong>Hover</strong> over a node to see related topics</div>
-                <div><strong>Click</strong> on a node to view details</div>
+                <div><strong>{isMobile ? 'Tap' : 'Hover'}</strong> {isMobile ? 'a node' : 'over a node'} to see related topics</div>
+                <div><strong>{isMobile ? 'Tap again' : 'Click'}</strong> {isMobile ? 'to open details' : 'on a node to view details'}</div>
               </div>
             ) : (
-              <div
-                onClick={() => setShowHint(true)}
-                style={{
-                  background: '#fff',
-                  border: '1px solid #d9d9d9',
-                  borderRadius: '50%',
-                  width: 28,
-                  height: 28,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                }}
-              >
+              <div onClick={() => setShowHint(true)} className={styles.guidanceToggle}>
                 <InfoCircleOutlined style={{ fontSize: 14, color: '#1890ff' }} />
               </div>
             )}
@@ -510,26 +454,10 @@ function KnowledgeGraphViz({
         </ReactFlow>
       </div>
       {/* Topic color legend */}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 16,
-          marginTop: 12,
-          justifyContent: 'center',
-        }}
-      >
+      <div className={styles.legend}>
         {Object.entries(topicColors).map(([key, color]) => (
-          <div key={key} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                backgroundColor: color,
-                flexShrink: 0,
-              }}
-            />
+          <div key={key} className={styles.legendItem}>
+            <div className={styles.legendDot} style={{ backgroundColor: color }} />
             <Text type="secondary" style={{ fontSize: 12 }}>
               {topicLabels[key] || key}
             </Text>
@@ -548,7 +476,7 @@ function KnowledgeMap() {
   const { isMobile, isTablet } = useResponsive();
 
   if (isLoading) {
-    return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />;
+    return <Spin size="large" className="center-spin" />;
   }
 
   if (!knowledgeState || knowledgeState.concepts.length === 0) {
@@ -708,7 +636,8 @@ function KnowledgeMap() {
                 <KnowledgeGraphViz
                   nodes={knowledge_graph?.nodes ?? []}
                   edges={knowledge_graph?.edges ?? []}
-                  graphWidth={isMobile ? 400 : isTablet ? 700 : 1100}
+                  isMobile={isMobile}
+                  graphWidth={isMobile ? 650 : isTablet ? 700 : 1100}
                   nodesep={isMobile ? 30 : 70}
                   ranksep={isMobile ? 80 : 120}
                 />
@@ -748,15 +677,8 @@ function KnowledgeMap() {
                               statusConfig[c.status as keyof typeof statusConfig] ||
                               statusConfig.not_started;
                             return (
-                              <div key={c.concept_id} style={{ marginBottom: 8 }}>
-                                <div
-                                  style={{
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    marginBottom: 2,
-                                  }}
-                                >
+                              <div key={c.concept_id} className={styles.conceptRow}>
+                                <div className={styles.conceptRowHeader}>
                                   <Text style={{ fontSize: 13 }}>
                                     {c.display_name}
                                   </Text>
@@ -776,7 +698,7 @@ function KnowledgeMap() {
                               </div>
                             );
                           })}
-                          <div style={{ marginTop: 8, textAlign: 'right' }}>
+                          <div className={styles.topicFooter}>
                             <Text type="secondary" style={{ fontSize: 12 }}>
                               Avg: {(avgMastery * 100).toFixed(0)}%
                             </Text>

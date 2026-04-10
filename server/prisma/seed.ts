@@ -122,7 +122,6 @@ Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
 - -10^9 <= target <= 10^9`,
       difficulty: Difficulty.EASY,
       courseId: course1.id,
-      tags: ['array', 'hash-table'],
       starterCode: generateStarterCode([{ input: JSON.stringify({ nums: [2, 7, 11, 15], target: 9 }) }]),
       testCases: {
         create: [
@@ -170,7 +169,6 @@ Explanation: From left to right, it reads -121. From right to left, it becomes 1
 - -2^31 <= x <= 2^31 - 1`,
       difficulty: Difficulty.EASY,
       courseId: course1.id,
-      tags: ['math'],
       starterCode: generateStarterCode([{ input: '121' }]),
       testCases: {
         create: [
@@ -206,7 +204,6 @@ Output: [2,1]
 - -5000 <= Node.val <= 5000`,
       difficulty: Difficulty.MEDIUM,
       courseId: course2.id,
-      tags: ['linked-list', 'recursion'],
       starterCode: generateStarterCode([{ input: JSON.stringify([1, 2, 3, 4, 5]) }]),
       testCases: {
         create: [
@@ -255,7 +252,6 @@ Explanation: The subarray [1] has the largest sum 1.
 - -10^4 <= nums[i] <= 10^4`,
       difficulty: Difficulty.MEDIUM,
       courseId: course2.id,
-      tags: ['array', 'dynamic-programming', 'divide-and-conquer'],
       starterCode: generateStarterCode([{ input: JSON.stringify([-2, 1, -3, 4, -1, 2, 1, -5, 4]) }]),
       testCases: {
         create: [
@@ -304,7 +300,6 @@ merging them into one sorted list:
 - -10^4 <= lists[i][j] <= 10^4`,
       difficulty: Difficulty.HARD,
       courseId: course2.id,
-      tags: ['linked-list', 'divide-and-conquer', 'heap', 'merge-sort'],
       starterCode: generateStarterCode([{ input: JSON.stringify([[1, 4, 5], [1, 3, 4], [2, 6]]) }]),
       testCases: {
         create: [

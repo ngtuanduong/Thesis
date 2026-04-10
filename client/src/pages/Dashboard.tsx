@@ -13,6 +13,7 @@ import { useKnowledgeState, useReviewQueue, useAdaptiveRecommendations } from '.
 import { useMe } from '../api/queries/useAuth';
 import { useNavigate } from 'react-router-dom';
 import OnboardingModal from '../components/OnboardingModal';
+import styles from './Dashboard.module.css';
 
 const { Title, Text } = Typography;
 
@@ -48,7 +49,7 @@ function Dashboard() {
 
       {/* Statistics Cards */}
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Problems Solved"
@@ -59,7 +60,7 @@ function Dashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Total Submissions"
@@ -69,7 +70,7 @@ function Dashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Active Days"
@@ -81,7 +82,7 @@ function Dashboard() {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Enrolled Courses"
@@ -102,7 +103,7 @@ function Dashboard() {
               onClick={() => navigate('/knowledge-map')}
               style={{ cursor: 'pointer' }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div className={styles.masteryCardInner}>
                 <Progress
                   type="circle"
                   percent={Math.round(knowledgeState.summary.overall_mastery * 100)}
@@ -122,7 +123,7 @@ function Dashboard() {
               </div>
             </Card>
           </Col>
-          <Col xs={24} sm={8}>
+          <Col xs={12} sm={8}>
             <Card
               hoverable
               onClick={() => navigate('/review-queue')}
@@ -143,7 +144,7 @@ function Dashboard() {
               />
             </Card>
           </Col>
-          <Col xs={24} sm={8}>
+          <Col xs={12} sm={8}>
             <Card
               hoverable
               onClick={() => navigate('/knowledge-map')}
@@ -204,7 +205,7 @@ function Dashboard() {
                 )}
               />
             ) : recommendationsLoading ? (
-              <div style={{ textAlign: 'center', padding: '20px' }}>
+              <div className={styles.spinCenter}>
                 <Spin />
               </div>
             ) : !recommendations || recommendations.length === 0 ? (
@@ -227,13 +228,9 @@ function Dashboard() {
                         </span>
                       }
                       description={
-                        problem.tags && problem.tags.length > 0
-                          ? problem.tags.slice(0, 3).map((tag: string) => (
-                              <Tag key={tag} style={{ marginRight: 4 }}>
-                                {tag}
-                              </Tag>
-                            ))
-                          : null
+                        <Tag color={difficultyColors[problem.difficulty]}>
+                          {problem.difficulty}
+                        </Tag>
                       }
                     />
                   </List.Item>
@@ -246,7 +243,7 @@ function Dashboard() {
         <Col xs={24} lg={12}>
           <Card title="📊 Recent Activity">
             {submissionsLoading ? (
-              <div style={{ textAlign: 'center', padding: '20px' }}>
+              <div className={styles.spinCenter}>
                 <Spin />
               </div>
             ) : !recentSubmissions || recentSubmissions.length === 0 ? (

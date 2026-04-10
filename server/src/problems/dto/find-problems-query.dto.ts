@@ -16,5 +16,5 @@ export class FindProblemsQueryDto extends PaginationQueryDto {
 
   @IsOptional()
   @IsString()
-  tags?: string; // comma-separated, split in controller
+  concepts?: string; // comma-separated concept IDs, split in controller
 }

@@ -3,7 +3,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Table, Tag, Typography, Input, Space, Select } from 'antd';
 import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { useProblemsPaginated, useProblemTags } from '../api/queries/useProblems';
+import { useProblemsPaginated } from '../api/queries/useProblems';
+import { useConcepts } from '../api/queries/useAdaptive';
 import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
@@ -13,7 +14,6 @@ interface ProblemRow {
   title: string;
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  tags: string[];
   problemConcepts?: { concept: { id: number; displayName: string }; isPrimary: boolean }[];
 }
 
@@ -27,12 +27,12 @@ function Problems() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const initialSearch = params.get('search') || '';
-  const initialTag = params.get('tag') || '';
+  const initialConcept = params.get('concept') || '';
 
   const [searchText, setSearchText] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
-  const [selectedTags, setSelectedTags] = useState<string[]>(() => {
-    if (initialTag) return [initialTag.replace(/_/g, '-')];
+  const [selectedConcepts, setSelectedConcepts] = useState<number[]>(() => {
+    if (initialConcept) return [Number(initialConcept)];
     return [];
   });
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
@@ -40,7 +40,7 @@ function Problems() {
   const [pageSize, setPageSize] = useState(15);
 
   const { isMobile } = useResponsive();
-  const { data: allTags } = useProblemTags();
+  const { data: allConcepts } = useConcepts();
 
   // Debounce search text
   useEffect(() => {
@@ -54,22 +54,22 @@ function Problems() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
-  }, [selectedDifficulties, selectedTags]);
+  }, [selectedDifficulties, selectedConcepts]);
 
   const { data, isLoading, isFetching } = useProblemsPaginated({
     page,
     pageSize,
     search: debouncedSearch || undefined,
     difficulty: selectedDifficulties.length ? selectedDifficulties : undefined,
-    tags: selectedTags.length ? selectedTags : undefined,
+    concepts: selectedConcepts.length ? selectedConcepts : undefined,
   });
 
-  const hasActiveFilters = selectedTags.length > 0 || selectedDifficulties.length > 0;
+  const hasActiveFilters = selectedConcepts.length > 0 || selectedDifficulties.length > 0;
 
   const clearAll = () => {
     setSearchText('');
     setDebouncedSearch('');
-    setSelectedTags([]);
+    setSelectedConcepts([]);
     setSelectedDifficulties([]);
   };
 
@@ -105,42 +105,30 @@ function Problems() {
       title: 'Concepts',
       key: 'concepts',
       width: 200,
-      responsive: ['lg'] as any,
+      responsive: ['md'] as any,
       render: (_: unknown, record: ProblemRow) => {
         const concepts = record.problemConcepts;
         if (!concepts || concepts.length === 0) return <Text type="secondary">--</Text>;
         return (
           <Space size={[4, 4]} wrap>
             {concepts.map((pc, idx) => (
-              <Tag key={idx} color={pc.isPrimary ? 'blue' : 'default'}>
+              <Tag
+                key={idx}
+                color={pc.isPrimary ? 'blue' : 'default'}
+                style={{ cursor: 'pointer' }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!selectedConcepts.includes(pc.concept.id)) {
+                    setSelectedConcepts((prev) => [...prev, pc.concept.id]);
+                  }
+                }}
+              >
                 {pc.concept.displayName}
               </Tag>
             ))}
           </Space>
         );
       },
-    },
-    {
-      title: 'Tags',
-      dataIndex: 'tags',
-      key: 'tags',
-      responsive: ['md'] as any,
-      render: (tags: string[]) => (
-        <Space size={[0, 4]} wrap>
-          {tags?.map((tag) => (
-            <Tag
-              key={tag}
-              style={{ cursor: 'pointer' }}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!selectedTags.includes(tag)) setSelectedTags((prev) => [...prev, tag]);
-              }}
-            >
-              {tag}
-            </Tag>
-          ))}
-        </Space>
-      ),
     },
   ];
 
@@ -151,13 +139,7 @@ function Problems() {
       </div>
 
       {/* Unified search & filter bar */}
-      <div style={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 8,
-        marginTop: 12,
-        alignItems: 'center',
-      }}>
+      <div className="filter-bar" style={{ marginTop: 12 }}>
         <Input
           placeholder="Search by title..."
           prefix={<SearchOutlined />}
@@ -184,18 +166,16 @@ function Problems() {
 
         <Select
           mode="multiple"
-          placeholder="Tags"
+          placeholder="Concepts"
           style={{ minWidth: 160, flex: 1, maxWidth: 360 }}
           maxTagCount="responsive"
           allowClear
           showSearch
-          value={selectedTags}
-          onChange={setSelectedTags}
-          options={(allTags ?? []).map((t) => ({ label: t, value: t }))}
+          value={selectedConcepts}
+          onChange={setSelectedConcepts}
+          options={(allConcepts ?? []).map((c) => ({ label: c.displayName, value: c.id }))}
           filterOption={(input, option) =>
-            (option?.label as string)?.toLowerCase().replace(/[_-]/g, '').includes(
-              input.toLowerCase().replace(/[_-]/g, ''),
-            ) ?? false
+            (option?.label as string)?.toLowerCase().includes(input.toLowerCase()) ?? false
           }
         />
 

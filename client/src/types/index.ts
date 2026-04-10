@@ -19,7 +19,6 @@ export interface Problem {
   description: string;
   constraints?: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  tags: string[];
   courseId?: string;
   starterCode?: string;
   testCases?: TestCase[];

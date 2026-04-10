@@ -13,7 +13,6 @@ export const TIER5: ProblemDef[] = [
     
     constraints: `- -10⁵ ≤ n ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['dynamic-programming'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: [],
     testCases: [
@@ -30,7 +29,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['dynamic-programming'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: [],
     testCases: [
@@ -47,7 +45,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(coins) ≤ 10⁵\n- -10⁹ ≤ coins[i] ≤ 10⁹\n- -10⁹ ≤ amount ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['dynamic-programming'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: [],
     testCases: [
@@ -64,7 +61,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(a) ≤ 10⁵\n- 0 ≤ len(b) ≤ 10⁵`,
 difficulty: Difficulty.HARD,
-    tags: ['dynamic-programming', 'strings'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -81,7 +77,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁵\n- -10⁹ ≤ nums[i] ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['dynamic-programming'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: [],
     testCases: [
@@ -98,7 +93,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(weights) ≤ 10⁵\n- -10⁹ ≤ weights[i] ≤ 10⁹\n- 0 ≤ len(values) ≤ 10⁵\n- -10⁹ ≤ values[i] ≤ 10⁹\n- -10⁹ ≤ W ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['dynamic-programming', 'knapsack'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: [],
     testCases: [
@@ -117,7 +111,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(tree) ≤ 10⁴\n- -10⁵ ≤ tree[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['trees', 'bfs'],
     primaryConcept: 'trees',
     secondaryConcepts: ['queues'],
     testCases: [
@@ -134,7 +127,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(tree) ≤ 100\n- -10⁴ ≤ tree[i] ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['trees'],
     primaryConcept: 'trees',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -151,7 +143,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(tree) ≤ 10⁴\n- -10⁵ ≤ tree[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['trees', 'bfs'],
     primaryConcept: 'trees',
     secondaryConcepts: ['queues'],
     testCases: [
@@ -170,7 +161,6 @@ A leaf is a node with no children. A left leaf is a leaf that is the left child 
     
     constraints: `- 0 ≤ len(tree) ≤ 10⁴\n- -10⁵ ≤ tree[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['trees'],
     primaryConcept: 'trees',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -189,7 +179,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- 0 ≤ len(grid) ≤ 10⁵`,
 difficulty: Difficulty.HARD,
-    tags: ['graphs', 'dfs', 'bfs'],
     primaryConcept: 'graphs',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -206,7 +195,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(grid) ≤ 10⁵`,
 difficulty: Difficulty.HARD,
-    tags: ['graphs', 'bfs'],
     primaryConcept: 'graphs',
     secondaryConcepts: ['queues'],
     testCases: [
@@ -223,7 +211,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- -10⁹ ≤ num_courses ≤ 10⁹\n- 0 ≤ len(prerequisites) ≤ 10⁵`,
 difficulty: Difficulty.HARD,
-    tags: ['graphs', 'topological-sort'],
     primaryConcept: 'graphs',
     secondaryConcepts: ['queues'],
     testCases: [
@@ -242,7 +229,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁵\n- -10⁹ ≤ nums[i] ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['backtracking'],
     primaryConcept: 'backtracking',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -259,7 +245,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['backtracking', 'subsets'],
     primaryConcept: 'backtracking',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -276,7 +261,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁹ ≤ n ≤ 10⁹`,
 difficulty: Difficulty.HARD,
-    tags: ['backtracking', 'n-queens'],
     primaryConcept: 'backtracking',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -295,7 +279,6 @@ difficulty: Difficulty.HARD,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['bit-manipulation', 'xor'],
     primaryConcept: 'bit_manipulation',
     secondaryConcepts: [],
     testCases: [
@@ -312,7 +295,6 @@ difficulty: Difficulty.MEDIUM,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['bit-manipulation'],
     primaryConcept: 'bit_manipulation',
     secondaryConcepts: [],
     testCases: [
@@ -329,7 +311,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- -10⁴ ≤ n ≤ 10⁴`,
 difficulty: Difficulty.EASY,
-    tags: ['bit-manipulation'],
     primaryConcept: 'bit_manipulation',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -346,7 +327,6 @@ difficulty: Difficulty.EASY,
     
     constraints: `- 0 ≤ len(nums) ≤ 10⁴\n- -10⁵ ≤ nums[i] ≤ 10⁵`,
 difficulty: Difficulty.MEDIUM,
-    tags: ['bit-manipulation', 'xor'],
     primaryConcept: 'bit_manipulation',
     secondaryConcepts: [],
     testCases: [

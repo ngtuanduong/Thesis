@@ -1,5 +1,15 @@
-import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
+import { IsString, IsOptional, IsInt, IsIn, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+
+export const VALID_TOPIC_GROUPS = [
+  'basics',
+  'control_flow',
+  'functions',
+  'data_structures',
+  'oop',
+  'algorithms',
+  'advanced',
+] as const;
 
 export class CreateConceptDto {
   @ApiProperty({ example: 'variables', description: 'Unique concept identifier' })
@@ -15,15 +25,19 @@ export class CreateConceptDto {
   @IsString()
   description?: string;
 
-  @ApiPropertyOptional({ example: 'Foundations', description: 'Topic grouping for organization' })
+  @ApiPropertyOptional({
+    example: 'basics',
+    enum: VALID_TOPIC_GROUPS,
+    description: 'Topic group: basics, control_flow, functions, data_structures, oop, algorithms, advanced',
+  })
   @IsOptional()
-  @IsString()
+  @IsIn(VALID_TOPIC_GROUPS, { message: `topicGroup must be one of: ${VALID_TOPIC_GROUPS.join(', ')}` })
   topicGroup?: string;
 
-  @ApiPropertyOptional({ example: 1, minimum: 1, maximum: 3, description: 'Difficulty tier (1-3)' })
+  @ApiPropertyOptional({ example: 1, minimum: 1, maximum: 5, description: 'Difficulty tier (1-5)' })
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Max(3)
+  @Max(5)
   difficultyTier?: number;
 }

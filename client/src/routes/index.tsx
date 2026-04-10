@@ -14,6 +14,7 @@ const KnowledgeMap = lazy(() => import('../pages/KnowledgeMap'));
 const ReviewQueue = lazy(() => import('../pages/ReviewQueue'));
 const InstructorDashboard = lazy(() => import('../pages/InstructorDashboard'));
 const ProblemManage = lazy(() => import('../pages/ProblemManage'));
+const ConceptManage = lazy(() => import('../pages/ConceptManage'));
 const AdminDashboard = lazy(() => import('../pages/AdminDashboard'));
 const Survey = lazy(() => import('../pages/Survey'));
 
@@ -49,6 +50,7 @@ function AppRoutes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/instructor" element={<InstructorDashboard />} />
           <Route path="/instructor/problems" element={<ProblemManage />} />
+          <Route path="/instructor/concepts" element={<ConceptManage />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/survey" element={<Survey />} />
         </Route>

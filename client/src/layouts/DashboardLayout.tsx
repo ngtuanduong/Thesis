@@ -18,6 +18,7 @@ import {
 import { useMe } from '../api/queries/useAuth';
 import ErrorBoundary from '../components/ErrorBoundary';
 import { useResponsive } from '../hooks/useResponsive';
+import styles from './DashboardLayout.module.css';
 
 const { Header, Sider, Content } = Layout;
 
@@ -48,6 +49,7 @@ function DashboardLayout() {
         { type: 'divider' },
         { key: '/instructor', icon: <TeamOutlined />, label: 'Instructor' },
         { key: '/instructor/problems', icon: <CodeOutlined />, label: 'Manage Problems' },
+        { key: '/instructor/concepts', icon: <NodeIndexOutlined />, label: 'Manage Concepts' },
       );
     }
 
@@ -84,17 +86,7 @@ function DashboardLayout() {
           width={256}
           styles={{ body: { padding: 0, background: '#001529' } }}
         >
-          <div
-            style={{
-              height: 64,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontSize: 20,
-              fontWeight: 700,
-            }}
-          >
+          <div className={styles.sidebarLogo} style={{ fontSize: 20 }}>
             AdaptLearn
           </div>
           <Menu
@@ -109,18 +101,8 @@ function DashboardLayout() {
           />
         </Drawer>
       ) : (
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div
-            style={{
-              height: 64,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: '#fff',
-              fontSize: collapsed ? 16 : 20,
-              fontWeight: 700,
-            }}
-          >
+        <Sider trigger={null} collapsible collapsed={collapsed} className={styles.sidebar}>
+          <div className={styles.sidebarLogo} style={{ fontSize: collapsed ? 16 : 20 }}>
             {collapsed ? 'AL' : 'AdaptLearn'}
           </div>
           <Menu
@@ -134,12 +116,10 @@ function DashboardLayout() {
       )}
       <Layout>
         <Header
+          className={styles.headerBar}
           style={{
             padding: isMobile ? '0 12px' : '0 24px',
             background: themeToken.colorBgContainer,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
           }}
         >
           {isMobile ? (

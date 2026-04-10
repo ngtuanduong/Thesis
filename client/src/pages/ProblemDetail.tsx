@@ -31,6 +31,7 @@ import { useProblem, useSubmitCode } from '../api/queries/useProblems';
 import { useProblemSubmissions, useSubmission } from '../api/queries/useSubmissions';
 import HintPanel from '../components/HintPanel';
 import type { Submission } from '../types';
+import styles from './ProblemDetail.module.css';
 
 const { Title, Text } = Typography;
 
@@ -183,7 +184,7 @@ function ProblemDetail() {
   ];
 
   if (isLoading) {
-    return <Spin size="large" style={{ display: 'block', margin: '100px auto' }} />;
+    return <Spin size="large" className="center-spin" />;
   }
 
   if (!problem) {
@@ -192,7 +193,7 @@ function ProblemDetail() {
 
   // ---------- Left panel: description / submissions ----------
   const leftPanel = (
-    <div style={{ height: '100%', overflow: 'auto', padding: '16px 20px' }}>
+    <div className={styles.leftPanel}>
       <Tabs
         activeKey={activeTab}
         onChange={setActiveTab}
@@ -209,32 +210,28 @@ function ProblemDetail() {
                   <Tag color={difficultyColors[problem.difficulty]}>
                     {problem.difficulty}
                   </Tag>
-                  {problem.tags?.map((tag: string) => (
-                    <Tag key={tag}>{tag}</Tag>
+                  {(problem as any).problemConcepts?.map((pc: any) => (
+                    <Tag key={pc.concept?.id} color={pc.isPrimary ? 'blue' : 'default'}>
+                      {pc.concept?.displayName}
+                    </Tag>
                   ))}
                 </Space>
 
                 {/* Description — rendered as markdown */}
                 <Title level={5}>Description</Title>
-                <div style={{ fontSize: 14, lineHeight: 1.8 }}>
+                <div className={styles.markdownContent}>
                   <ReactMarkdown>{problem.description}</ReactMarkdown>
                 </div>
 
                 {/* Examples — from visible test cases */}
                 {visibleTestCases.length > 0 && (
-                  <div style={{ marginTop: 24 }}>
+                  <div className="section-gap-lg">
                     <Title level={5}>Examples</Title>
                     {visibleTestCases.map((tc, idx) => (
                       <div
                         key={tc.id}
-                        style={{
-                          background: themeToken.colorBgLayout,
-                          borderRadius: 8,
-                          padding: '12px 16px',
-                          marginBottom: 12,
-                          fontFamily: 'monospace',
-                          fontSize: 13,
-                        }}
+                        className={styles.exampleBlock}
+                        style={{ background: themeToken.colorBgLayout }}
                       >
                         <Text strong>Example {idx + 1}</Text>
                         <div style={{ marginTop: 8 }}>
@@ -252,9 +249,9 @@ function ProblemDetail() {
 
                 {/* Constraints */}
                 {problem.constraints && (
-                  <div style={{ marginTop: 24 }}>
+                  <div className="section-gap-lg">
                     <Title level={5}>Constraints</Title>
-                    <div style={{ fontSize: 14, lineHeight: 1.8 }}>
+                    <div className={styles.markdownContent}>
                       <ReactMarkdown>{problem.constraints}</ReactMarkdown>
                     </div>
                   </div>
@@ -291,14 +288,8 @@ function ProblemDetail() {
   // ---------- Right panel: editor + results ----------
   const editorToolbar = (
     <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '8px 12px',
-        borderBottom: `1px solid ${themeToken.colorBorderSecondary}`,
-        background: themeToken.colorBgLayout,
-      }}
+      className={styles.panelToolbar}
+      style={{ borderBottom: `1px solid ${themeToken.colorBorderSecondary}`, background: themeToken.colorBgLayout }}
     >
       <Select
         value={language}
@@ -320,14 +311,8 @@ function ProblemDetail() {
 
   const resultsToolbar = (
     <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '8px 12px',
-        borderBottom: `1px solid ${themeToken.colorBorderSecondary}`,
-        background: themeToken.colorBgLayout,
-      }}
+      className={styles.panelToolbar}
+      style={{ borderBottom: `1px solid ${themeToken.colorBorderSecondary}`, background: themeToken.colorBgLayout }}
     >
       <Text strong style={{ fontSize: 13 }}>
         Results
@@ -355,7 +340,7 @@ function ProblemDetail() {
   );
 
   const resultDisplay = (
-    <div style={{ padding: 12, overflow: 'auto', flex: 1 }}>
+    <div className={styles.resultContent}>
       {latestResult ? (
         <div>
           <Space style={{ marginBottom: 12 }}>
@@ -379,19 +364,7 @@ function ProblemDetail() {
             )}
           </Space>
           {latestResult.output && (
-            <div
-              style={{
-                background: '#1e1e1e',
-                color: '#d4d4d4',
-                borderRadius: 6,
-                padding: 12,
-                fontFamily: 'monospace',
-                fontSize: 13,
-                whiteSpace: 'pre-wrap',
-                maxHeight: 200,
-                overflow: 'auto',
-              }}
-            >
+            <div className={styles.codeOutput}>
               {latestResult.output}
             </div>
           )}
@@ -407,9 +380,9 @@ function ProblemDetail() {
   const rightPanel = (
     <Splitter layout="vertical" style={{ height: '100%' }}>
       <Splitter.Panel defaultSize="65%" min="30%">
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className={styles.columnFull}>
           {editorToolbar}
-          <div style={{ flex: 1, overflow: 'auto' }}>
+          <div className={styles.flexGrow}>
             <CodeMirror
               value={code}
               onChange={setCode}
@@ -429,10 +402,10 @@ function ProblemDetail() {
         </div>
       </Splitter.Panel>
       <Splitter.Panel defaultSize="35%" min="15%">
-        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className={styles.columnFull}>
           {resultsToolbar}
           {resultDisplay}
-          <div style={{ padding: '0 12px 8px' }}>
+          <div className={styles.hintFooter}>
             <HintPanel
               problemId={id!}
               code={code}
@@ -446,7 +419,7 @@ function ProblemDetail() {
 
   if (isMobile) {
     return (
-      <div style={{ height: 'calc(100vh - 120px)', margin: -12, display: 'flex', flexDirection: 'column' }}>
+      <div className={styles.mobileWrapper}>
         <Tabs
           activeKey={mobileTab}
           onChange={(key) => setMobileTab(key as 'problem' | 'code')}
@@ -456,7 +429,7 @@ function ProblemDetail() {
               key: 'problem',
               label: 'Problem',
               children: (
-                <div style={{ overflow: 'auto', height: 'calc(100vh - 180px)', padding: '0 4px' }}>
+                <div className={styles.mobileProblemScroll}>
                   {leftPanel}
                 </div>
               ),
@@ -465,9 +438,9 @@ function ProblemDetail() {
               key: 'code',
               label: 'Code',
               children: (
-                <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 180px)' }}>
+                <div className={styles.mobileCodePanel}>
                   {editorToolbar}
-                  <div style={{ flex: 1, overflow: 'hidden' }}>
+                  <div className={styles.flexGrowHidden}>
                     <CodeMirror
                       value={code}
                       onChange={setCode}
@@ -485,11 +458,11 @@ function ProblemDetail() {
                     />
                   </div>
                   {latestResult && (
-                    <div style={{ maxHeight: 100, overflow: 'auto', borderTop: '1px solid #f0f0f0', padding: 8 }}>
+                    <div className={styles.mobileResultPreview}>
                       {resultDisplay}
                     </div>
                   )}
-                  <div style={{ padding: '8px 12px', borderTop: `1px solid ${themeToken.colorBorderSecondary}`, display: 'flex', gap: 8 }}>
+                  <div className={styles.mobileActions} style={{ borderTop: `1px solid ${themeToken.colorBorderSecondary}` }}>
                     <Button
                       block
                       icon={<PlayCircleOutlined />}
@@ -508,7 +481,7 @@ function ProblemDetail() {
                       Submit
                     </Button>
                   </div>
-                  <div style={{ padding: '0 12px 8px' }}>
+                  <div className={styles.hintFooter}>
                     <HintPanel
                       problemId={id!}
                       code={code}
@@ -525,7 +498,7 @@ function ProblemDetail() {
   }
 
   return (
-    <div style={{ height: 'calc(100vh - 160px)', margin: -24 }}>
+    <div className={styles.desktopWrapper}>
       <Splitter style={{ height: '100%' }}>
         <Splitter.Panel defaultSize="45%" min="25%">
           {leftPanel}

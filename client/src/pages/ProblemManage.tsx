@@ -26,13 +26,14 @@ import type { ColumnsType } from 'antd/es/table';
 import type { Problem } from '../types';
 import {
   useProblemsPaginated,
+  useConcepts,
   useCreateProblem,
   useUpdateProblem,
   useDeleteProblem,
 } from '../api/queries/useProblemManage';
 import { useResponsive } from '../hooks/useResponsive';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const { TextArea } = Input;
 
 const difficultyColors: Record<string, string> = {
@@ -45,7 +46,7 @@ interface ProblemFormValues {
   title: string;
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
-  tags?: string[];
+  conceptIds?: number[];
   starterCode?: string;
   testCases?: { input: string; expected: string; isHidden: boolean }[];
 }
@@ -74,6 +75,7 @@ function ProblemManage() {
     pageSize,
     search: debouncedSearch || undefined,
   });
+  const { data: allConcepts } = useConcepts();
   const createProblem = useCreateProblem();
   const updateProblem = useUpdateProblem();
   const deleteProblem = useDeleteProblem();
@@ -95,7 +97,7 @@ function ProblemManage() {
         title: problem.title,
         description: problem.description,
         difficulty: problem.difficulty,
-        tags: problem.tags ?? [],
+        conceptIds: (problem as any).problemConcepts?.map((pc: any) => pc.conceptId ?? pc.concept?.id) ?? [],
         starterCode: problem.starterCode ?? '',
         testCases:
           problem.testCases && problem.testCases.length > 0
@@ -124,7 +126,7 @@ function ProblemManage() {
         title: values.title,
         description: values.description,
         difficulty: values.difficulty,
-        tags: values.tags,
+        conceptIds: values.conceptIds,
         starterCode: values.starterCode?.trim() || undefined,
         testCases: values.testCases?.filter(
           (tc) => tc.input.trim() !== '' || tc.expected.trim() !== '',
@@ -182,17 +184,22 @@ function ProblemManage() {
       onFilter: (value, record) => record.difficulty === value,
     },
     {
-      title: 'Tags',
-      dataIndex: 'tags',
-      key: 'tags',
+      title: 'Concepts',
+      key: 'concepts',
       responsive: ['md'] as any,
-      render: (tags: string[]) => (
-        <Space size={[0, 4]} wrap>
-          {tags?.map((tag) => (
-            <Tag key={tag}>{tag}</Tag>
-          ))}
-        </Space>
-      ),
+      render: (_: unknown, record: any) => {
+        const concepts = record.problemConcepts;
+        if (!concepts || concepts.length === 0) return <Text type="secondary">--</Text>;
+        return (
+          <Space size={[0, 4]} wrap>
+            {concepts.map((pc: any, idx: number) => (
+              <Tag key={idx} color={pc.isPrimary ? 'blue' : 'default'}>
+                {pc.concept?.displayName}
+              </Tag>
+            ))}
+          </Space>
+        );
+      },
     },
     {
       title: 'Test Cases',
@@ -204,15 +211,15 @@ function ProblemManage() {
     {
       title: 'Actions',
       key: 'actions',
-      width: 150,
+      width: isMobile ? 80 : 150,
       render: (_: unknown, record: Problem) => (
-        <Space>
+        <Space size={isMobile ? 0 : 'small'}>
           <Button
             type="link"
             icon={<EditOutlined />}
             onClick={() => openEditModal(record)}
           >
-            Edit
+            {!isMobile && 'Edit'}
           </Button>
           <Popconfirm
             title="Delete problem"
@@ -222,7 +229,7 @@ function ProblemManage() {
             cancelText="No"
           >
             <Button type="link" danger icon={<DeleteOutlined />}>
-              Delete
+              {!isMobile && 'Delete'}
             </Button>
           </Popconfirm>
         </Space>
@@ -272,6 +279,7 @@ function ProblemManage() {
             }
           },
         }}
+        scroll={{ x: 500 }}
       />
 
       <Modal
@@ -322,11 +330,15 @@ function ProblemManage() {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12}>
-              <Form.Item name="tags" label="Tags">
+              <Form.Item name="conceptIds" label="Concepts">
                 <Select
-                  mode="tags"
-                  placeholder="Type and press Enter to add tags"
-                  tokenSeparators={[',']}
+                  mode="multiple"
+                  placeholder="Select concepts"
+                  showSearch
+                  options={(allConcepts ?? []).map((c) => ({ label: c.displayName, value: c.id }))}
+                  filterOption={(input, option) =>
+                    (option?.label as string)?.toLowerCase().includes(input.toLowerCase()) ?? false
+                  }
                 />
               </Form.Item>
             </Col>

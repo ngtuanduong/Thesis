@@ -163,7 +163,6 @@ Output: (10, 5)
 
 **Note:** Return the result as a tuple.`,
     difficulty: Difficulty.EASY,
-    tags: ['variables', 'basics'],
     primaryConcept: 'variables',
     secondaryConcepts: [],
     testCases: [
@@ -192,7 +191,6 @@ Input: value = "hello"
 Output: "string"
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['data-types', 'basics'],
     primaryConcept: 'data_types',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -219,7 +217,6 @@ Input: a = 10, b = 0, op = "/"
 Output: "Error"
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['operators', 'conditionals'],
     primaryConcept: 'operators',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -243,7 +240,6 @@ Input: s = "Python"
 Output: "nohtyP"
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['strings', 'loops'],
     primaryConcept: 'strings',
     secondaryConcepts: ['loops'],
     testCases: [
@@ -274,7 +270,6 @@ Input: score = 85
 Output: "B"
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['conditionals'],
     primaryConcept: 'conditionals',
     secondaryConcepts: [],
     testCases: [
@@ -299,7 +294,6 @@ Input: n = 5
 Output: ["1", "2", "Fizz", "4", "Buzz"]
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['loops', 'conditionals'],
     primaryConcept: 'loops',
     secondaryConcepts: ['conditionals'],
     testCases: [
@@ -320,7 +314,6 @@ Input: n = 3
 Output: [[1, 2, 3], [2, 4, 6], [3, 6, 9]]
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['nested-loops'],
     primaryConcept: 'nested_loops',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -352,7 +345,6 @@ Output: 0.0
 
 The function to test will be specified in the input as \`func\`.`,
     difficulty: Difficulty.EASY,
-    tags: ['functions', 'math'],
     primaryConcept: 'functions',
     secondaryConcepts: ['operators'],
     testCases: [
@@ -383,7 +375,6 @@ Input: base = 2, exp = -2
 Output: 0.25
 \`\`\``,
     difficulty: Difficulty.MEDIUM,
-    tags: ['functions', 'recursion', 'math'],
     primaryConcept: 'parameters',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -413,7 +404,6 @@ Output: 1
 **Constraints:**
 - 0 <= n <= 20`,
     difficulty: Difficulty.EASY,
-    tags: ['recursion'],
     primaryConcept: 'recursion',
     secondaryConcepts: ['functions'],
     testCases: [
@@ -445,7 +435,6 @@ Output: 55
 **Constraints:**
 - 0 <= n <= 30`,
     difficulty: Difficulty.EASY,
-    tags: ['recursion', 'dynamic-programming'],
     primaryConcept: 'recursion',
     secondaryConcepts: ['dynamic_programming'],
     testCases: [
@@ -470,7 +459,6 @@ Input: nums = [1, 1, 2, 2, 3]
 Output: [1, 2, 3]
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['lists', 'two-pointers'],
     primaryConcept: 'lists',
     secondaryConcepts: ['two_pointers'],
     testCases: [
@@ -495,7 +483,6 @@ Output: [5, 6, 7, 1, 2, 3, 4]
 - 1 <= nums.length <= 10^5
 - 0 <= k <= 10^5`,
     difficulty: Difficulty.MEDIUM,
-    tags: ['lists'],
     primaryConcept: 'lists',
     secondaryConcepts: [],
     testCases: [
@@ -518,7 +505,6 @@ Input: text = "the cat sat on the mat"
 Output: {"the": 2, "cat": 1, "sat": 1, "on": 1, "mat": 1}
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['dictionaries', 'strings'],
     primaryConcept: 'dictionaries',
     secondaryConcepts: ['strings', 'loops'],
     testCases: [
@@ -541,7 +527,6 @@ Input: list1 = [1, 2, 2, 3, 4], list2 = [2, 3, 3, 5]
 Output: [2, 3]
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['sets', 'lists'],
     primaryConcept: 'sets',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -570,7 +555,6 @@ Input: s = "(]"
 Output: false
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['stacks', 'strings'],
     primaryConcept: 'stacks',
     secondaryConcepts: ['strings'],
     testCases: [
@@ -601,7 +585,6 @@ r.is_square()  # False
 
 The test input specifies the method to call.`,
     difficulty: Difficulty.EASY,
-    tags: ['classes', 'oop'],
     primaryConcept: 'classes',
     secondaryConcepts: [],
     testCases: [
@@ -629,7 +612,6 @@ Input: nums = [-1, 0, 3, 5, 9, 12], target = 2
 Output: -1
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['searching', 'binary-search'],
     primaryConcept: 'searching',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -652,7 +634,6 @@ Input: nums = [64, 34, 25, 12, 22, 11, 90]
 Output: [11, 12, 22, 25, 34, 64, 90]
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['sorting', 'nested-loops'],
     primaryConcept: 'sorting',
     secondaryConcepts: ['nested_loops', 'lists'],
     testCases: [
@@ -681,7 +662,6 @@ Explanation: Subarray [5, 1, 3] has the maximum sum of 9.
 **Constraints:**
 - 1 <= k <= nums.length <= 10^5`,
     difficulty: Difficulty.MEDIUM,
-    tags: ['sliding-window', 'arrays'],
     primaryConcept: 'sliding_window',
     secondaryConcepts: ['lists'],
     testCases: [
@@ -705,7 +685,6 @@ Output: 3
 Explanation: Select activities [1,3], [5,7], [8,9]
 \`\`\``,
     difficulty: Difficulty.MEDIUM,
-    tags: ['greedy', 'sorting'],
     primaryConcept: 'greedy',
     secondaryConcepts: ['sorting'],
     testCases: [
@@ -737,7 +716,6 @@ Output: 8
 **Constraints:**
 - 1 <= n <= 45`,
     difficulty: Difficulty.EASY,
-    tags: ['dynamic-programming'],
     primaryConcept: 'dynamic_programming',
     secondaryConcepts: ['recursion'],
     testCases: [
@@ -766,7 +744,6 @@ Output: ["()"]
 **Constraints:**
 - 1 <= n <= 8`,
     difficulty: Difficulty.MEDIUM,
-    tags: ['backtracking', 'recursion'],
     primaryConcept: 'backtracking',
     secondaryConcepts: ['recursion', 'strings'],
     testCases: [
@@ -791,7 +768,6 @@ Input: nums = [4, 1, 2, 1, 2]
 Output: 4
 \`\`\``,
     difficulty: Difficulty.EASY,
-    tags: ['bit-manipulation'],
     primaryConcept: 'bit_manipulation',
     secondaryConcepts: [],
     testCases: [
@@ -912,7 +888,6 @@ export async function seedAdaptive(course1Id: string, course2Id: string) {
           difficulty: p.difficulty,
           constraints: p.constraints || null,
           courseId: batch.courseId,
-          tags: p.tags,
           starterCode: generateStarterCode(p.testCases),
           testCases: {
             create: p.testCases,

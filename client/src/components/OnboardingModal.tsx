@@ -8,6 +8,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useResponsive } from '../hooks/useResponsive';
 
+import styles from './OnboardingModal.module.css';
+
 const { Title, Paragraph, Text } = Typography;
 
 const ONBOARDING_KEY = 'adaptlearn_onboarding_done';
@@ -17,7 +19,7 @@ const steps = [
     title: 'Welcome to AdaptLearn',
     icon: <RocketOutlined />,
     content: (
-      <div style={{ textAlign: 'center', padding: '24px 0' }}>
+      <div className={styles.stepContent}>
         <Title level={4}>Personalized Programming Learning</Title>
         <Paragraph>
           AdaptLearn adapts to your skill level using AI-powered algorithms.
@@ -31,7 +33,7 @@ const steps = [
     title: 'Your Knowledge Map',
     icon: <NodeIndexOutlined />,
     content: (
-      <div style={{ textAlign: 'center', padding: '24px 0' }}>
+      <div className={styles.stepContent}>
         <Title level={4}>Track Your Progress</Title>
         <Paragraph>
           The Knowledge Map visualizes your mastery across all programming
@@ -46,7 +48,7 @@ const steps = [
     title: 'Get Started',
     icon: <TrophyOutlined />,
     content: (
-      <div style={{ textAlign: 'center', padding: '24px 0' }}>
+      <div className={styles.stepContent}>
         <Title level={4}>Ready to Learn?</Title>
         <Paragraph>
           Head to the Dashboard to see your personalized recommendations, or
@@ -92,7 +94,7 @@ function OnboardingModal() {
       closable
     >
       {isMobile ? (
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+        <div className={styles.stepIndicator}>
           <Text type="secondary">Step {current + 1} of {steps.length}</Text>
         </div>
       ) : (
@@ -106,7 +108,7 @@ function OnboardingModal() {
 
       {steps[current]?.content}
 
-      <div style={{ textAlign: 'right', marginTop: 16 }}>
+      <div className={styles.footer}>
         <Space>
           {current > 0 && (
             <Button onClick={() => setCurrent(current - 1)}>Previous</Button>

@@ -1,0 +1,16 @@
+.hintCard {
+  margin-bottom: var(--space-2);
+  padding: var(--space-2) 10px;
+  background: var(--hint-bg);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--hint-border);
+}
+
+.hintCardHeader {
+  margin-bottom: var(--space-1);
+}
+
+.loadingCenter {
+  text-align: center;
+  padding: var(--space-3);
+}
