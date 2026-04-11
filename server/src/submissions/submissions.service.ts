@@ -32,6 +32,11 @@ export class SubmissionsService {
       data: { ...dto, userId, status: SubmissionStatus.PENDING },
     });
 
+    // Auto-enroll student in the problem's course (if any)
+    this.autoEnroll(dto.problemId, userId).catch((error) => {
+      this.logger.warn(`Auto-enroll skipped: ${error.message}`);
+    });
+
     // Execute code asynchronously
     this.executeSubmission(submission.id, dto.problemId, dto.code, dto.language).catch(
       (error) => {
@@ -40,6 +45,24 @@ export class SubmissionsService {
     );
 
     return submission;
+  }
+
+  private async autoEnroll(problemId: string, userId: string) {
+    const problem = await this.prisma.problem.findUnique({
+      where: { id: problemId },
+      select: { courseId: true },
+    });
+    if (!problem?.courseId) return;
+
+    const existing = await this.prisma.enrollment.findUnique({
+      where: { userId_courseId: { userId, courseId: problem.courseId } },
+    });
+    if (existing) return;
+
+    await this.prisma.enrollment.create({
+      data: { userId, courseId: problem.courseId },
+    });
+    this.logger.log(`Auto-enrolled user ${userId} in course ${problem.courseId}`);
   }
 
   private async executeSubmission(
@@ -90,14 +113,7 @@ export class SubmissionsService {
         },
       });
 
-      // If submission was accepted, update user's skill profile
-      if (result.status === SubmissionStatus.ACCEPTED) {
-        await this.updateUserSkills(updatedSubmission.userId).catch((error) => {
-          this.logger.error(`Failed to update user skills: ${error.message}`);
-        });
-      }
-
-      // Update adaptive learning layers (BKT, Elo, MAB, FSRS)
+      // Update skill profile + adaptive layers in parallel
       if (
         result.status === SubmissionStatus.ACCEPTED ||
         result.status === SubmissionStatus.WRONG_ANSWER
@@ -109,17 +125,33 @@ export class SubmissionsService {
           },
         });
 
-        await this.adaptiveService
-          .updateAfterSubmission({
-            studentId: updatedSubmission.userId,
-            problemId: problemId,
-            isCorrect: result.status === SubmissionStatus.ACCEPTED,
-            attemptNumber: attemptCount,
-            timeSpent: result.runtime ? Math.round(result.runtime / 1000) : 60,
-          })
-          .catch((error) => {
-            this.logger.error(`Failed to update adaptive layers: ${error.message}`);
-          });
+        const parallelTasks: Promise<unknown>[] = [];
+
+        // Skill profile update (ACCEPTED only)
+        if (result.status === SubmissionStatus.ACCEPTED) {
+          parallelTasks.push(
+            this.updateUserSkills(updatedSubmission.userId).catch((error) => {
+              this.logger.error(`Failed to update user skills: ${error.message}`);
+            }),
+          );
+        }
+
+        // Adaptive layers update (BKT, Elo, MAB, FSRS)
+        parallelTasks.push(
+          this.adaptiveService
+            .updateAfterSubmission({
+              studentId: updatedSubmission.userId,
+              problemId: problemId,
+              isCorrect: result.status === SubmissionStatus.ACCEPTED,
+              attemptNumber: attemptCount,
+              timeSpent: result.runtime ? Math.round(result.runtime / 1000) : 60,
+            })
+            .catch((error) => {
+              this.logger.error(`Failed to update adaptive layers: ${error.message}`);
+            }),
+        );
+
+        await Promise.all(parallelTasks);
       }
     } catch (error: any) {
       // Handle execution errors

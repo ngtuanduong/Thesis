@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { CoursesService } from './courses.service';
@@ -24,15 +24,31 @@ export class CoursesController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List all courses' })
-  findAll() {
-    return this.coursesService.findAll();
+  @ApiOperation({ summary: 'List all courses with enrollment counts' })
+  findAll(@CurrentUser() user: { id: string }) {
+    return this.coursesService.findAll(user.id);
   }
 
   @Get(':id')
   @ApiOperation({ summary: 'Get course by ID with problems' })
   findOne(@Param('id') id: string) {
     return this.coursesService.findById(id);
+  }
+
+  @Put(':id')
+  @UseGuards(RolesGuard)
+  @Roles(Role.INSTRUCTOR, Role.ADMIN)
+  @ApiOperation({ summary: 'Update a course (Instructor/Admin)' })
+  update(@Param('id') id: string, @Body() dto: CreateCourseDto) {
+    return this.coursesService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles(Role.INSTRUCTOR, Role.ADMIN)
+  @ApiOperation({ summary: 'Delete a course (Instructor/Admin)' })
+  remove(@Param('id') id: string) {
+    return this.coursesService.remove(id);
   }
 
   @Post(':id/enroll')

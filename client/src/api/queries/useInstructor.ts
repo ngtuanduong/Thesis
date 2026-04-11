@@ -1,4 +1,4 @@
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import api from '../axios';
 import type { PaginatedResponse } from '../../types';
 
@@ -48,11 +48,14 @@ interface InstructorProblem {
   concepts: ProblemConcept[];
 }
 
-interface CourseItem {
+export interface CourseItem {
   id: string;
   title: string;
   description?: string;
   instructorId: string;
+  instructor?: { id: string; name: string };
+  _count?: { enrollments: number; problems: number };
+  isEnrolled?: boolean;
 }
 
 export function useInstructorDashboard(courseId: string) {
@@ -85,6 +88,7 @@ export function useInstructorProblems(params: {
   page: number;
   pageSize: number;
   search?: string;
+  courseId?: string;
 }) {
   return useQuery({
     queryKey: ['instructor-problems', params],
@@ -94,6 +98,7 @@ export function useInstructorProblems(params: {
         pageSize: String(params.pageSize),
       };
       if (params.search) query.search = params.search;
+      if (params.courseId) query.courseId = params.courseId;
       const res = await api.get<PaginatedResponse<InstructorProblem>>(
         '/instructor/problems/manage',
         { params: query },
@@ -110,6 +115,45 @@ export function useCourses() {
     queryFn: async () => {
       const res = await api.get<CourseItem[]>('/courses');
       return res.data;
+    },
+  });
+}
+
+export function useCreateCourse() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: { title: string; description?: string }) => {
+      const res = await api.post<CourseItem>('/courses', data);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+    },
+  });
+}
+
+export function useDeleteCourse() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const res = await api.delete(`/courses/${id}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
+    },
+  });
+}
+
+export function useEnrollCourse() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (courseId: string) => {
+      const res = await api.post(`/courses/${courseId}/enroll`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
     },
   });
 }

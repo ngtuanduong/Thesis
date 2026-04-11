@@ -60,6 +60,12 @@ export function useSubmitCode() {
     },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ['submissions', variables.problemId] });
+      // Invalidate all adaptive data so it refreshes after the backend pipeline completes
+      queryClient.invalidateQueries({ queryKey: ['knowledge-state'] });
+      queryClient.invalidateQueries({ queryKey: ['adaptive-recommendations'] });
+      queryClient.invalidateQueries({ queryKey: ['review-queue'] });
+      queryClient.invalidateQueries({ queryKey: ['review-cards'] });
+      queryClient.invalidateQueries({ queryKey: ['instructor-dashboard'] });
     },
   });
 }

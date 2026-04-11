@@ -6,12 +6,26 @@ Implements FSRS-5 algorithm for scheduling concept reviews to prevent forgetting
 
 import logging
 import math
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.tables import Concept, FsrsCard
+
+
+def _utcnow() -> datetime:
+    """Naive UTC now (matches DB storage)."""
+    return datetime.utcnow()
+
+
+def _isoformat(dt: datetime | None) -> str | None:
+    """ISO format with Z suffix for naive UTC datetimes."""
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        return dt.isoformat() + "Z"
+    return dt.isoformat()
 
 logger = logging.getLogger(__name__)
 
@@ -134,7 +148,7 @@ class FSRSService:
                 stability=1.0,
                 retrievability=1.0,
                 state="NEW",
-                due_date=datetime.utcnow(),
+                due_date=_utcnow(),
                 reps=0,
                 lapses=0,
             )
@@ -155,7 +169,7 @@ class FSRSService:
         Rating: 1=Again, 2=Hard, 3=Good, 4=Easy
         """
         card = await self.get_or_create_card(session, student_id, concept_id)
-        now = datetime.utcnow()
+        now = _utcnow()
 
         stability_before = card.stability
         difficulty_before = card.difficulty
@@ -206,7 +220,7 @@ class FSRSService:
             "stability_before": round(stability_before, 4),
             "stability_after": round(card.stability, 4),
             "state": card.state,
-            "next_review": card.due_date.isoformat(),
+            "next_review": _isoformat(card.due_date),
             "reps": card.reps,
             "lapses": card.lapses,
         }
@@ -224,7 +238,7 @@ class FSRSService:
             )
         )
         rows = result.all()
-        now = datetime.utcnow()
+        now = _utcnow()
 
         due_cards = []
         upcoming_cards = []
@@ -244,7 +258,7 @@ class FSRSService:
                     "concept_name": concept.name,
                     "display_name": concept.display_name,
                     "retrievability": round(current_r, 4),
-                    "due_date": due_date.isoformat() if due_date else None,
+                    "due_date": _isoformat(due_date),
                     "days_overdue": max(0, (now - due_date).days),
                     "urgency": round(1.0 - current_r, 4),
                     "stability": round(card.stability, 2),
@@ -283,7 +297,7 @@ class FSRSService:
             )
         )
         rows = result.all()
-        now = datetime.utcnow()
+        now = _utcnow()
 
         cards = []
         for card, concept in rows:
@@ -315,8 +329,8 @@ class FSRSService:
                 "state": card.state,
                 "reps": card.reps,
                 "lapses": card.lapses,
-                "last_review": card.last_review.isoformat() if card.last_review else None,
-                "due_date": card.due_date.isoformat() if card.due_date else None,
+                "last_review": _isoformat(card.last_review),
+                "due_date": _isoformat(card.due_date),
                 "memory_status": memory_status,
             })
 
@@ -328,7 +342,7 @@ class FSRSService:
     ) -> dict | None:
         """Get specific card state."""
         card = await self.get_or_create_card(session, student_id, concept_id)
-        now = datetime.utcnow()
+        now = _utcnow()
 
         if card.last_review:
             elapsed_days = (now - card.last_review).total_seconds() / 86400
@@ -342,8 +356,8 @@ class FSRSService:
             "stability": round(card.stability, 4),
             "retrievability": round(current_r, 4),
             "state": card.state,
-            "due_date": card.due_date.isoformat() if card.due_date else None,
-            "last_review": card.last_review.isoformat() if card.last_review else None,
+            "due_date": _isoformat(card.due_date),
+            "last_review": _isoformat(card.last_review),
             "reps": card.reps,
             "lapses": card.lapses,
         }

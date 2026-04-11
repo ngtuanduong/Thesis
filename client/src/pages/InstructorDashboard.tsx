@@ -98,6 +98,7 @@ function InstructorDashboard() {
       page: problemPage,
       pageSize: problemPageSize,
       search: debouncedSearch || undefined,
+      courseId: activeCourseId || undefined,
     });
 
   const strugglingColumns: ColumnsType<StrugglingStudentRow> = [

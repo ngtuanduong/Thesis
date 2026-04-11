@@ -97,7 +97,7 @@ async def export_events(
             "event": log.event,
             "data": log.data,
             "session_id": log.session_id,
-            "created_at": log.created_at.isoformat() if log.created_at else None,
+            "created_at": log.created_at.isoformat() + "Z" if log.created_at else None,
         }
         for log in logs
     ]
@@ -118,7 +118,7 @@ async def export_knowledge_snapshots(session: AsyncSession) -> list[dict]:
             "p_mastery": round(s.p_mastery, 4),
             "n_attempts": s.n_attempts,
             "n_correct": s.n_correct,
-            "updated_at": s.updated_at.isoformat() if s.updated_at else None,
+            "updated_at": s.updated_at.isoformat() + "Z" if s.updated_at else None,
         }
         for s in states
     ]
@@ -159,7 +159,7 @@ async def export_fsrs_cards(session: AsyncSession) -> list[dict]:
             "stability": round(c.stability, 4),
             "retrievability": round(c.retrievability, 4),
             "state": c.state,
-            "due_date": c.due_date.isoformat() if c.due_date else None,
+            "due_date": c.due_date.isoformat() + "Z" if c.due_date else None,
             "reps": c.reps,
             "lapses": c.lapses,
         }

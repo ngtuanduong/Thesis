@@ -170,7 +170,7 @@ class EloService:
 
         # Append to history
         history_entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.utcnow().isoformat() + "Z",
             "rating": round(student_elo.rating, 1),
             "opponent_rating": round(problem_elo.rating, 1),
             "outcome": actual,

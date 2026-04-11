@@ -177,11 +177,13 @@ export class InstructorService {
     page: number;
     pageSize: number;
     search?: string;
+    courseId?: string;
   }): Promise<PaginatedResponse<any>> {
-    const { page, pageSize, search } = params;
+    const { page, pageSize, search, courseId } = params;
 
     const where: any = {};
     if (search) where.title = { contains: search, mode: 'insensitive' };
+    if (courseId) where.courseId = courseId;
 
     const selectFields = {
       id: true,

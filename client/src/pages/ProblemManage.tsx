@@ -31,6 +31,7 @@ import {
   useUpdateProblem,
   useDeleteProblem,
 } from '../api/queries/useProblemManage';
+import { useCourses } from '../api/queries/useInstructor';
 import { useResponsive } from '../hooks/useResponsive';
 
 const { Title, Text } = Typography;
@@ -46,6 +47,7 @@ interface ProblemFormValues {
   title: string;
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  courseId?: string;
   conceptIds?: number[];
   starterCode?: string;
   testCases?: { input: string; expected: string; isHidden: boolean }[];
@@ -57,6 +59,7 @@ function ProblemManage() {
   const [editingProblem, setEditingProblem] = useState<Problem | null>(null);
   const [searchText, setSearchText] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [courseFilter, setCourseFilter] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
   const { isMobile } = useResponsive();
@@ -74,8 +77,10 @@ function ProblemManage() {
     page,
     pageSize,
     search: debouncedSearch || undefined,
+    courseId: courseFilter,
   });
   const { data: allConcepts } = useConcepts();
+  const { data: allCourses } = useCourses();
   const createProblem = useCreateProblem();
   const updateProblem = useUpdateProblem();
   const deleteProblem = useDeleteProblem();
@@ -97,6 +102,7 @@ function ProblemManage() {
         title: problem.title,
         description: problem.description,
         difficulty: problem.difficulty,
+        courseId: problem.courseId || undefined,
         conceptIds: (problem as any).problemConcepts?.map((pc: any) => pc.conceptId ?? pc.concept?.id) ?? [],
         starterCode: problem.starterCode ?? '',
         testCases:
@@ -126,6 +132,7 @@ function ProblemManage() {
         title: values.title,
         description: values.description,
         difficulty: values.difficulty,
+        courseId: values.courseId || undefined,
         conceptIds: values.conceptIds,
         starterCode: values.starterCode?.trim() || undefined,
         testCases: values.testCases?.filter(
@@ -202,6 +209,18 @@ function ProblemManage() {
       },
     },
     {
+      title: 'Course',
+      dataIndex: 'courseId',
+      key: 'course',
+      width: 140,
+      responsive: ['lg'] as any,
+      render: (courseId: string | null) => {
+        if (!courseId) return <Text type="secondary">--</Text>;
+        const course = allCourses?.find((c) => c.id === courseId);
+        return <Tag>{course?.title ?? courseId}</Tag>;
+      },
+    },
+    {
       title: 'Test Cases',
       key: 'testCases',
       width: 110,
@@ -245,7 +264,7 @@ function ProblemManage() {
         <Title level={3} style={{ margin: 0 }}>
           Problem Management
         </Title>
-        <Space>
+        <Space wrap>
           <Input
             placeholder="Search by title..."
             prefix={<SearchOutlined />}
@@ -253,6 +272,14 @@ function ProblemManage() {
             onChange={(e) => setSearchText(e.target.value)}
             style={{ width: isMobile ? '100%' : 250 }}
             allowClear
+          />
+          <Select
+            placeholder="All Courses"
+            value={courseFilter}
+            onChange={(val) => { setCourseFilter(val || undefined); setPage(1); }}
+            style={{ width: 180 }}
+            allowClear
+            options={(allCourses ?? []).map((c) => ({ label: c.title, value: c.id }))}
           />
           <Button type="primary" icon={<PlusOutlined />} onClick={openCreateModal}>
             Create Problem
@@ -316,7 +343,7 @@ function ProblemManage() {
           </Form.Item>
 
           <Row gutter={16}>
-            <Col xs={24} sm={12}>
+            <Col xs={24} sm={8}>
               <Form.Item
                 name="difficulty"
                 label="Difficulty"
@@ -329,7 +356,16 @@ function ProblemManage() {
                 </Select>
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12}>
+            <Col xs={24} sm={8}>
+              <Form.Item name="courseId" label="Course">
+                <Select
+                  placeholder="Select course"
+                  allowClear
+                  options={(allCourses ?? []).map((c) => ({ label: c.title, value: c.id }))}
+                />
+              </Form.Item>
+            </Col>
+            <Col xs={24} sm={8}>
               <Form.Item name="conceptIds" label="Concepts">
                 <Select
                   mode="multiple"

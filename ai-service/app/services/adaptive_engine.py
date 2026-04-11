@@ -11,12 +11,14 @@ Feature flags (from config/env) control which layers are active:
 This enables control-group mode for evaluation (disable all = content-based only).
 """
 
+import asyncio
 import logging
 
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
+from app.database import async_session
 from app.models.tables import (
     Concept,
     EloRating,
@@ -74,7 +76,7 @@ class AdaptiveEngine:
         raw_diff = prob_result.scalar_one_or_none()
         problem_difficulty = raw_diff.value if hasattr(raw_diff, 'value') else str(raw_diff or "MEDIUM")
 
-        # --- Layer 1: Update BKT ---
+        # --- Phase 1: BKT first (MAB reward depends on mastery delta) ---
         bkt_result = {}
         p_mastery_before = 0.1
         p_mastery_after = 0.1
@@ -86,16 +88,19 @@ class AdaptiveEngine:
                     p_mastery_after = update["p_mastery_after"]
                     break
 
-        # --- Layer 2: Update Elo ---
-        elo_result = {}
-        if settings.enable_elo:
-            elo_result = await self.elo.update(
-                session, student_id, problem_id, is_correct, str(problem_difficulty)
-            )
+        # --- Phase 2: Elo, MAB, FSRS in parallel (each with its own session) ---
+        async def update_elo():
+            if not settings.enable_elo:
+                return {}
+            async with async_session() as s:
+                result = await self.elo.update(
+                    s, student_id, problem_id, is_correct, str(problem_difficulty)
+                )
+                return result
 
-        # --- Layer 3: Update MAB ---
-        mab_result = {}
-        if settings.enable_mab and concept_id is not None:
+        async def update_mab():
+            if not settings.enable_mab or concept_id is None:
+                return {}
             reward = compute_reward(
                 p_mastery_before,
                 p_mastery_after,
@@ -103,15 +108,23 @@ class AdaptiveEngine:
                 attempt_number,
                 time_spent_seconds,
             )
-            mab_result = await self.mab.update(
-                session, student_id, concept_id, problem_id, reward
-            )
+            async with async_session() as s:
+                result = await self.mab.update(
+                    s, student_id, concept_id, problem_id, reward
+                )
+                return result
 
-        # --- Layer 4: Update FSRS ---
-        fsrs_result = {}
-        if settings.enable_fsrs and concept_id is not None:
+        async def update_fsrs():
+            if not settings.enable_fsrs or concept_id is None:
+                return {}
             rating = submission_to_fsrs_rating(is_correct, attempt_number, time_spent_seconds)
-            fsrs_result = await self.fsrs.review(session, student_id, concept_id, rating)
+            async with async_session() as s:
+                result = await self.fsrs.review(s, student_id, concept_id, rating)
+                return result
+
+        elo_result, mab_result, fsrs_result = await asyncio.gather(
+            update_elo(), update_mab(), update_fsrs()
+        )
 
         # Invalidate cached data for this student
         await cache.invalidate_student(student_id)

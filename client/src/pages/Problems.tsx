@@ -5,6 +5,7 @@ import { SearchOutlined, FilterOutlined, BulbOutlined } from '@ant-design/icons'
 import type { ColumnsType } from 'antd/es/table';
 import { useProblemsPaginated } from '../api/queries/useProblems';
 import { useConcepts, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
+import { useCourses } from '../api/queries/useInstructor';
 import { useMe } from '../api/queries/useAuth';
 import { useResponsive } from '../hooks/useResponsive';
 import PageTour from '../components/onboarding/PageTour';
@@ -46,11 +47,13 @@ function Problems() {
     return [];
   });
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
 
   const { isMobile } = useResponsive();
   const { data: allConcepts } = useConcepts();
+  const { data: allCourses } = useCourses();
 
   // Debounce search text
   useEffect(() => {
@@ -64,7 +67,7 @@ function Problems() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setPage(1);
-  }, [selectedDifficulties, selectedConcepts]);
+  }, [selectedDifficulties, selectedConcepts, selectedCourse]);
 
   const { data, isLoading, isFetching } = useProblemsPaginated({
     page,
@@ -72,15 +75,17 @@ function Problems() {
     search: debouncedSearch || undefined,
     difficulty: selectedDifficulties.length ? selectedDifficulties : undefined,
     concepts: selectedConcepts.length ? selectedConcepts : undefined,
+    courseId: selectedCourse,
   });
 
-  const hasActiveFilters = selectedConcepts.length > 0 || selectedDifficulties.length > 0;
+  const hasActiveFilters = selectedConcepts.length > 0 || selectedDifficulties.length > 0 || !!selectedCourse;
 
   const clearAll = () => {
     setSearchText('');
     setDebouncedSearch('');
     setSelectedConcepts([]);
     setSelectedDifficulties([]);
+    setSelectedCourse(undefined);
   };
 
   const columns: ColumnsType<ProblemRow> = [
@@ -273,6 +278,17 @@ function Problems() {
             (option?.label as string)?.toLowerCase().includes(input.toLowerCase()) ?? false
           }
         />
+
+        {allCourses && allCourses.length > 0 && (
+          <Select
+            placeholder="Course"
+            style={{ minWidth: 160 }}
+            allowClear
+            value={selectedCourse}
+            onChange={(val) => setSelectedCourse(val || undefined)}
+            options={allCourses.map((c) => ({ label: c.title, value: c.id }))}
+          />
+        )}
 
         {hasActiveFilters && (
           <a onClick={clearAll} style={{ fontSize: 12, whiteSpace: 'nowrap' }}>

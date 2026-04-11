@@ -12,10 +12,21 @@ export class CoursesService {
     });
   }
 
-  async findAll() {
-    return this.prisma.course.findMany({
-      include: { instructor: { select: { id: true, name: true } } },
+  async findAll(userId?: string) {
+    const courses = await this.prisma.course.findMany({
+      include: {
+        instructor: { select: { id: true, name: true } },
+        _count: { select: { enrollments: true, problems: true } },
+        enrollments: userId
+          ? { where: { userId }, select: { id: true } }
+          : false,
+      },
     });
+
+    return courses.map(({ enrollments, ...course }) => ({
+      ...course,
+      isEnrolled: Array.isArray(enrollments) && enrollments.length > 0,
+    }));
   }
 
   async findById(id: string) {
@@ -32,9 +43,22 @@ export class CoursesService {
     return course;
   }
 
+  async update(id: string, dto: CreateCourseDto) {
+    return this.prisma.course.update({
+      where: { id },
+      data: { title: dto.title, description: dto.description },
+    });
+  }
+
+  async remove(id: string) {
+    return this.prisma.course.delete({ where: { id } });
+  }
+
   async enroll(courseId: string, userId: string) {
-    return this.prisma.enrollment.create({
-      data: { courseId, userId },
+    return this.prisma.enrollment.upsert({
+      where: { userId_courseId: { userId, courseId } },
+      create: { courseId, userId },
+      update: {},
     });
   }
 }

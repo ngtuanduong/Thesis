@@ -15,6 +15,7 @@ import {
   TeamOutlined,
   SettingOutlined,
   BookOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import { useMe } from '../api/queries/useAuth';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -43,6 +44,7 @@ function DashboardLayout() {
       { key: '/problems', icon: <CodeOutlined />, label: 'Problems' },
       { key: '/knowledge-map', icon: <NodeIndexOutlined />, label: 'Knowledge Map' },
       { key: '/review-queue', icon: <CalendarOutlined />, label: 'Review Queue' },
+      { key: '/courses', icon: <AppstoreOutlined />, label: 'My Courses' },
       { key: '/profile', icon: <UserOutlined />, label: 'Profile' },
       { key: '/glossary', icon: <BookOutlined />, label: 'Glossary' },
     ];
@@ -53,6 +55,7 @@ function DashboardLayout() {
         { key: '/instructor', icon: <TeamOutlined />, label: 'Instructor' },
         { key: '/instructor/problems', icon: <CodeOutlined />, label: 'Manage Problems' },
         { key: '/instructor/concepts', icon: <NodeIndexOutlined />, label: 'Manage Concepts' },
+        { key: '/instructor/courses', icon: <AppstoreOutlined />, label: 'Manage Courses' },
       );
     }
 

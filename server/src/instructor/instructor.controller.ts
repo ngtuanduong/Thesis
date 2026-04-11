@@ -34,6 +34,7 @@ export class InstructorController {
       page: query.page ?? 1,
       pageSize: query.pageSize ?? 10,
       search: query.search || undefined,
+      courseId: query.courseId || undefined,
     });
   }
 }
