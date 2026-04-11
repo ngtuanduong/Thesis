@@ -58,15 +58,15 @@
 }
 
 .scaleBarTrack {
-  position: relative;
   height: 8px;
   border-radius: 4px;
   margin: 0 6px;
 }
 
-.scaleStops {
+.scaleStopsTop,
+.scaleStopsBot {
   position: relative;
-  height: 28px;
+  height: 26px;
   margin: 0 6px;
 }
 
@@ -80,10 +80,9 @@
 
 .scaleStopMarker {
   width: 3px;
-  height: 10px;
+  height: 8px;
   background: var(--color-text-secondary, #8c8c8c);
   border-radius: 1px;
-  margin-bottom: 2px;
 }
 
 .scaleStopLabel {
@@ -99,6 +98,12 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 6px;
+}
+
+.whereTag {
+  white-space: normal;
+  height: auto;
+  line-height: 1.4;
 }
 
 .whereSectionLabel {

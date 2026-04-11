@@ -17,22 +17,32 @@ function ScaleBar({ stops, unit }: { stops: ScaleStop[]; unit: string }) {
     .map((s) => `${s.color} ${s.value}%`)
     .join(', ');
 
+  const topStops = stops.filter((_, i) => i % 2 === 0);
+  const botStops = stops.filter((_, i) => i % 2 !== 0);
+
   return (
     <div className={styles.scaleContainer}>
       <div className={styles.scaleLabel}>
         Value scale{unit ? ` (${unit})` : ''}
       </div>
+      {/* Top row: label above, tick below */}
+      <div className={styles.scaleStopsTop}>
+        {topStops.map((stop, i) => (
+          <div key={i} className={styles.scaleStop} style={{ left: `${stop.value}%` }}>
+            <span className={styles.scaleStopLabel}>{stop.label}</span>
+            <div className={styles.scaleStopMarker} />
+          </div>
+        ))}
+      </div>
+      {/* Gradient bar */}
       <div
         className={styles.scaleBarTrack}
         style={{ background: `linear-gradient(to right, ${gradient})` }}
       />
-      <div className={styles.scaleStops}>
-        {stops.map((stop, i) => (
-          <div
-            key={i}
-            className={styles.scaleStop}
-            style={{ left: `${stop.value}%` }}
-          >
+      {/* Bottom row: tick above, label below */}
+      <div className={styles.scaleStopsBot}>
+        {botStops.map((stop, i) => (
+          <div key={i} className={styles.scaleStop} style={{ left: `${stop.value}%` }}>
             <div className={styles.scaleStopMarker} />
             <span className={styles.scaleStopLabel}>{stop.label}</span>
           </div>
@@ -111,7 +121,7 @@ function TermCard({
             Where:
           </span>
           {entry.whereYouSeeIt.map((loc, i) => (
-            <Tag key={i} style={{ fontSize: 12 }}>{loc}</Tag>
+            <Tag key={i} className={styles.whereTag} style={{ fontSize: 12 }}>{loc}</Tag>
           ))}
         </div>
       )}
