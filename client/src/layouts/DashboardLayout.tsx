@@ -14,6 +14,7 @@ import {
   CalendarOutlined,
   TeamOutlined,
   SettingOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import { useMe } from '../api/queries/useAuth';
 import ErrorBoundary from '../components/ErrorBoundary';
@@ -43,6 +44,7 @@ function DashboardLayout() {
       { key: '/knowledge-map', icon: <NodeIndexOutlined />, label: 'Knowledge Map' },
       { key: '/review-queue', icon: <CalendarOutlined />, label: 'Review Queue' },
       { key: '/profile', icon: <UserOutlined />, label: 'Profile' },
+      { key: '/glossary', icon: <BookOutlined />, label: 'Glossary' },
     ];
 
     if (user?.role === 'INSTRUCTOR' || user?.role === 'ADMIN') {
