@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Table, Tag, Typography, Input, Space, Select } from 'antd';
 import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
@@ -6,6 +6,7 @@ import type { ColumnsType } from 'antd/es/table';
 import { useProblemsPaginated } from '../api/queries/useProblems';
 import { useConcepts } from '../api/queries/useAdaptive';
 import { useResponsive } from '../hooks/useResponsive';
+import PageTour from '../components/onboarding/PageTour';
 
 const { Title, Text } = Typography;
 
@@ -28,6 +29,9 @@ function Problems() {
   const [params] = useSearchParams();
   const initialSearch = params.get('search') || '';
   const initialConcept = params.get('concept') || '';
+
+  const filterBarRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
 
   const [searchText, setSearchText] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
@@ -132,14 +136,28 @@ function Problems() {
     },
   ];
 
+  const tourSteps = [
+    {
+      title: 'Search & Filter',
+      description: 'Search problems by title, filter by difficulty level (Easy/Medium/Hard), or narrow down by specific concepts.',
+      target: () => filterBarRef.current!,
+    },
+    {
+      title: 'Problem List',
+      description: 'Click any problem to start solving. Concept tags show which topics each problem covers — click a tag to filter by that concept.',
+      target: () => tableRef.current!,
+    },
+  ];
+
   return (
     <div>
+      <PageTour tourKey="problems" steps={tourSteps} />
       <div className="responsive-page-header">
         <Title level={3} style={{ margin: 0 }}>Problems</Title>
       </div>
 
       {/* Unified search & filter bar */}
-      <div className="filter-bar" style={{ marginTop: 12 }}>
+      <div className="filter-bar" style={{ marginTop: 12 }} ref={filterBarRef}>
         <Input
           placeholder="Search by title..."
           prefix={<SearchOutlined />}
@@ -194,6 +212,7 @@ function Problems() {
         </Text>
       </div>
 
+      <div ref={tableRef}>
       <Table
         columns={columns}
         dataSource={data?.data}
@@ -215,6 +234,7 @@ function Problems() {
         }}
         scroll={{ x: 500 }}
       />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { ConfigProvider, App as AntApp } from 'antd';
 import AppRoutes from './routes';
+import { OnboardingProvider } from './contexts/OnboardingContext';
 
 function App() {
   return (
@@ -12,7 +13,9 @@ function App() {
       }}
     >
       <AntApp>
-        <AppRoutes />
+        <OnboardingProvider>
+          <AppRoutes />
+        </OnboardingProvider>
       </AntApp>
     </ConfigProvider>
   );

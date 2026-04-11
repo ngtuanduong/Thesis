@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Card,
   Typography,
@@ -23,6 +24,9 @@ import { useMe } from '../api/queries/useAuth';
 import { useReviewQueue, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
 import type { ReviewItem } from '../types';
 import { useResponsive } from '../hooks/useResponsive';
+import PageTour from '../components/onboarding/PageTour';
+import TermTooltip from '../components/onboarding/TermTooltip';
+import GuidedEmptyState from '../components/onboarding/GuidedEmptyState';
 
 const { Title, Text } = Typography;
 
@@ -131,6 +135,11 @@ function ReviewQueue() {
   const { data: recData, isLoading: recLoading } = useAdaptiveRecommendations(user?.id, 5);
   const navigate = useNavigate();
 
+  const summaryRef = useRef<HTMLDivElement>(null);
+  const dueRef = useRef<HTMLDivElement>(null);
+  const upcomingRef = useRef<HTMLDivElement>(null);
+  const recsRef = useRef<HTMLDivElement>(null);
+
   if (reviewLoading) {
     return <Spin size="large" className="center-spin" />;
   }
@@ -139,15 +148,39 @@ function ReviewQueue() {
   const upcoming = reviewData?.upcoming || [];
   const criticalCount = dueNow.filter((r) => r.retrievability < 0.7).length;
 
+  const tourSteps = [
+    {
+      title: 'Review Summary',
+      description: '"Due Now" = concepts you should review today. "Critical" = memories fading fast and need immediate attention.',
+      target: () => summaryRef.current!,
+    },
+    {
+      title: 'Due for Review',
+      description: 'These concepts need practice now. The circular indicator shows memory strength — red means it is fading quickly.',
+      target: () => dueRef.current!,
+    },
+    {
+      title: 'Upcoming Reviews',
+      description: 'These reviews are coming up soon. The system schedules them at optimal intervals to maximize your retention.',
+      target: () => upcomingRef.current!,
+    },
+    {
+      title: 'Recommended Problems',
+      description: 'The adaptive engine suggests problems that will help you review the concepts that need attention.',
+      target: () => recsRef.current!,
+    },
+  ];
+
   return (
     <div>
+      <PageTour tourKey="reviewQueue" steps={tourSteps} />
       <Title level={3}>
         <CalendarOutlined style={{ marginRight: 8 }} />
-        Review Queue
+        <TermTooltip term="review_queue">Review Queue</TermTooltip>
       </Title>
 
       {/* Summary Stats */}
-      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }} ref={summaryRef}>
         <Col xs={12} sm={6}>
           <Card>
             <Statistic
@@ -185,7 +218,7 @@ function ReviewQueue() {
         <Col xs={12} sm={6}>
           <Card>
             <Statistic
-              title="Avg Memory"
+              title={<TermTooltip term="retrievability">Avg Memory</TermTooltip>}
               value={
                 dueNow.length > 0
                   ? Math.round(
@@ -212,7 +245,7 @@ function ReviewQueue() {
 
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         {/* Due Now */}
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={12} ref={dueRef}>
           <Card
             title={
               <span>
@@ -238,12 +271,12 @@ function ReviewQueue() {
         </Col>
 
         {/* Upcoming */}
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={12} ref={upcomingRef}>
           <Card
             title={
               <span>
                 <CalendarOutlined style={{ color: '#1890ff', marginRight: 8 }} />
-                Upcoming Reviews
+                <TermTooltip term="spaced_repetition">Upcoming Reviews</TermTooltip>
               </span>
             }
             extra={
@@ -266,6 +299,7 @@ function ReviewQueue() {
 
       {/* Adaptive Recommendations */}
       <Card
+        ref={recsRef}
         title="Recommended Next Problems"
         extra={<Text type="secondary">Powered by Adaptive Engine</Text>}
         style={{ marginTop: 16 }}
@@ -275,7 +309,7 @@ function ReviewQueue() {
             <Spin />
           </div>
         ) : !recData?.recommendations || recData.recommendations.length === 0 ? (
-          <Empty description="Solve problems to get adaptive recommendations!" />
+          <GuidedEmptyState type="recommendations" />
         ) : (
           <List
             dataSource={recData.recommendations}

@@ -30,6 +30,7 @@ import { oneDark } from '@codemirror/theme-one-dark';
 import { useProblem, useSubmitCode } from '../api/queries/useProblems';
 import { useProblemSubmissions, useSubmission } from '../api/queries/useSubmissions';
 import HintPanel from '../components/HintPanel';
+import PageTour from '../components/onboarding/PageTour';
 import type { Submission } from '../types';
 import styles from './ProblemDetail.module.css';
 
@@ -56,6 +57,13 @@ const FALLBACK_CODE = `def solution():
     pass
 `;
 
+const submissionErrorMessages: Record<string, string> = {
+  WRONG_ANSWER: 'Some test cases did not pass. Check your logic and try again — use the AI Tutor below for a hint!',
+  TIME_LIMIT: 'Your solution took too long. Consider optimizing your algorithm or reducing unnecessary loops.',
+  RUNTIME_ERROR: 'Your code crashed during execution. Check for errors like division by zero or index out of range.',
+  COMPILATION_ERROR: 'Your code has syntax errors. Review the error output below for details.',
+};
+
 function ProblemDetail() {
   const { id } = useParams<{ id: string }>();
   const { token: themeToken } = theme.useToken();
@@ -63,6 +71,12 @@ function ProblemDetail() {
   const { data: problem, isLoading } = useProblem(id!);
   const submitCode = useSubmitCode();
   const { data: submissions, refetch: refetchSubmissions } = useProblemSubmissions(id!);
+
+  const descRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<HTMLDivElement>(null);
+  const submitRef = useRef<HTMLDivElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLDivElement>(null);
 
   const effectiveStarterCode = problem?.starterCode || FALLBACK_CODE;
   const [code, setCode] = useState(FALLBACK_CODE);
@@ -109,7 +123,7 @@ function ProblemDetail() {
       if (polledSubmission.status === 'ACCEPTED') {
         message.success('All test cases passed!');
       } else {
-        message.error(`Submission: ${polledSubmission.status.replace(/_/g, ' ')}`);
+        message.error(submissionErrorMessages[polledSubmission.status] || `Submission: ${polledSubmission.status.replace(/_/g, ' ')}`);
       }
     }
   }, [polledSubmission?.status, polledSubmission?.id, pollingId]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -191,9 +205,37 @@ function ProblemDetail() {
     return <Title level={4}>Problem not found</Title>;
   }
 
+  const tourSteps = [
+    {
+      title: 'Problem Description',
+      description: 'Read the problem statement, examples, and constraints carefully before coding.',
+      target: () => descRef.current!,
+    },
+    {
+      title: 'Code Editor',
+      description: 'Write your Python solution here. The editor has syntax highlighting, autocomplete, and line numbers.',
+      target: () => editorRef.current!,
+    },
+    {
+      title: 'Run & Submit',
+      description: '"Run" tests against visible examples. "Submit" runs all test cases including hidden ones to verify your solution.',
+      target: () => submitRef.current!,
+    },
+    {
+      title: 'Results',
+      description: 'See your submission results here — status, runtime, and output details.',
+      target: () => resultRef.current!,
+    },
+    {
+      title: 'AI Tutor',
+      description: 'Stuck? Click "Get Hint" for a Socratic nudge. Hints start gentle and get more specific — you get 3 levels of help.',
+      target: () => hintRef.current!,
+    },
+  ];
+
   // ---------- Left panel: description / submissions ----------
   const leftPanel = (
-    <div className={styles.leftPanel}>
+    <div className={styles.leftPanel} ref={descRef}>
       <Tabs
         activeKey={activeTab}
         onChange={setActiveTab}
@@ -317,7 +359,7 @@ function ProblemDetail() {
       <Text strong style={{ fontSize: 13 }}>
         Results
       </Text>
-      <Space>
+      <Space ref={submitRef}>
         <Button
           size="small"
           icon={<PlayCircleOutlined />}
@@ -380,7 +422,7 @@ function ProblemDetail() {
   const rightPanel = (
     <Splitter layout="vertical" style={{ height: '100%' }}>
       <Splitter.Panel defaultSize="65%" min="30%">
-        <div className={styles.columnFull}>
+        <div className={styles.columnFull} ref={editorRef}>
           {editorToolbar}
           <div className={styles.flexGrow}>
             <CodeMirror
@@ -402,10 +444,10 @@ function ProblemDetail() {
         </div>
       </Splitter.Panel>
       <Splitter.Panel defaultSize="35%" min="15%">
-        <div className={styles.columnFull}>
+        <div className={styles.columnFull} ref={resultRef}>
           {resultsToolbar}
           {resultDisplay}
-          <div className={styles.hintFooter}>
+          <div className={styles.hintFooter} ref={hintRef}>
             <HintPanel
               problemId={id!}
               code={code}
@@ -499,6 +541,7 @@ function ProblemDetail() {
 
   return (
     <div className={styles.desktopWrapper}>
+      <PageTour tourKey="problemDetail" steps={tourSteps} />
       <Splitter style={{ height: '100%' }}>
         <Splitter.Panel defaultSize="45%" min="25%">
           {leftPanel}

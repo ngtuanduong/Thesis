@@ -1,4 +1,5 @@
-import { Row, Col, Card, Statistic, Typography, List, Tag, Spin, Empty, Progress } from 'antd';
+import { useRef } from 'react';
+import { Row, Col, Card, Statistic, Typography, List, Tag, Spin, Progress } from 'antd';
 import {
   CodeOutlined,
   CheckCircleOutlined,
@@ -12,7 +13,11 @@ import { useDashboardStats, useRecentSubmissions, useRecommendations } from '../
 import { useKnowledgeState, useReviewQueue, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
 import { useMe } from '../api/queries/useAuth';
 import { useNavigate } from 'react-router-dom';
-import OnboardingModal from '../components/OnboardingModal';
+import WelcomeFlow from '../components/onboarding/WelcomeFlow';
+import ColdStartBanner from '../components/onboarding/ColdStartBanner';
+import GuidedEmptyState from '../components/onboarding/GuidedEmptyState';
+import PageTour from '../components/onboarding/PageTour';
+import TermTooltip from '../components/onboarding/TermTooltip';
 import styles from './Dashboard.module.css';
 
 const { Title, Text } = Typography;
@@ -42,13 +47,53 @@ function Dashboard() {
   const { data: reviewData } = useReviewQueue(user?.id);
   const { data: adaptiveRecs } = useAdaptiveRecommendations(user?.id, 5);
 
+  const statsRef = useRef<HTMLDivElement>(null);
+  const masteryRef = useRef<HTMLDivElement>(null);
+  const reviewsRef = useRef<HTMLDivElement>(null);
+  const recsRef = useRef<HTMLDivElement>(null);
+  const activityRef = useRef<HTMLDivElement>(null);
+
+  const tourSteps = [
+    {
+      title: 'Your Progress Stats',
+      description: 'These cards show your overall progress — problems solved, submissions, and active days. They update as you solve problems.',
+      target: () => statsRef.current!,
+    },
+    ...(knowledgeState?.summary
+      ? [
+          {
+            title: 'Knowledge Mastery',
+            description: 'This shows how many concepts you have mastered. Click to see the full Knowledge Map with all concepts and their connections.',
+            target: () => masteryRef.current!,
+          },
+          {
+            title: 'Reviews Due',
+            description: 'When concepts start fading from memory, they show up here. Click to see your review schedule and practice before you forget.',
+            target: () => reviewsRef.current!,
+          },
+        ]
+      : []),
+    {
+      title: 'Recommended Problems',
+      description: 'The adaptive engine picks problems matched to your skill level. These update after every submission to keep you in the optimal learning zone.',
+      target: () => recsRef.current!,
+    },
+    {
+      title: 'Recent Activity',
+      description: 'Track your submission history here — see which problems you solved and how you performed.',
+      target: () => activityRef.current!,
+    },
+  ];
+
   return (
     <div>
-      <OnboardingModal />
+      <WelcomeFlow />
+      <PageTour tourKey="dashboard" steps={tourSteps} />
+      <ColdStartBanner problemsSolved={stats?.problemsSolved ?? 0} />
       <Title level={3}>Dashboard</Title>
 
       {/* Statistics Cards */}
-      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }} ref={statsRef}>
         <Col xs={12} sm={12} lg={6}>
           <Card>
             <Statistic
@@ -97,7 +142,7 @@ function Dashboard() {
       {/* Adaptive Learning Overview */}
       {knowledgeState?.summary && (
         <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-          <Col xs={24} sm={8}>
+          <Col xs={24} sm={8} ref={masteryRef}>
             <Card
               hoverable
               onClick={() => navigate('/knowledge-map')}
@@ -114,7 +159,7 @@ function Dashboard() {
                   }}
                 />
                 <div>
-                  <Text strong>Knowledge Mastery</Text>
+                  <Text strong><TermTooltip term="mastery">Knowledge Mastery</TermTooltip></Text>
                   <br />
                   <Text type="secondary" style={{ fontSize: 12 }}>
                     {knowledgeState.summary.mastered}/{knowledgeState.summary.total_concepts} concepts mastered
@@ -123,14 +168,14 @@ function Dashboard() {
               </div>
             </Card>
           </Col>
-          <Col xs={12} sm={8}>
+          <Col xs={12} sm={8} ref={reviewsRef}>
             <Card
               hoverable
               onClick={() => navigate('/review-queue')}
               style={{ cursor: 'pointer' }}
             >
               <Statistic
-                title="Reviews Due"
+                title={<TermTooltip term="review_queue">Reviews Due</TermTooltip>}
                 value={reviewData?.due_now?.length || 0}
                 prefix={<ThunderboltOutlined />}
                 valueStyle={{
@@ -168,10 +213,10 @@ function Dashboard() {
 
       {/* Recommendations and Recent Activity */}
       <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={12} ref={recsRef}>
           <Card
             title="Recommended Problems"
-            extra={<Text type="secondary">Adaptive Engine</Text>}
+            extra={<Text type="secondary"><TermTooltip term="adaptive_engine">Adaptive Engine</TermTooltip></Text>}
           >
             {adaptiveRecs?.recommendations && adaptiveRecs.recommendations.length > 0 ? (
               <List
@@ -209,7 +254,7 @@ function Dashboard() {
                 <Spin />
               </div>
             ) : !recommendations || recommendations.length === 0 ? (
-              <Empty description="Solve a problem to get personalized recommendations!" />
+              <GuidedEmptyState type="recommendations" />
             ) : (
               <List
                 dataSource={recommendations}
@@ -240,14 +285,14 @@ function Dashboard() {
           </Card>
         </Col>
 
-        <Col xs={24} lg={12}>
-          <Card title="📊 Recent Activity">
+        <Col xs={24} lg={12} ref={activityRef}>
+          <Card title="Recent Activity">
             {submissionsLoading ? (
               <div className={styles.spinCenter}>
                 <Spin />
               </div>
             ) : !recentSubmissions || recentSubmissions.length === 0 ? (
-              <Empty description="No recent activity yet. Start solving problems!" />
+              <GuidedEmptyState type="activity" />
             ) : (
               <List
                 dataSource={recentSubmissions}

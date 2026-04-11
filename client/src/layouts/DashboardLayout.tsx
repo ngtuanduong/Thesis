@@ -17,6 +17,7 @@ import {
 } from '@ant-design/icons';
 import { useMe } from '../api/queries/useAuth';
 import ErrorBoundary from '../components/ErrorBoundary';
+import HelpMenu from '../components/onboarding/HelpMenu';
 import { useResponsive } from '../hooks/useResponsive';
 import styles from './DashboardLayout.module.css';
 
@@ -129,9 +130,12 @@ function DashboardLayout() {
           ) : (
             <MenuFoldOutlined onClick={() => setCollapsed(true)} style={{ fontSize: 18 }} />
           )}
-          <Dropdown menu={userMenu} placement="bottomRight">
-            <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
-          </Dropdown>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <HelpMenu />
+            <Dropdown menu={userMenu} placement="bottomRight">
+              <Avatar icon={<UserOutlined />} style={{ cursor: 'pointer' }} />
+            </Dropdown>
+          </div>
         </Header>
         <Content
           style={{

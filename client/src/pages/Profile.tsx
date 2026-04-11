@@ -5,7 +5,6 @@ import {
   Descriptions,
   Spin,
   Progress,
-  Empty,
   List,
   Tag,
   Row,
@@ -21,6 +20,8 @@ import {
 } from '@ant-design/icons';
 import { useMe } from '../api/queries/useAuth';
 import { useKnowledgeState } from '../api/queries/useAdaptive';
+import GuidedEmptyState from '../components/onboarding/GuidedEmptyState';
+import TermTooltip from '../components/onboarding/TermTooltip';
 import type { ConceptState } from '../types';
 
 const { Title, Text } = Typography;
@@ -116,17 +117,7 @@ function Profile() {
             <Spin />
           </div>
         ) : !knowledgeState || !knowledgeState.concepts?.length ? (
-          <Empty
-            description={
-              <span>
-                <Text type="secondary">No mastery data yet.</Text>
-                <br />
-                <Text type="secondary">
-                  Solve problems to build your mastery profile.
-                </Text>
-              </span>
-            }
-          />
+          <GuidedEmptyState type="knowledge" />
         ) : (
           <>
             {/* Summary row — overall stats from BKT */}
@@ -169,7 +160,7 @@ function Profile() {
             )}
 
             <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
-              Mastery is estimated using Bayesian Knowledge Tracing (BKT) — a
+              <TermTooltip term="mastery">Mastery</TermTooltip> is estimated using a
               probabilistic model updated after every submission. Percentages
               reflect the estimated probability that you have learned the
               concept, accounting for slips and guesses.

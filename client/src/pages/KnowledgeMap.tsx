@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   ReactFlow,
   Background,
@@ -44,6 +44,9 @@ import { useMe } from '../api/queries/useAuth';
 import { useKnowledgeState, usePracticeForConcept } from '../api/queries/useAdaptive';
 import type { ConceptState, KnowledgeGraphNode, KnowledgeGraphEdge } from '../types';
 import { useResponsive } from '../hooks/useResponsive';
+import PageTour from '../components/onboarding/PageTour';
+import TermTooltip from '../components/onboarding/TermTooltip';
+import GuidedEmptyState from '../components/onboarding/GuidedEmptyState';
 import styles from './KnowledgeMap.module.css';
 
 const { Title, Text } = Typography;
@@ -307,6 +310,7 @@ function KnowledgeGraphViz({
   nodesep,
   ranksep,
   isMobile,
+  legendRef,
 }: {
   nodes: KnowledgeGraphNode[];
   edges: KnowledgeGraphEdge[];
@@ -314,6 +318,7 @@ function KnowledgeGraphViz({
   nodesep: number;
   ranksep: number;
   isMobile: boolean;
+  legendRef?: React.Ref<HTMLDivElement>;
 }) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
@@ -454,7 +459,7 @@ function KnowledgeGraphViz({
         </ReactFlow>
       </div>
       {/* Topic color legend */}
-      <div className={styles.legend}>
+      <div className={styles.legend} ref={legendRef}>
         {Object.entries(topicColors).map(([key, color]) => (
           <div key={key} className={styles.legendItem}>
             <div className={styles.legendDot} style={{ backgroundColor: color }} />
@@ -486,13 +491,38 @@ function KnowledgeMap() {
           <NodeIndexOutlined style={{ marginRight: 8 }} />
           Knowledge Map
         </Title>
-        <Empty
-          description="No knowledge data yet. Start solving problems to build your knowledge map!"
-          style={{ marginTop: 60 }}
-        />
+        <GuidedEmptyState type="knowledge" />
       </div>
     );
   }
+
+  const summaryRef = useRef<HTMLDivElement>(null);
+  const graphRef = useRef<HTMLDivElement>(null);
+  const legendRef = useRef<HTMLDivElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
+
+  const tourSteps = [
+    {
+      title: 'Mastery Overview',
+      description: 'Your overall mastery at a glance. "Mastered" means the system is confident you truly understand this concept.',
+      target: () => summaryRef.current!,
+    },
+    {
+      title: 'Concept Graph',
+      description: 'Each circle is a concept. Color = topic group, fill intensity = mastery level. Hover to see connections (prerequisites).',
+      target: () => graphRef.current!,
+    },
+    {
+      title: 'Topic Legend',
+      description: 'Colors represent different topic groups. Click a node to see details and practice that concept.',
+      target: () => legendRef.current!,
+    },
+    {
+      title: 'View Options',
+      description: 'Switch between the graph view, topic groups, or a sortable table of all concepts.',
+      target: () => tabsRef.current!,
+    },
+  ];
 
   const { concepts, knowledge_graph, summary } = knowledgeState;
 
@@ -572,17 +602,18 @@ function KnowledgeMap() {
 
   return (
     <div>
+      <PageTour tourKey="knowledgeMap" steps={tourSteps} />
       <Title level={3}>
         <NodeIndexOutlined style={{ marginRight: 8 }} />
         Knowledge Map
       </Title>
 
       {/* Summary Stats */}
-      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }} ref={summaryRef}>
         <Col xs={12} sm={6}>
           <Card>
             <Statistic
-              title="Overall Mastery"
+              title={<TermTooltip term="mastery">Overall Mastery</TermTooltip>}
               value={Math.round(summary.overall_mastery * 100)}
               suffix="%"
               valueStyle={{
@@ -625,7 +656,7 @@ function KnowledgeMap() {
       </Row>
 
       {/* Tabs for Graph and Table views */}
-      <Card style={{ marginTop: 16 }}>
+      <Card style={{ marginTop: 16 }} ref={tabsRef}>
         <Tabs
           defaultActiveKey="graph"
           items={[
@@ -633,14 +664,17 @@ function KnowledgeMap() {
               key: 'graph',
               label: 'Prerequisite Graph',
               children: (
-                <KnowledgeGraphViz
-                  nodes={knowledge_graph?.nodes ?? []}
-                  edges={knowledge_graph?.edges ?? []}
-                  isMobile={isMobile}
-                  graphWidth={isMobile ? 650 : isTablet ? 700 : 1100}
-                  nodesep={isMobile ? 30 : 70}
-                  ranksep={isMobile ? 80 : 120}
-                />
+                <div ref={graphRef}>
+                  <KnowledgeGraphViz
+                    nodes={knowledge_graph?.nodes ?? []}
+                    edges={knowledge_graph?.edges ?? []}
+                    isMobile={isMobile}
+                    graphWidth={isMobile ? 650 : isTablet ? 700 : 1100}
+                    nodesep={isMobile ? 30 : 70}
+                    ranksep={isMobile ? 80 : 120}
+                    legendRef={legendRef}
+                  />
+                </div>
               ),
             },
             {
