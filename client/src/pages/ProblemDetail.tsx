@@ -32,6 +32,7 @@ import { useProblemSubmissions, useSubmission } from '../api/queries/useSubmissi
 import HintPanel from '../components/HintPanel';
 import PageTour from '../components/onboarding/PageTour';
 import type { Submission } from '../types';
+import { columnTitle } from '../components/columnHelper';
 import styles from './ProblemDetail.module.css';
 
 const { Title, Text } = Typography;
@@ -184,7 +185,7 @@ function ProblemDetail() {
       render: (lang: string) => <Tag>{lang}</Tag>,
     },
     {
-      title: 'Runtime',
+      title: columnTitle('Runtime', 'Code execution time in milliseconds'),
       dataIndex: 'runtime',
       key: 'runtime',
       render: (val: number | null) => (val != null ? `${val} ms` : '-'),

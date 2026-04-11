@@ -36,6 +36,7 @@ import { useResponsive } from '../hooks/useResponsive';
 import PageTour from '../components/onboarding/PageTour';
 import TermTooltip from '../components/onboarding/TermTooltip';
 import GuidedEmptyState from '../components/onboarding/GuidedEmptyState';
+import { sorterTooltip, columnTitle } from '../components/columnHelper';
 
 const { Title, Text } = Typography;
 
@@ -342,6 +343,7 @@ function AllConceptsView({ userId }: { userId?: string }) {
       title: 'Concept',
       dataIndex: 'display_name',
       sorter: (a, b) => a.display_name.localeCompare(b.display_name),
+      showSorterTooltip: sorterTooltip('Concept name and topic group. Click to sort.'),
       render: (name: string, record: ReviewCard) => (
         <div>
           <Text strong>{name}</Text>
@@ -357,6 +359,7 @@ function AllConceptsView({ userId }: { userId?: string }) {
       title: 'Memory',
       dataIndex: 'retrievability',
       sorter: (a, b) => a.retrievability - b.retrievability,
+      showSorterTooltip: sorterTooltip('Probability you can recall this right now (0–100%). Click to sort.'),
       defaultSortOrder: 'ascend',
       width: 120,
       render: (r: number) => (
@@ -373,7 +376,7 @@ function AllConceptsView({ userId }: { userId?: string }) {
       ),
     },
     {
-      title: 'State',
+      title: columnTitle('State', 'FSRS learning phase: Learning → Review → Relearning if forgotten'),
       dataIndex: 'state',
       width: 110,
       filters: [
@@ -390,6 +393,7 @@ function AllConceptsView({ userId }: { userId?: string }) {
       title: 'Stability',
       dataIndex: 'stability',
       sorter: (a, b) => a.stability - b.stability,
+      showSorterTooltip: sorterTooltip('Days until memory fades to 90% — higher means longer between reviews. Click to sort.'),
       width: 90,
       responsive: ['md'] as ('md')[],
       render: (s: number) => `${s.toFixed(1)}d`,
@@ -398,12 +402,14 @@ function AllConceptsView({ userId }: { userId?: string }) {
       title: 'Reviews',
       dataIndex: 'reps',
       sorter: (a, b) => a.reps - b.reps,
+      showSorterTooltip: sorterTooltip('Total review sessions completed for this concept. Click to sort.'),
       width: 80,
     },
     {
       title: 'Lapses',
       dataIndex: 'lapses',
       sorter: (a, b) => a.lapses - b.lapses,
+      showSorterTooltip: sorterTooltip('Times you forgot during a scheduled review. Click to sort.'),
       width: 75,
       responsive: ['md'] as ('md')[],
       render: (lapses: number) => (
@@ -418,6 +424,7 @@ function AllConceptsView({ userId }: { userId?: string }) {
         const bTime = b.last_review ? new Date(b.last_review).getTime() : 0;
         return aTime - bTime;
       },
+      showSorterTooltip: sorterTooltip('When you last reviewed this concept. Click to sort.'),
       width: 110,
       responsive: ['lg'] as ('lg')[],
       render: (date: string | null) => (
@@ -428,6 +435,7 @@ function AllConceptsView({ userId }: { userId?: string }) {
       title: 'Due Date',
       dataIndex: 'due_date',
       sorter: (a, b) => new Date(a.due_date).getTime() - new Date(b.due_date).getTime(),
+      showSorterTooltip: sorterTooltip('Next scheduled review date. Click to sort.'),
       width: 110,
       render: (date: string) => (
         <Text type="secondary" style={{ fontSize: 12 }}>

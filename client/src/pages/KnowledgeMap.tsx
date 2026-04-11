@@ -47,6 +47,7 @@ import { useResponsive } from '../hooks/useResponsive';
 import PageTour from '../components/onboarding/PageTour';
 import TermTooltip from '../components/onboarding/TermTooltip';
 import GuidedEmptyState from '../components/onboarding/GuidedEmptyState';
+import { sorterTooltip } from '../components/columnHelper';
 import styles from './KnowledgeMap.module.css';
 
 const { Title, Text } = Typography;
@@ -568,6 +569,7 @@ function KnowledgeMap() {
       key: 'p_mastery',
       width: 200,
       sorter: (a: ConceptState, b: ConceptState) => a.p_mastery - b.p_mastery,
+      showSorterTooltip: sorterTooltip('Probability you\'ve truly learned this concept (85%+ = mastered). Click to sort.'),
       render: (val: number) => {
         const pct = Math.round(val * 100);
         const color = pct >= 80 ? '#52c41a' : pct >= 50 ? '#1890ff' : '#faad14';
@@ -597,6 +599,7 @@ function KnowledgeMap() {
       width: 90,
       responsive: ['md'] as any,
       sorter: (a: ConceptState, b: ConceptState) => a.n_attempts - b.n_attempts,
+      showSorterTooltip: sorterTooltip('Total submissions for problems in this concept. Click to sort.'),
     },
     {
       title: 'Correct',
@@ -605,6 +608,7 @@ function KnowledgeMap() {
       width: 90,
       responsive: ['md'] as any,
       sorter: (a: ConceptState, b: ConceptState) => a.n_correct - b.n_correct,
+      showSorterTooltip: sorterTooltip('Number of successful (accepted) submissions. Click to sort.'),
     },
   ];
 

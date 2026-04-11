@@ -31,6 +31,7 @@ import {
   useCourses,
 } from '../api/queries/useInstructor';
 import { useResponsive } from '../hooks/useResponsive';
+import { sorterTooltip } from '../components/columnHelper';
 
 const { Title, Text } = Typography;
 
@@ -117,6 +118,7 @@ function InstructorDashboard() {
       dataIndex: 'averageMastery',
       key: 'averageMastery',
       sorter: (a, b) => a.averageMastery - b.averageMastery,
+      showSorterTooltip: sorterTooltip('Mean BKT mastery across all concepts. Click to sort.'),
       render: (val: number) => (
         <Progress
           percent={Math.round(val * 100)}
@@ -170,6 +172,7 @@ function InstructorDashboard() {
       width: 110,
       responsive: ['md'] as any,
       sorter: (a, b) => a.submissionCount - b.submissionCount,
+      showSorterTooltip: sorterTooltip('Total student submissions for this problem. Click to sort.'),
       align: 'right',
     },
     {
@@ -179,6 +182,7 @@ function InstructorDashboard() {
       width: 150,
       responsive: ['md'] as any,
       sorter: (a, b) => a.acceptanceRate - b.acceptanceRate,
+      showSorterTooltip: sorterTooltip('Percentage of submissions that pass all test cases. Click to sort.'),
       render: (rate: number) => (
         <Progress
           percent={Math.round(rate * 100)}
