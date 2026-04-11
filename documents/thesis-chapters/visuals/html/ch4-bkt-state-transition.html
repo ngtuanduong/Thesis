@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman', serif; }
+.container { max-width: 700px; margin: 0 auto; }
+.caption { text-align: center; font-size: 12pt; margin-top: 10px; font-style: italic; }
+.caption .label { font-weight: bold; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="container">
+<svg width="680" height="420" viewBox="0 0 680 420">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#2e7d32"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#c62828"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="340" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#333">BKT Hidden Markov Model — State Transitions</text>
+
+  <!-- Not Learned state -->
+  <circle cx="180" cy="150" r="60" fill="#ffebee" stroke="#c62828" stroke-width="2.5"/>
+  <text x="180" y="143" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">Not</text>
+  <text x="180" y="162" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">Learned</text>
+  <text x="180" y="180" text-anchor="middle" font-size="11" fill="#888" font-style="italic">(&#172;L)</text>
+
+  <!-- Learned state -->
+  <circle cx="500" cy="150" r="60" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2.5"/>
+  <text x="500" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Learned</text>
+  <text x="500" y="168" text-anchor="middle" font-size="11" fill="#888" font-style="italic">(L)</text>
+
+  <!-- Transition: Not Learned -> Learned (P(T)) -->
+  <path d="M 240 130 C 310 80 370 80 440 130" fill="none" stroke="#2e7d32" stroke-width="2" marker-end="url(#arr-green)"/>
+  <rect x="300" y="72" width="80" height="22" rx="3" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="340" y="88" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold" font-style="italic">P(T)</text>
+
+  <!-- Self-loop: Not Learned stays (1-P(T)) -->
+  <path d="M 130 120 C 80 70 80 200 130 170" fill="none" stroke="#c62828" stroke-width="1.5" marker-end="url(#arr-red)"/>
+  <text x="65" y="148" text-anchor="middle" font-size="10" fill="#c62828" font-style="italic">1−P(T)</text>
+
+  <!-- Self-loop: Learned stays (1.0, no forgetting) -->
+  <path d="M 550 120 C 600 70 600 200 550 170" fill="none" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="615" y="148" text-anchor="middle" font-size="10" fill="#2e7d32" font-style="italic">1.0</text>
+
+  <!-- Observation emissions -->
+  <!-- From Not Learned -->
+  <rect x="90" y="270" width="80" height="32" rx="4" fill="#4caf50" fill-opacity="0.2" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="130" y="291" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">Correct</text>
+  <line x1="155" y1="210" x2="135" y2="268" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-green)"/>
+  <text x="125" y="240" font-size="10" fill="#4caf50" font-style="italic">P(G)</text>
+
+  <rect x="200" y="270" width="85" height="32" rx="4" fill="#ef5350" fill-opacity="0.2" stroke="#ef5350" stroke-width="1.5"/>
+  <text x="242" y="291" text-anchor="middle" font-size="11" fill="#c62828" font-weight="bold">Incorrect</text>
+  <line x1="205" y1="210" x2="238" y2="268" stroke="#ef5350" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-red)"/>
+  <text x="240" y="240" font-size="10" fill="#c62828" font-style="italic">1−P(G)</text>
+
+  <!-- From Learned -->
+  <rect x="410" y="270" width="80" height="32" rx="4" fill="#4caf50" fill-opacity="0.2" stroke="#4caf50" stroke-width="1.5"/>
+  <text x="450" y="291" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">Correct</text>
+  <line x1="475" y1="210" x2="455" y2="268" stroke="#4caf50" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-green)"/>
+  <text x="448" y="240" font-size="10" fill="#4caf50" font-style="italic">1−P(S)</text>
+
+  <rect x="520" y="270" width="85" height="32" rx="4" fill="#ef5350" fill-opacity="0.2" stroke="#ef5350" stroke-width="1.5"/>
+  <text x="562" y="291" text-anchor="middle" font-size="11" fill="#c62828" font-weight="bold">Incorrect</text>
+  <line x1="525" y1="210" x2="558" y2="268" stroke="#ef5350" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-red)"/>
+  <text x="560" y="240" font-size="10" fill="#c62828" font-style="italic">P(S)</text>
+
+  <!-- Labels -->
+  <text x="180" y="235" text-anchor="middle" font-size="10" fill="#666">Emissions from &#172;L:</text>
+  <text x="500" y="235" text-anchor="middle" font-size="10" fill="#666">Emissions from L:</text>
+
+  <!-- Legend -->
+  <rect x="120" y="340" width="440" height="65" rx="5" fill="#fafafa" stroke="#ddd"/>
+  <text x="140" y="358" font-size="10" fill="#333" font-weight="bold">Parameters (per concept):</text>
+  <text x="140" y="375" font-size="10" fill="#555">P(L<tspan font-size="7" baseline-shift="sub">0</tspan>) = prior knowledge     P(T) = learn rate (&#172;L &#8594; L transition)</text>
+  <text x="140" y="392" font-size="10" fill="#555">P(G) = guess rate (correct when &#172;L)     P(S) = slip rate (incorrect when L)</text>
+</svg>
+<div class="caption"><span class="label">Figure 4.2.</span> BKT Hidden Markov Model showing the two hidden states (Learned and Not Learned), the learning transition P(T), and the observation emission probabilities P(G) and P(S).</div>
+</div>
+</body>
+</html>

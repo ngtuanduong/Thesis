@@ -1,0 +1,10 @@
+.page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.submitFooter {
+  text-align: center;
+  margin-top: var(--space-6);
+  margin-bottom: 48px;
+}

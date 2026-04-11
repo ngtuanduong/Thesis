@@ -1,0 +1,977 @@
+[
+  {
+    "id": 1,
+    "line": 3,
+    "original": "Chapter 3 presented the architectural blueprint for the five-layer adaptive learning platform, detailing each layer's responsibilities, interfaces, and data flows. This chapter describes how that design was translated into working software. It covers the technology choices and their justifications, the construction of the knowledge graph that underpins the adaptive engine, the implementation of each adaptive layer with code walkthroughs drawn from the actual codebase, the frontend components that surface adaptive data to students, and the deployment configuration that ties the system together.",
+    "clean_text": "Chapter 3 presented the architectural blueprint for the five-layer adaptive learning platform, detailing each layer's responsibilities, interfaces, and data flows. This chapter describes how that design was translated into working software. It covers the technology choices and their justifications, the construction of the knowledge graph that underpins the adaptive engine, the implementation of each adaptive layer with code walkthroughs drawn from the actual codebase, the frontend components that surface adaptive data to students, and the deployment configuration that ties the system together.",
+    "placeholders": {},
+    "words": 82,
+    "humanized": "In Chapter 3, the architectural blueprint for the five-layer adaptive learning platform was introduced, where the functions, interfaces, and flow of information for each layer were discussed. In this chapter, the process of how the architectural blueprint was actually implemented in code will be discussed, which includes the technology stack used and the rationale behind the choices, the knowledge graph development, the actual implementation of the adaptive layers with code snippets from the actual codebase, the frontend components used in displaying adaptive information to the student, and the deployment configuration used in tying everything together.",
+    "status": "done"
+  },
+  {
+    "id": 2,
+    "line": 5,
+    "original": "The implementation follows the phased roadmap outlined in the implementation plan: Phase 0 established the knowledge graph and database schema, Phases 1 through 4 built the four adaptive layers in dependency order, Phase 5 integrated the layers into a unified pipeline, Phase 6 updated the frontend, and Phase 7 added optional LLM feedback. Each section in this chapter corresponds to one of these phases or to one of the nine sections specified in the thesis outline.",
+    "clean_text": "The implementation follows the phased roadmap outlined in the implementation plan: Phase 0 established the knowledge graph and database schema, Phases 1 through 4 built the four adaptive layers in dependency order, Phase 5 integrated the layers into a unified pipeline, Phase 6 updated the frontend, and Phase 7 added optional LLM feedback. Each section in this chapter corresponds to one of these phases or to one of the nine sections specified in the thesis outline.",
+    "placeholders": {},
+    "words": 76,
+    "humanized": "This process follows the phased plan as outlined in the implementation plan: Phase 0 defined the knowledge graph and database schema, Phases 1-4 constructed the four adaptive layers in dependency order, Phase 5 combined the four adaptive layers in a unified pipeline, Phase 6 refined the frontend, and Phase 7 added optional LLM feedback. Each section in this chapter corresponds to a phase or one of the nine sections as outlined in the thesis outline.",
+    "status": "done"
+  },
+  {
+    "id": 3,
+    "line": 9,
+    "original": "The platform comprises four principal components, each chosen for a specific role in the system. This section justifies those choices and explains how they interact.",
+    "clean_text": "The platform comprises four principal components, each chosen for a specific role in the system. This section justifies those choices and explains how they interact.",
+    "placeholders": {},
+    "words": 25,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 4,
+    "line": 11,
+    "original": "**Frontend: React 18 + TypeScript + Ant Design.** The client application is built with React 18 using Vite as the build tool. TypeScript provides static type checking, which reduces runtime errors in the data-intensive dashboard components that display mastery probabilities, Elo histories, and review schedules. Ant Design supplies a comprehensive component library with data tables, charts, and form elements that accelerate the development of the instructor and student dashboards. React's component model aligns well with the modular structure of the adaptive UI: each adaptive metric (mastery radar, Elo chart, review queue) is an independent component that can be composed onto any page.",
+    "clean_text": "BOLD1 The client application is built with React 18 using Vite as the build tool. TypeScript provides static type checking, which reduces runtime errors in the data-intensive dashboard components that display mastery probabilities, Elo histories, and review schedules. Ant Design supplies a comprehensive component library with data tables, charts, and form elements that accelerate the development of the instructor and student dashboards. React's component model aligns well with the modular structure of the adaptive UI: each adaptive metric (mastery radar, Elo chart, review queue) is an independent component that can be composed onto any page.",
+    "placeholders": {
+      "BOLD1": "**Frontend: React 18 + TypeScript + Ant Design.**"
+    },
+    "words": 102,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 5,
+    "line": 13,
+    "original": "**Backend API: NestJS 10 + Prisma 6.** The API gateway is built with NestJS, a TypeScript framework that enforces modular architecture through its module-controller-service pattern. NestJS was selected over Express or Fastify because its built-in dependency injection and decorator-based routing reduce boilerplate in a system with many interconnected modules (authentication, problems, submissions, courses, adaptive proxy). Prisma serves as the ORM, providing type-safe database access and a declarative schema that generates both the TypeScript client and database migrations from a single source of truth. The NestJS server handles authentication with JWT, manages problems and test cases, proxies adaptive requests to the AI service, and orchestrates the Docker sandbox for code execution.",
+    "clean_text": "BOLD1 The API gateway is built with NestJS, a TypeScript framework that enforces modular architecture through its module-controller-service pattern. NestJS was selected over Express or Fastify because its built-in dependency injection and decorator-based routing reduce boilerplate in a system with many interconnected modules (authentication, problems, submissions, courses, adaptive proxy). Prisma serves as the ORM, providing type-safe database access and a declarative schema that generates both the TypeScript client and database migrations from a single source of truth. The NestJS server handles authentication with JWT, manages problems and test cases, proxies adaptive requests to the AI service, and orchestrates the Docker sandbox for code execution.",
+    "placeholders": {
+      "BOLD1": "**Backend API: NestJS 10 + Prisma 6.**"
+    },
+    "words": 110,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 6,
+    "line": 15,
+    "original": "**AI Service: FastAPI + Python 3.11.** The adaptive engine is implemented as a separate microservice in Python because the machine learning ecosystem --- NumPy for Thompson Sampling, mathematical libraries for BKT and FSRS calculations, and the sentence-transformers library for the existing embedding-based recommender --- is substantially more mature in Python than in TypeScript. FastAPI was chosen for its native async support, automatic OpenAPI documentation, and high throughput on I/O-bound workloads. The AI service exposes RESTful endpoints for each adaptive layer and for the unified pipeline orchestrator. It connects to the same PostgreSQL database as the NestJS server through SQLAlchemy, avoiding inter-service API calls for data access while maintaining clear service boundaries.",
+    "clean_text": "BOLD1 The adaptive engine is implemented as a separate microservice in Python because the machine learning ecosystem --- NumPy for Thompson Sampling, mathematical libraries for BKT and FSRS calculations, and the sentence-transformers library for the existing embedding-based recommender --- is substantially more mature in Python than in TypeScript. FastAPI was chosen for its native async support, automatic OpenAPI documentation, and high throughput on I/O-bound workloads. The AI service exposes RESTful endpoints for each adaptive layer and for the unified pipeline orchestrator. It connects to the same PostgreSQL database as the NestJS server through SQLAlchemy, avoiding inter-service API calls for data access while maintaining clear service boundaries.",
+    "placeholders": {
+      "BOLD1": "**AI Service: FastAPI + Python 3.11.**"
+    },
+    "words": 111,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 7,
+    "line": 17,
+    "original": "**Database: PostgreSQL 16 + pgvector + Redis 7.** PostgreSQL serves as the single persistent store for all platform data: user accounts, problems, submissions, knowledge states, Elo ratings, MAB states, and FSRS cards. The pgvector extension supports the legacy content-based filtering system by enabling efficient cosine similarity search over 384-dimensional sentence-transformer embeddings. Redis provides caching for the recommendation pipeline, storing precomputed recommendation lists and knowledge states with configurable TTLs to meet the 500-millisecond latency requirement specified in NFR2.",
+    "clean_text": "BOLD1 PostgreSQL serves as the single persistent store for all platform data: user accounts, problems, submissions, knowledge states, Elo ratings, MAB states, and FSRS cards. The pgvector extension supports the legacy content-based filtering system by enabling efficient cosine similarity search over 384-dimensional sentence-transformer embeddings. Redis provides caching for the recommendation pipeline, storing precomputed recommendation lists and knowledge states with configurable TTLs to meet the 500-millisecond latency requirement specified in NFR2.",
+    "placeholders": {
+      "BOLD1": "**Database: PostgreSQL 16 + pgvector + Redis 7.**"
+    },
+    "words": 77,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 8,
+    "line": 19,
+    "original": "**Code Execution: Docker Sandbox.** Student-submitted code is executed inside ephemeral Docker containers with strict resource limits: no network access, 256 MB memory ceiling, 5-second CPU timeout, and unprivileged execution. Each submission spawns a fresh container, executes the code against test cases, captures stdout and stderr, and terminates the container. This isolation model satisfies NFR4 (execution security) and prevents fork bombs, filesystem escape, and cross-student interference.",
+    "clean_text": "BOLD1 Student-submitted code is executed inside ephemeral Docker containers with strict resource limits: no network access, 256 MB memory ceiling, 5-second CPU timeout, and unprivileged execution. Each submission spawns a fresh container, executes the code against test cases, captures stdout and stderr, and terminates the container. This isolation model satisfies NFR4 (execution security) and prevents fork bombs, filesystem escape, and cross-student interference.",
+    "placeholders": {
+      "BOLD1": "**Code Execution: Docker Sandbox.**"
+    },
+    "words": 65,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 9,
+    "line": 21,
+    "original": "Table 4.1 summarizes the technology stack with version numbers and primary responsibilities.",
+    "clean_text": "Table 4.1 summarizes the technology stack with version numbers and primary responsibilities.",
+    "placeholders": {},
+    "words": 12,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 10,
+    "line": 36,
+    "original": "The knowledge graph serves as the foundation for the entire adaptive engine. It defines the concept taxonomy, prerequisite relationships, and problem-to-concept mappings that Layer 1 (BKT), Layer 3 (MAB), and Layer 4 (FSRS) all depend on. Without a well-structured knowledge graph, the prerequisite gating in the MAB cannot function, the BKT cannot track per-concept mastery, and the FSRS cannot schedule per-concept reviews.",
+    "clean_text": "The knowledge graph serves as the foundation for the entire adaptive engine. It defines the concept taxonomy, prerequisite relationships, and problem-to-concept mappings that Layer 1 (BKT), Layer 3 (MAB), and Layer 4 (FSRS) all depend on. Without a well-structured knowledge graph, the prerequisite gating in the MAB cannot function, the BKT cannot track per-concept mastery, and the FSRS cannot schedule per-concept reviews.",
+    "placeholders": {},
+    "words": 62,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 11,
+    "line": 40,
+    "original": "The concept taxonomy was manually curated based on the curriculum of the introductory Python programming course at Hanoi University. The taxonomy comprises 28 concepts organized into five difficulty tiers and seven topic groups. The tiers correspond to the natural progression of a Python course: Tier 1 (Foundations) covers variables, data types, and input/output; Tier 2 (Core Skills) covers operators, conditionals, and loops; Tier 3 (Intermediate) covers functions, strings, and lists; Tier 4 (Advanced Application) covers dictionaries, file I/O, exception handling, and object-oriented programming; and Tier 5 (Expert) covers recursion, sorting algorithms, and advanced data structures.",
+    "clean_text": "The concept taxonomy was manually curated based on the curriculum of the introductory Python programming course at Hanoi University. The taxonomy comprises 28 concepts organized into five difficulty tiers and seven topic groups. The tiers correspond to the natural progression of a Python course: Tier 1 (Foundations) covers variables, data types, and input/output; Tier 2 (Core Skills) covers operators, conditionals, and loops; Tier 3 (Intermediate) covers functions, strings, and lists; Tier 4 (Advanced Application) covers dictionaries, file I/O, exception handling, and object-oriented programming; and Tier 5 (Expert) covers recursion, sorting algorithms, and advanced data structures.",
+    "placeholders": {},
+    "words": 95,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 12,
+    "line": 42,
+    "original": "Each concept is stored in the `concepts` table with the following attributes:",
+    "clean_text": "Each concept is stored in the CODE1 table with the following attributes:",
+    "placeholders": {
+      "CODE1": "`concepts`"
+    },
+    "words": 12,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 13,
+    "line": 55,
+    "original": "The seven topic groups --- Fundamentals, Control Flow, Functions and Scope, Data Structures, Object-Oriented Programming, Algorithms, and File and Error Handling --- provide a secondary organizational axis that supports the dashboard's mastery radar chart, where each axis of the radar corresponds to a topic group.",
+    "clean_text": "The seven topic groups --- Fundamentals, Control Flow, Functions and Scope, Data Structures, Object-Oriented Programming, Algorithms, and File and Error Handling --- provide a secondary organizational axis that supports the dashboard's mastery radar chart, where each axis of the radar corresponds to a topic group.",
+    "placeholders": {},
+    "words": 45,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 14,
+    "line": 59,
+    "original": "Prerequisite relationships are modeled as directed edges in a directed acyclic graph (DAG). Each edge asserts that mastery of the source concept is required before the target concept should be attempted. For example, the concept \"for_loops\" has \"conditionals\" and \"variables\" as prerequisites, reflecting the pedagogical reality that a student cannot write meaningful loops without understanding conditional logic and variable assignment.",
+    "clean_text": "Prerequisite relationships are modeled as directed edges in a directed acyclic graph (DAG). Each edge asserts that mastery of the source concept is required before the target concept should be attempted. For example, the concept \"for_loops\" has \"conditionals\" and \"variables\" as prerequisites, reflecting the pedagogical reality that a student cannot write meaningful loops without understanding conditional logic and variable assignment.",
+    "placeholders": {},
+    "words": 60,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 15,
+    "line": 61,
+    "original": "The edges are stored in the `knowledge_graph_edges` table:",
+    "clean_text": "The edges are stored in the CODE1 table:",
+    "placeholders": {
+      "CODE1": "`knowledge_graph_edges`"
+    },
+    "words": 8,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 16,
+    "line": 74,
+    "original": "The graph contains approximately 45 prerequisite edges. The DAG property is enforced at the application level: before inserting an edge, the system verifies that the insertion would not create a cycle. The `weight` field is reserved for future use in weighted prerequisite gating, where partial mastery of a prerequisite might unlock the next concept under certain conditions.",
+    "clean_text": "The graph contains approximately 45 prerequisite edges. The DAG property is enforced at the application level: before inserting an edge, the system verifies that the insertion would not create a cycle. The CODE1 field is reserved for future use in weighted prerequisite gating, where partial mastery of a prerequisite might unlock the next concept under certain conditions.",
+    "placeholders": {
+      "CODE1": "`weight`"
+    },
+    "words": 57,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 17,
+    "line": 78,
+    "original": "Each problem in the platform is mapped to one or more concepts through the `problem_concepts` junction table. One mapping per problem is designated as the primary concept --- the concept that the problem is principally designed to test. Secondary concepts represent skills that the problem also exercises but does not primarily assess. For instance, a problem that asks the student to implement binary search is primarily mapped to \"searching_algorithms\" but secondarily mapped to \"lists\" and \"while_loops.\"",
+    "clean_text": "Each problem in the platform is mapped to one or more concepts through the CODE1 junction table. One mapping per problem is designated as the primary concept --- the concept that the problem is principally designed to test. Secondary concepts represent skills that the problem also exercises but does not primarily assess. For instance, a problem that asks the student to implement binary search is primarily mapped to \"searching_algorithms\" but secondarily mapped to \"lists\" and \"while_loops.\"",
+    "placeholders": {
+      "CODE1": "`problem_concepts`"
+    },
+    "words": 76,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 18,
+    "line": 80,
+    "original": "This distinction matters for the BKT update logic: a correct submission fully updates the mastery estimate for the primary concept but only partially updates secondary concepts. An incorrect submission penalizes only the primary concept, on the principle that the failure was most likely caused by a gap in the primary skill rather than the secondary ones.",
+    "clean_text": "This distinction matters for the BKT update logic: a correct submission fully updates the mastery estimate for the primary concept but only partially updates secondary concepts. An incorrect submission penalizes only the primary concept, on the principle that the failure was most likely caused by a gap in the primary skill rather than the secondary ones.",
+    "placeholders": {},
+    "words": 56,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 19,
+    "line": 94,
+    "original": "The current knowledge graph was manually curated, which is feasible for a single course but does not scale to a multi-course deployment. Future work will investigate the Automated Concept Extraction (ACE) methodology, which uses natural language processing and code analysis to infer concept tags and prerequisite relationships from problem descriptions, solution code, and student submission patterns. The manual graph serves as a validated ground truth against which any automated extraction method can be evaluated.",
+    "clean_text": "The current knowledge graph was manually curated, which is feasible for a single course but does not scale to a multi-course deployment. Future work will investigate the Automated Concept Extraction (ACE) methodology, which uses natural language processing and code analysis to infer concept tags and prerequisite relationships from problem descriptions, solution code, and student submission patterns. The manual graph serves as a validated ground truth against which any automated extraction method can be evaluated.",
+    "placeholders": {},
+    "words": 74,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 20,
+    "line": 98,
+    "original": "Layer 1 implements Bayesian Knowledge Tracing (BKT) to maintain a probabilistic mastery estimate $P(L_t)$ for each (student, concept) pair. The implementation follows the mathematical model defined in Section 3.3.1 and is realized in `ai-service/app/services/bkt_service.py`.",
+    "clean_text": "Layer 1 implements Bayesian Knowledge Tracing (BKT) to maintain a probabilistic mastery estimate MATH1 for each (student, concept) pair. The implementation follows the mathematical model defined in Section 3.3.1 and is realized in CODE2.",
+    "placeholders": {
+      "MATH1": "$P(L_t)$",
+      "CODE2": "`ai-service/app/services/bkt_service.py`"
+    },
+    "words": 34,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 21,
+    "line": 102,
+    "original": "The BKT model treats each (student, concept) pair as a two-state Hidden Markov Model. The two hidden states are Learned ($L$) and Not Learned ($\\neg L$). Four parameters govern the model: prior knowledge $P(L_0)$, learn rate $P(T)$, guess rate $P(G)$, and slip rate $P(S)$. The implementation uses per-concept default parameters that vary by difficulty tier, reflecting the observation that foundational concepts like variables have higher prior knowledge and learn rates than advanced concepts like recursion.",
+    "clean_text": "The BKT model treats each (student, concept) pair as a two-state Hidden Markov Model. The two hidden states are Learned (MATH1) and Not Learned (MATH2). Four parameters govern the model: prior knowledge MATH3, learn rate MATH4, guess rate MATH5, and slip rate MATH6. The implementation uses per-concept default parameters that vary by difficulty tier, reflecting the observation that foundational concepts like variables have higher prior knowledge and learn rates than advanced concepts like recursion.",
+    "placeholders": {
+      "MATH1": "$L$",
+      "MATH2": "$\\neg L$",
+      "MATH3": "$P(L_0)$",
+      "MATH4": "$P(T)$",
+      "MATH5": "$P(G)$",
+      "MATH6": "$P(S)$"
+    },
+    "words": 75,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 22,
+    "line": 104,
+    "original": "The core update function computes the posterior mastery probability after observing a student's response:",
+    "clean_text": "The core update function computes the posterior mastery probability after observing a student's response:",
+    "placeholders": {},
+    "words": 14,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 23,
+    "line": 125,
+    "original": "The update proceeds in two stages. First, Bayes' theorem computes the posterior probability that the student has mastered the concept given the observed response. If the response is correct, the posterior is $P(L_t | \\text{correct}) = P(L_t)(1 - P(S)) / P(\\text{correct})$, where $P(\\text{correct}) = P(L_t)(1 - P(S)) + (1 - P(L_t))P(G)$. Second, the learning transition accounts for the possibility that the student learned the concept during the practice opportunity, even if they had not mastered it before: $P(L_{t+1}) = P(L_t | \\text{obs}) + (1 - P(L_t | \\text{obs}))P(T)$. The result is clamped to $[0.001, 0.999]$ to prevent numerical boundary issues.",
+    "clean_text": "The update proceeds in two stages. First, Bayes' theorem computes the posterior probability that the student has mastered the concept given the observed response. If the response is correct, the posterior is MATH1, where MATH2. Second, the learning transition accounts for the possibility that the student learned the concept during the practice opportunity, even if they had not mastered it before: MATH3. The result is clamped to MATH4 to prevent numerical boundary issues.",
+    "placeholders": {
+      "MATH1": "$P(L_t | \\text{correct}) = P(L_t)(1 - P(S)) / P(\\text{correct})$",
+      "MATH2": "$P(\\text{correct}) = P(L_t)(1 - P(S)) + (1 - P(L_t))P(G)$",
+      "MATH3": "$P(L_{t+1}) = P(L_t | \\text{obs}) + (1 - P(L_t | \\text{obs}))P(T)$",
+      "MATH4": "$[0.001, 0.999]$"
+    },
+    "words": 100,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 24,
+    "line": 127,
+    "original": "The default parameters are stratified by difficulty tier:",
+    "clean_text": "The default parameters are stratified by difficulty tier:",
+    "placeholders": {},
+    "words": 8,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 25,
+    "line": 139,
+    "original": "The rationale for decreasing $P(L_0)$ and $P(T)$ with increasing difficulty is straightforward: students are less likely to have prior knowledge of advanced topics and learn them more slowly. The slip rate $P(S)$ is held constant at 0.10 across all tiers because careless errors are roughly difficulty-independent. The guess rate $P(G)$ decreases for harder concepts because the probability of producing a correct solution by chance is lower for complex programming tasks.",
+    "clean_text": "The rationale for decreasing MATH1 and MATH2 with increasing difficulty is straightforward: students are less likely to have prior knowledge of advanced topics and learn them more slowly. The slip rate MATH3 is held constant at 0.10 across all tiers because careless errors are roughly difficulty-independent. The guess rate MATH4 decreases for harder concepts because the probability of producing a correct solution by chance is lower for complex programming tasks.",
+    "placeholders": {
+      "MATH1": "$P(L_0)$",
+      "MATH2": "$P(T)$",
+      "MATH3": "$P(S)$",
+      "MATH4": "$P(G)$"
+    },
+    "words": 70,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 26,
+    "line": 143,
+    "original": "When a student submits code, the submission may exercise multiple concepts. The `BKTService.update` method retrieves all concept mappings for the submitted problem and applies differentiated updates:",
+    "clean_text": "When a student submits code, the submission may exercise multiple concepts. The CODE1 method retrieves all concept mappings for the submitted problem and applies differentiated updates:",
+    "placeholders": {
+      "CODE1": "`BKTService.update`"
+    },
+    "words": 26,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 27,
+    "line": 171,
+    "original": "The key design decision is the attenuated update for secondary concepts: only correct responses update secondary concept mastery, and incorrect responses do not penalize them. This reflects the reasoning that a failure on a problem primarily testing recursion should not reduce the mastery estimate for list operations, even if the problem also involves lists.",
+    "clean_text": "The key design decision is the attenuated update for secondary concepts: only correct responses update secondary concept mastery, and incorrect responses do not penalize them. This reflects the reasoning that a failure on a problem primarily testing recursion should not reduce the mastery estimate for list operations, even if the problem also involves lists.",
+    "placeholders": {},
+    "words": 54,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 28,
+    "line": 173,
+    "original": "The BKT service is invoked asynchronously after each submission through the adaptive engine's `process_submission` method. This event-driven integration ensures that mastery estimates are always current without introducing latency into the synchronous submission-execution path that the student experiences.",
+    "clean_text": "The BKT service is invoked asynchronously after each submission through the adaptive engine's CODE1 method. This event-driven integration ensures that mastery estimates are always current without introducing latency into the synchronous submission-execution path that the student experiences.",
+    "placeholders": {
+      "CODE1": "`process_submission`"
+    },
+    "words": 37,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 29,
+    "line": 177,
+    "original": "Layer 2 implements a dual Elo rating system that maintains dynamic difficulty ratings for both students and problems. The implementation in `ai-service/app/services/elo_service.py` extends the standard Elo formulation with a dynamic K-factor that adapts to each student's learning trajectory.",
+    "clean_text": "Layer 2 implements a dual Elo rating system that maintains dynamic difficulty ratings for both students and problems. The implementation in CODE1 extends the standard Elo formulation with a dynamic K-factor that adapts to each student's learning trajectory.",
+    "placeholders": {
+      "CODE1": "`ai-service/app/services/elo_service.py`"
+    },
+    "words": 38,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 30,
+    "line": 181,
+    "original": "The Elo system assigns a numerical rating to every student and every problem. When a student submits a solution, the expected outcome is computed from the rating difference, and both ratings are updated based on the discrepancy between the expected and actual outcomes.",
+    "clean_text": "The Elo system assigns a numerical rating to every student and every problem. When a student submits a solution, the expected outcome is computed from the rating difference, and both ratings are updated based on the discrepancy between the expected and actual outcomes.",
+    "placeholders": {},
+    "words": 43,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 31,
+    "line": 183,
+    "original": "The expected probability that a student solves a given problem is:",
+    "clean_text": "The expected probability that a student solves a given problem is:",
+    "placeholders": {},
+    "words": 11,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 32,
+    "line": 187,
+    "original": "After observing the outcome $S$ (1 if correct, 0 otherwise), both ratings are updated:",
+    "clean_text": "After observing the outcome MATH1 (1 if correct, 0 otherwise), both ratings are updated:",
+    "placeholders": {
+      "MATH1": "$S$"
+    },
+    "words": 14,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 33,
+    "line": 192,
+    "original": "Note that the student and problem ratings move in opposite directions: a correct response increases the student's rating while decreasing the problem's rating, since the outcome suggests the problem was easier than its rating indicated.",
+    "clean_text": "Note that the student and problem ratings move in opposite directions: a correct response increases the student's rating while decreasing the problem's rating, since the outcome suggests the problem was easier than its rating indicated.",
+    "placeholders": {},
+    "words": 35,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 34,
+    "line": 194,
+    "original": "The implementation initializes student ratings at 1200 and problem ratings from the static difficulty label: EASY = 1000, MEDIUM = 1400, HARD = 1800. Ratings are clamped to the range [400, 2800] to prevent extreme values from distorting the expected score calculation.",
+    "clean_text": "The implementation initializes student ratings at 1200 and problem ratings from the static difficulty label: EASY = 1000, MEDIUM = 1400, HARD = 1800. Ratings are clamped to the range [400, 2800] to prevent extreme values from distorting the expected score calculation.",
+    "placeholders": {},
+    "words": 42,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 35,
+    "line": 204,
+    "original": "The dynamic K-factor is the distinguishing feature of this implementation. Rather than using a fixed K-value, the system adjusts K based on the student's recent performance trend. A student who is consistently outperforming expectations (positive trend) receives a lower K, making their rating more stable. A student who is underperforming (negative trend) receives a higher K, enabling faster recalibration. This approach follows the adaptive K-value methodology described by Pelanek [11].",
+    "clean_text": "The dynamic K-factor is the distinguishing feature of this implementation. Rather than using a fixed K-value, the system adjusts K based on the student's recent performance trend. A student who is consistently outperforming expectations (positive trend) receives a lower K, making their rating more stable. A student who is underperforming (negative trend) receives a higher K, enabling faster recalibration. This approach follows the adaptive K-value methodology described by Pelanek [11].",
+    "placeholders": {},
+    "words": 70,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 36,
+    "line": 230,
+    "original": "The trend is computed as an exponentially weighted average of residuals (actual outcome minus expected score) over the last 10 submissions. Exponential recency weighting ($0.9^{n-1-i}$) ensures that the most recent submissions dominate the trend calculation. The K-factor interpolates between $K_{\\min} = 10$ and $K_{\\max} = 40$ using an exponential decay function parameterized by $\\lambda = 2.0$.",
+    "clean_text": "The trend is computed as an exponentially weighted average of residuals (actual outcome minus expected score) over the last 10 submissions. Exponential recency weighting (MATH1) ensures that the most recent submissions dominate the trend calculation. The K-factor interpolates between MATH2 and MATH3 using an exponential decay function parameterized by MATH4.",
+    "placeholders": {
+      "MATH1": "$0.9^{n-1-i}$",
+      "MATH2": "$K_{\\min} = 10$",
+      "MATH3": "$K_{\\max} = 40$",
+      "MATH4": "$\\lambda = 2.0$"
+    },
+    "words": 56,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 37,
+    "line": 232,
+    "original": "Problem K-factors follow a different strategy: they decrease as the square root of the number of attempts, reflecting the principle that a problem's difficulty estimate becomes more reliable as more students attempt it.",
+    "clean_text": "Problem K-factors follow a different strategy: they decrease as the square root of the number of attempts, reflecting the principle that a problem's difficulty estimate becomes more reliable as more students attempt it.",
+    "placeholders": {},
+    "words": 33,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 38,
+    "line": 239,
+    "original": "The student's rating history is persisted as a JSON array in the `elo_ratings` table, capped at the 100 most recent entries to bound storage growth while retaining sufficient history for trend computation and dashboard visualization.",
+    "clean_text": "The student's rating history is persisted as a JSON array in the CODE1 table, capped at the 100 most recent entries to bound storage growth while retaining sufficient history for trend computation and dashboard visualization.",
+    "placeholders": {
+      "CODE1": "`elo_ratings`"
+    },
+    "words": 35,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 39,
+    "line": 243,
+    "original": "The Zone of Proximal Development (ZPD) filter is the mechanism through which the Elo system feeds into the MAB problem selector. It constrains the set of candidate problems to those whose Elo ratings fall within a configurable range above the student's rating, targeting problems that are challenging but achievable.",
+    "clean_text": "The Zone of Proximal Development (ZPD) filter is the mechanism through which the Elo system feeds into the MAB problem selector. It constrains the set of candidate problems to those whose Elo ratings fall within a configurable range above the student's rating, targeting problems that are challenging but achievable.",
+    "placeholders": {},
+    "words": 49,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 40,
+    "line": 245,
+    "original": "The default ZPD range is $[R_{\\text{student}} + 100, R_{\\text{student}} + 300]$, which maps to an expected success rate of approximately 36--64%. This range aligns with the principles of desirable difficulty [32] and flow theory [33]: problems should be hard enough to promote learning but not so hard that they induce frustration.",
+    "clean_text": "The default ZPD range is MATH1, which maps to an expected success rate of approximately 36--64%. This range aligns with the principles of desirable difficulty [32] and flow theory [33]: problems should be hard enough to promote learning but not so hard that they induce frustration.",
+    "placeholders": {
+      "MATH1": "$[R_{\\text{student}} + 100, R_{\\text{student}} + 300]$"
+    },
+    "words": 51,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 41,
+    "line": 263,
+    "original": "The implementation includes two fallback mechanisms for edge cases. If no problems fall within the ZPD range for the specified concept, the range is expanded to $[R_{\\text{student}}, R_{\\text{student}} + 400]$. If the expanded range is also empty, the system falls back to returning the easiest unsolved problems for that concept. These fallbacks ensure that the recommendation pipeline never stalls due to an insufficient problem pool, which is particularly important in the early stages of deployment when the problem set may be small.",
+    "clean_text": "The implementation includes two fallback mechanisms for edge cases. If no problems fall within the ZPD range for the specified concept, the range is expanded to MATH1. If the expanded range is also empty, the system falls back to returning the easiest unsolved problems for that concept. These fallbacks ensure that the recommendation pipeline never stalls due to an insufficient problem pool, which is particularly important in the early stages of deployment when the problem set may be small.",
+    "placeholders": {
+      "MATH1": "$[R_{\\text{student}}, R_{\\text{student}} + 400]$"
+    },
+    "words": 82,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 42,
+    "line": 267,
+    "original": "Layer 3 implements the problem selector using a Hierarchical Multi-Armed Bandit with Thompson Sampling. The implementation in `ai-service/app/services/mab_service.py` realizes the two-level hierarchy described in Section 3.3.5: Level 1 selects which concept to study, and Level 2 selects which specific problem within that concept.",
+    "clean_text": "Layer 3 implements the problem selector using a Hierarchical Multi-Armed Bandit with Thompson Sampling. The implementation in CODE1 realizes the two-level hierarchy described in Section 3.3.5: Level 1 selects which concept to study, and Level 2 selects which specific problem within that concept.",
+    "placeholders": {
+      "CODE1": "`ai-service/app/services/mab_service.py`"
+    },
+    "words": 43,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 43,
+    "line": 271,
+    "original": "Thompson Sampling is a Bayesian approach to the exploration-exploitation tradeoff. Each arm (concept or problem) maintains a Beta distribution $\\text{Beta}(\\alpha, \\beta)$ representing the system's belief about the arm's reward probability. To select an arm, the algorithm draws a random sample from each arm's Beta distribution and selects the arm with the highest sample. This naturally balances exploration (arms with high uncertainty produce widely varying samples) and exploitation (arms with high observed rewards have distributions concentrated on high values).",
+    "clean_text": "Thompson Sampling is a Bayesian approach to the exploration-exploitation tradeoff. Each arm (concept or problem) maintains a Beta distribution MATH1 representing the system's belief about the arm's reward probability. To select an arm, the algorithm draws a random sample from each arm's Beta distribution and selects the arm with the highest sample. This naturally balances exploration (arms with high uncertainty produce widely varying samples) and exploitation (arms with high observed rewards have distributions concentrated on high values).",
+    "placeholders": {
+      "MATH1": "$\\text{Beta}(\\alpha, \\beta)$"
+    },
+    "words": 78,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 44,
+    "line": 287,
+    "original": "Arms are initialized with $\\text{Beta}(1, 1)$, the uniform distribution over $[0, 1]$. This maximally uninformative prior ensures that all arms receive exploration before any arm dominates. As the system collects observations, the posterior distributions narrow and Thompson Sampling increasingly favors arms with higher observed rewards.",
+    "clean_text": "Arms are initialized with MATH1, the uniform distribution over MATH2. This maximally uninformative prior ensures that all arms receive exploration before any arm dominates. As the system collects observations, the posterior distributions narrow and Thompson Sampling increasingly favors arms with higher observed rewards.",
+    "placeholders": {
+      "MATH1": "$\\text{Beta}(1, 1)$",
+      "MATH2": "$[0, 1]$"
+    },
+    "words": 45,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 45,
+    "line": 291,
+    "original": "The reward signal that drives MAB learning is computed from three components: learning gain, difficulty match, and efficiency. Learning gain, weighted at 0.5, measures the change in BKT mastery before and after the problem attempt. The raw mastery delta is scaled by a factor of 10 to amplify the typically small BKT changes (0.01--0.05 per interaction) into a range where Beta distribution updates are meaningful. Difficulty match, weighted at 0.3, rewards problems that the student solved within a reasonable number of attempts. Efficiency, weighted at 0.2, provides a time-based bonus that favors problems solved quickly.",
+    "clean_text": "The reward signal that drives MAB learning is computed from three components: learning gain, difficulty match, and efficiency. Learning gain, weighted at 0.5, measures the change in BKT mastery before and after the problem attempt. The raw mastery delta is scaled by a factor of 10 to amplify the typically small BKT changes (0.01--0.05 per interaction) into a range where Beta distribution updates are meaningful. Difficulty match, weighted at 0.3, rewards problems that the student solved within a reasonable number of attempts. Efficiency, weighted at 0.2, provides a time-based bonus that favors problems solved quickly.",
+    "placeholders": {},
+    "words": 95,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 46,
+    "line": 314,
+    "original": "The multi-component design addresses the noise problem inherent in using BKT mastery deltas as the sole reward signal. A single BKT update typically produces small changes, and the difficulty and efficiency components provide less noisy auxiliary signals that help the MAB converge even when mastery changes are tiny.",
+    "clean_text": "The multi-component design addresses the noise problem inherent in using BKT mastery deltas as the sole reward signal. A single BKT update typically produces small changes, and the difficulty and efficiency components provide less noisy auxiliary signals that help the MAB converge even when mastery changes are tiny.",
+    "placeholders": {},
+    "words": 48,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 47,
+    "line": 318,
+    "original": "The full recommendation pipeline integrates FSRS review urgency with the two-level MAB hierarchy. The pipeline proceeds in four stages:",
+    "clean_text": "The full recommendation pipeline integrates FSRS review urgency with the two-level MAB hierarchy. The pipeline proceeds in four stages:",
+    "placeholders": {},
+    "words": 19,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 48,
+    "line": 320,
+    "original": "1. **FSRS conflict resolution.** The system first checks which concepts have FSRS cards with retrievability below the threshold. Critical reviews (retrievability below 0.7) take absolute priority. Standard reviews (retrievability between 0.7 and 0.9) receive up to half of the remaining recommendation slots. This threshold mechanism ensures that the MAB always gets at least one exploration slot unless all slots are consumed by critical reviews.",
+    "clean_text": "1. BOLD1 The system first checks which concepts have FSRS cards with retrievability below the threshold. Critical reviews (retrievability below 0.7) take absolute priority. Standard reviews (retrievability between 0.7 and 0.9) receive up to half of the remaining recommendation slots. This threshold mechanism ensures that the MAB always gets at least one exploration slot unless all slots are consumed by critical reviews.",
+    "placeholders": {
+      "BOLD1": "**FSRS conflict resolution.**"
+    },
+    "words": 64,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 49,
+    "line": 322,
+    "original": "2. **Eligible concept filtering.** The system queries the knowledge graph to determine which concepts have all prerequisites satisfied (all prerequisite concept mastery $\\geq 0.85$) and are not yet fully mastered (mastery $< 0.95$). Concepts due for FSRS review are also included even if they are otherwise mastered.",
+    "clean_text": "2. BOLD3 The system queries the knowledge graph to determine which concepts have all prerequisites satisfied (all prerequisite concept mastery MATH1) and are not yet fully mastered (mastery MATH2). Concepts due for FSRS review are also included even if they are otherwise mastered.",
+    "placeholders": {
+      "MATH1": "$\\geq 0.85$",
+      "MATH2": "$< 0.95$",
+      "BOLD3": "**Eligible concept filtering.**"
+    },
+    "words": 47,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 50,
+    "line": 324,
+    "original": "3. **Level 1 MAB: Concept selection.** Thompson Sampling selects which concepts to recommend from the eligible set. Each concept is represented as an arm with its own Beta distribution.",
+    "clean_text": "3. BOLD1 Thompson Sampling selects which concepts to recommend from the eligible set. Each concept is represented as an arm with its own Beta distribution.",
+    "placeholders": {
+      "BOLD1": "**Level 1 MAB: Concept selection.**"
+    },
+    "words": 29,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 51,
+    "line": 326,
+    "original": "4. **Level 2 MAB: Problem selection.** For each selected concept, Thompson Sampling selects a specific problem. Problems attempted within the last 24 hours are filtered out to prevent repetition. ZPD filtering from the Elo system is applied to constrain candidates to appropriately difficult problems.",
+    "clean_text": "4. BOLD1 For each selected concept, Thompson Sampling selects a specific problem. Problems attempted within the last 24 hours are filtered out to prevent repetition. ZPD filtering from the Elo system is applied to constrain candidates to appropriately difficult problems.",
+    "placeholders": {
+      "BOLD1": "**Level 2 MAB: Problem selection.**"
+    },
+    "words": 44,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 52,
+    "line": 328,
+    "original": "The MAB state is updated after each submission via the `update` method, which receives the computed reward and adds it to both the concept-level and problem-level arms:",
+    "clean_text": "The MAB state is updated after each submission via the CODE1 method, which receives the computed reward and adds it to both the concept-level and problem-level arms:",
+    "placeholders": {
+      "CODE1": "`update`"
+    },
+    "words": 27,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 53,
+    "line": 348,
+    "original": "The continuous reward $r \\in [0, 1]$ is split between $\\alpha$ (reward portion) and $\\beta$ (1 - reward portion), enabling the Beta distribution to capture partial successes rather than treating outcomes as purely binary.",
+    "clean_text": "The continuous reward MATH1 is split between MATH2 (reward portion) and MATH3 (1 - reward portion), enabling the Beta distribution to capture partial successes rather than treating outcomes as purely binary.",
+    "placeholders": {
+      "MATH1": "$r \\in [0, 1]$",
+      "MATH2": "$\\alpha$",
+      "MATH3": "$\\beta$"
+    },
+    "words": 34,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 54,
+    "line": 352,
+    "original": "Layer 4 implements the Free Spaced Repetition Scheduler (FSRS-5) to prevent knowledge decay over time. The implementation in `ai-service/app/services/fsrs_service.py` tracks three memory states per (student, concept) card --- difficulty, stability, and retrievability --- and schedules reviews to maintain recall above a target threshold.",
+    "clean_text": "Layer 4 implements the Free Spaced Repetition Scheduler (FSRS-5) to prevent knowledge decay over time. The implementation in CODE1 tracks three memory states per (student, concept) card --- difficulty, stability, and retrievability --- and schedules reviews to maintain recall above a target threshold.",
+    "placeholders": {
+      "CODE1": "`ai-service/app/services/fsrs_service.py`"
+    },
+    "words": 43,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 55,
+    "line": 356,
+    "original": "The FSRS-5 algorithm models memory as a combination of difficulty $D \\in [1, 10]$, stability $S > 0$ (days until retrievability drops to 90%), and retrievability $R \\in [0, 1]$ (current recall probability). Retrievability decays over time according to a power-law function:",
+    "clean_text": "The FSRS-5 algorithm models memory as a combination of difficulty MATH1, stability MATH2 (days until retrievability drops to 90%), and retrievability MATH3 (current recall probability). Retrievability decays over time according to a power-law function:",
+    "placeholders": {
+      "MATH1": "$D \\in [1, 10]$",
+      "MATH2": "$S > 0$",
+      "MATH3": "$R \\in [0, 1]$"
+    },
+    "words": 42,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 56,
+    "line": 360,
+    "original": "where $t$ is the elapsed time in days since the last review. This function has three key properties: $R(0, S) = 1$ (just reviewed implies perfect recall), $R(S, S) = 0.9$ (at $t = S$ days, recall is exactly 90%, which is the definition of stability), and $R \\to 0$ as $t \\to \\infty$ (without review, the concept is eventually forgotten).",
+    "clean_text": "where MATH1 is the elapsed time in days since the last review. This function has three key properties: MATH2 (just reviewed implies perfect recall), MATH3 (at MATH4 days, recall is exactly 90%, which is the definition of stability), and MATH5 as MATH6 (without review, the concept is eventually forgotten).",
+    "placeholders": {
+      "MATH1": "$t$",
+      "MATH2": "$R(0, S) = 1$",
+      "MATH3": "$R(S, S) = 0.9$",
+      "MATH4": "$t = S$",
+      "MATH5": "$R \\to 0$",
+      "MATH6": "$t \\to \\infty$"
+    },
+    "words": 61,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 57,
+    "line": 362,
+    "original": "The algorithm uses 19 optimizable weights, denoted $w_0$ through $w_{18}$, that control how stability and difficulty evolve after each review. The implementation uses the FSRS-5 default weights established by the open-source FSRS research community [12]:",
+    "clean_text": "The algorithm uses 19 optimizable weights, denoted MATH1 through MATH2, that control how stability and difficulty evolve after each review. The implementation uses the FSRS-5 default weights established by the open-source FSRS research community [12]:",
+    "placeholders": {
+      "MATH1": "$w_0$",
+      "MATH2": "$w_{18}$"
+    },
+    "words": 35,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 58,
+    "line": 383,
+    "original": "After a successful review (rating $\\geq 2$), the new stability is computed as:",
+    "clean_text": "After a successful review (rating MATH1), the new stability is computed as:",
+    "placeholders": {
+      "MATH1": "$\\geq 2$"
+    },
+    "words": 13,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 59,
+    "line": 387,
+    "original": "where $H$ is a hard penalty ($w_{17}$ if rating = 2, else 1) and $B$ is an easy bonus ($w_{18}$ if rating = 4, else 1). After a failed review (rating = 1), stability decreases:",
+    "clean_text": "where MATH1 is a hard penalty (MATH2 if rating = 2, else 1) and MATH3 is an easy bonus (MATH4 if rating = 4, else 1). After a failed review (rating = 1), stability decreases:",
+    "placeholders": {
+      "MATH1": "$H$",
+      "MATH2": "$w_{17}$",
+      "MATH3": "$B$",
+      "MATH4": "$w_{18}$"
+    },
+    "words": 35,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 60,
+    "line": 391,
+    "original": "with the constraint that $S' \\leq S$ (stability cannot increase after failure).",
+    "clean_text": "with the constraint that MATH1 (stability cannot increase after failure).",
+    "placeholders": {
+      "MATH1": "$S' \\leq S$"
+    },
+    "words": 12,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 61,
+    "line": 395,
+    "original": "A key design contribution of this implementation is the mapping from programming submission outcomes to FSRS ratings. Traditional spaced repetition systems operate on flashcard-style recall, where the user self-reports difficulty. In a programming context, the system must infer the rating from observable signals.",
+    "clean_text": "A key design contribution of this implementation is the mapping from programming submission outcomes to FSRS ratings. Traditional spaced repetition systems operate on flashcard-style recall, where the user self-reports difficulty. In a programming context, the system must infer the rating from observable signals.",
+    "placeholders": {},
+    "words": 43,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 62,
+    "line": 414,
+    "original": "The mapping uses two signals: correctness and effort. A first-attempt success in under two minutes indicates strong recall (Easy), while a first-attempt success taking longer suggests moderate effort (Good). Multiple attempts before success always maps to Hard, regardless of total time. An incorrect final submission maps to Again, triggering a stability reset. This mapping preserves the FSRS assumption that higher ratings indicate stronger memory traces, while adapting it to the programming domain where \"recall\" manifests as the ability to write correct code rather than the ability to recognize a fact.",
+    "clean_text": "The mapping uses two signals: correctness and effort. A first-attempt success in under two minutes indicates strong recall (Easy), while a first-attempt success taking longer suggests moderate effort (Good). Multiple attempts before success always maps to Hard, regardless of total time. An incorrect final submission maps to Again, triggering a stability reset. This mapping preserves the FSRS assumption that higher ratings indicate stronger memory traces, while adapting it to the programming domain where \"recall\" manifests as the ability to write correct code rather than the ability to recognize a fact.",
+    "placeholders": {},
+    "words": 90,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 63,
+    "line": 418,
+    "original": "The FSRS service maintains a review queue that identifies concepts whose retrievability has dropped below the threshold. The `get_review_queue` method computes current retrievability for all active cards and partitions them into due (retrievability below 0.9) and upcoming (due within three days) categories, sorted by urgency.",
+    "clean_text": "The FSRS service maintains a review queue that identifies concepts whose retrievability has dropped below the threshold. The CODE1 method computes current retrievability for all active cards and partitions them into due (retrievability below 0.9) and upcoming (due within three days) categories, sorted by urgency.",
+    "placeholders": {
+      "CODE1": "`get_review_queue`"
+    },
+    "words": 45,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 64,
+    "line": 420,
+    "original": "The next review is scheduled at the point where retrievability will drop to exactly 0.9. Solving the retrievability equation $R(t, S) = 0.9$ yields $t = S$ days, so the due date is simply the current time plus $S$ days after each review. This elegant property of the FSRS retrievability function means that the stability value directly corresponds to the review interval.",
+    "clean_text": "The next review is scheduled at the point where retrievability will drop to exactly 0.9. Solving the retrievability equation MATH1 yields MATH2 days, so the due date is simply the current time plus MATH3 days after each review. This elegant property of the FSRS retrievability function means that the stability value directly corresponds to the review interval.",
+    "placeholders": {
+      "MATH1": "$R(t, S) = 0.9$",
+      "MATH2": "$t = S$",
+      "MATH3": "$S$"
+    },
+    "words": 62,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 65,
+    "line": 424,
+    "original": "Layer 5 provides optional Socratic hints for students who are struggling with a problem. This layer is triggered when a student has accumulated three or more failed attempts on a single problem. The implementation uses a Retrieval-Augmented Generation (RAG) pipeline that combines knowledge graph context with the student's code and error messages to generate pedagogically appropriate hints.",
+    "clean_text": "Layer 5 provides optional Socratic hints for students who are struggling with a problem. This layer is triggered when a student has accumulated three or more failed attempts on a single problem. The implementation uses a Retrieval-Augmented Generation (RAG) pipeline that combines knowledge graph context with the student's code and error messages to generate pedagogically appropriate hints.",
+    "placeholders": {},
+    "words": 57,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 66,
+    "line": 426,
+    "original": "The RAG pipeline proceeds in three steps. First, the system retrieves the relevant concept from the knowledge graph based on the problem's primary concept mapping, along with the concept's description and prerequisite chain. Second, a prompt template combines this context with the student's most recent code submission and the error message, instructing the LLM to generate a Socratic question that guides the student toward the solution without revealing the answer. Third, the prompt is sent to a language model API with temperature set to 0.7 to balance creativity and reliability.",
+    "clean_text": "The RAG pipeline proceeds in three steps. First, the system retrieves the relevant concept from the knowledge graph based on the problem's primary concept mapping, along with the concept's description and prerequisite chain. Second, a prompt template combines this context with the student's most recent code submission and the error message, instructing the LLM to generate a Socratic question that guides the student toward the solution without revealing the answer. Third, the prompt is sent to a language model API with temperature set to 0.7 to balance creativity and reliability.",
+    "placeholders": {},
+    "words": 90,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 67,
+    "line": 428,
+    "original": "Rate limiting is enforced at the user level: each student is limited to a configurable number of hint requests per hour to manage API costs. The hint generation is fully optional and can be disabled via a feature flag (`ENABLE_LLM_HINTS`) without affecting the other four layers.",
+    "clean_text": "Rate limiting is enforced at the user level: each student is limited to a configurable number of hint requests per hour to manage API costs. The hint generation is fully optional and can be disabled via a feature flag (CODE1) without affecting the other four layers.",
+    "placeholders": {
+      "CODE1": "`ENABLE_LLM_HINTS`"
+    },
+    "words": 46,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 68,
+    "line": 430,
+    "original": "This layer is designated as supplementary. The core thesis contribution --- the integration of BKT, Elo, MAB, and FSRS into a coherent adaptive pipeline --- is independent of LLM feedback. Layer 5 is included to demonstrate the extensibility of the architecture and to explore the pedagogical potential of LLM-generated hints, but the evaluation in Chapter 5 focuses on the first four layers.",
+    "clean_text": "This layer is designated as supplementary. The core thesis contribution --- the integration of BKT, Elo, MAB, and FSRS into a coherent adaptive pipeline --- is independent of LLM feedback. Layer 5 is included to demonstrate the extensibility of the architecture and to explore the pedagogical potential of LLM-generated hints, but the evaluation in Chapter 5 focuses on the first four layers.",
+    "placeholders": {},
+    "words": 62,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 69,
+    "line": 434,
+    "original": "The frontend surfaces the adaptive engine's outputs through three principal views: an enhanced student dashboard, an adaptive recommendation page, and a review queue interface. All frontend components consume data from the NestJS API, which proxies requests to the AI service.",
+    "clean_text": "The frontend surfaces the adaptive engine's outputs through three principal views: an enhanced student dashboard, an adaptive recommendation page, and a review queue interface. All frontend components consume data from the NestJS API, which proxies requests to the AI service.",
+    "placeholders": {},
+    "words": 40,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 70,
+    "line": 438,
+    "original": "The dashboard provides an at-a-glance summary of the student's adaptive state. Key components include:",
+    "clean_text": "The dashboard provides an at-a-glance summary of the student's adaptive state. Key components include:",
+    "placeholders": {},
+    "words": 14,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 71,
+    "line": 440,
+    "original": "**Mastery radar chart.** A radar chart displays mastery probabilities aggregated by topic group (Fundamentals, Control Flow, Functions, Data Structures, OOP, Algorithms, File Handling). Each axis represents the average BKT mastery across concepts in that group, providing a visual fingerprint of the student's strengths and weaknesses.",
+    "clean_text": "BOLD1 A radar chart displays mastery probabilities aggregated by topic group (Fundamentals, Control Flow, Functions, Data Structures, OOP, Algorithms, File Handling). Each axis represents the average BKT mastery across concepts in that group, providing a visual fingerprint of the student's strengths and weaknesses.",
+    "placeholders": {
+      "BOLD1": "**Mastery radar chart.**"
+    },
+    "words": 45,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 72,
+    "line": 442,
+    "original": "**Elo rating card with trend.** A card displays the student's current Elo rating alongside a trend indicator (improving, stable, or declining) derived from the exponentially weighted residual computed by the dynamic K-value algorithm. A mini sparkline chart shows the rating trajectory over the last 20 submissions.",
+    "clean_text": "BOLD1 A card displays the student's current Elo rating alongside a trend indicator (improving, stable, or declining) derived from the exponentially weighted residual computed by the dynamic K-value algorithm. A mini sparkline chart shows the rating trajectory over the last 20 submissions.",
+    "placeholders": {
+      "BOLD1": "**Elo rating card with trend.**"
+    },
+    "words": 46,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 73,
+    "line": 444,
+    "original": "**Review queue badge.** A notification badge on the dashboard indicates the number of concepts currently due for FSRS review. Clicking the badge navigates to the review queue page.",
+    "clean_text": "BOLD1 A notification badge on the dashboard indicates the number of concepts currently due for FSRS review. Clicking the badge navigates to the review queue page.",
+    "placeholders": {
+      "BOLD1": "**Review queue badge.**"
+    },
+    "words": 28,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 74,
+    "line": 446,
+    "original": "**Concept mastery tree.** An interactive tree visualization renders the knowledge graph with nodes colored by mastery status: green for mastered ($P(L_t) \\geq 0.85$), yellow for in-progress, gray for not started, and locked (with a padlock icon) for concepts whose prerequisites are not yet met. Prerequisite edges are drawn as directed arrows, and clicking a node displays the concept's mastery history and associated problems.",
+    "clean_text": "BOLD2 An interactive tree visualization renders the knowledge graph with nodes colored by mastery status: green for mastered (MATH1), yellow for in-progress, gray for not started, and locked (with a padlock icon) for concepts whose prerequisites are not yet met. Prerequisite edges are drawn as directed arrows, and clicking a node displays the concept's mastery history and associated problems.",
+    "placeholders": {
+      "MATH1": "$P(L_t) \\geq 0.85$",
+      "BOLD2": "**Concept mastery tree.**"
+    },
+    "words": 63,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 75,
+    "line": 450,
+    "original": "The recommendation page displays a list of problems selected by the hierarchical MAB, each annotated with contextual information. Each recommendation card shows the problem title, difficulty estimate (from Elo), expected success probability, the concept it targets, and the reason for the recommendation (REVIEW, NEW_CONCEPT, or PRACTICE). A color-coded difficulty match indicator communicates how well the problem aligns with the student's current ability level: green indicates a good match, yellow indicates a stretch, and red indicates a potential mismatch.",
+    "clean_text": "The recommendation page displays a list of problems selected by the hierarchical MAB, each annotated with contextual information. Each recommendation card shows the problem title, difficulty estimate (from Elo), expected success probability, the concept it targets, and the reason for the recommendation (REVIEW, NEW_CONCEPT, or PRACTICE). A color-coded difficulty match indicator communicates how well the problem aligns with the student's current ability level: green indicates a good match, yellow indicates a stretch, and red indicates a potential mismatch.",
+    "placeholders": {},
+    "words": 78,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 76,
+    "line": 454,
+    "original": "The review queue page lists concepts that the FSRS scheduler has flagged for review, ordered by urgency (lowest retrievability first). Each entry displays the concept name, current retrievability percentage, days overdue, and stability. A \"Start Review\" button navigates the student to a recommended problem for that concept, as selected by the Level 2 MAB.",
+    "clean_text": "The review queue page lists concepts that the FSRS scheduler has flagged for review, ordered by urgency (lowest retrievability first). Each entry displays the concept name, current retrievability percentage, days overdue, and stability. A \"Start Review\" button navigates the student to a recommended problem for that concept, as selected by the Level 2 MAB.",
+    "placeholders": {},
+    "words": 54,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 77,
+    "line": 458,
+    "original": "The dashboard charts and visualizations are implemented using a combination of Ant Design's built-in chart components and Recharts for more complex visualizations like the mastery radar and Elo history graphs. The knowledge graph tree uses a custom SVG-based renderer that positions nodes according to their difficulty tier (vertical axis) and topic group (horizontal axis), with edges drawn as curved paths. TanStack Query (React Query) manages server state, providing automatic caching, background refetching, and optimistic updates that keep the dashboard responsive even on slow connections.",
+    "clean_text": "The dashboard charts and visualizations are implemented using a combination of Ant Design's built-in chart components and Recharts for more complex visualizations like the mastery radar and Elo history graphs. The knowledge graph tree uses a custom SVG-based renderer that positions nodes according to their difficulty tier (vertical axis) and topic group (horizontal axis), with edges drawn as curved paths. TanStack Query (React Query) manages server state, providing automatic caching, background refetching, and optimistic updates that keep the dashboard responsive even on slow connections.",
+    "placeholders": {},
+    "words": 84,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 78,
+    "line": 462,
+    "original": "The platform is deployed using Docker Compose, which orchestrates five services: the React frontend (served by Nginx), the NestJS backend, the FastAPI AI service, the PostgreSQL database, and the Redis cache. A single `docker-compose.yml` file defines the service dependencies, network configuration, port mappings, and volume mounts.",
+    "clean_text": "The platform is deployed using Docker Compose, which orchestrates five services: the React frontend (served by Nginx), the NestJS backend, the FastAPI AI service, the PostgreSQL database, and the Redis cache. A single CODE1 file defines the service dependencies, network configuration, port mappings, and volume mounts.",
+    "placeholders": {
+      "CODE1": "`docker-compose.yml`"
+    },
+    "words": 46,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 79,
+    "line": 466,
+    "original": "Each service is configured with the appropriate environment variables. The NestJS server receives the database URL, JWT secret, and AI service URL. The AI service receives the database URL, Redis URL, and feature flags for enabling or disabling individual adaptive layers (`ENABLE_BKT`, `ENABLE_ELO`, `ENABLE_MAB`, `ENABLE_FSRS`, `ENABLE_LLM_HINTS`). These feature flags are critical for the evaluation described in Chapter 5: the control group uses a configuration with all adaptive layers disabled, defaulting to the legacy content-based filtering system, while the treatment group uses the full five-layer pipeline.",
+    "clean_text": "Each service is configured with the appropriate environment variables. The NestJS server receives the database URL, JWT secret, and AI service URL. The AI service receives the database URL, Redis URL, and feature flags for enabling or disabling individual adaptive layers (CODE1, CODE2, CODE3, CODE4, CODE5). These feature flags are critical for the evaluation described in Chapter 5: the control group uses a configuration with all adaptive layers disabled, defaulting to the legacy content-based filtering system, while the treatment group uses the full five-layer pipeline.",
+    "placeholders": {
+      "CODE1": "`ENABLE_BKT`",
+      "CODE2": "`ENABLE_ELO`",
+      "CODE3": "`ENABLE_MAB`",
+      "CODE4": "`ENABLE_FSRS`",
+      "CODE5": "`ENABLE_LLM_HINTS`"
+    },
+    "words": 85,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 80,
+    "line": 470,
+    "original": "The deployment supports three environment profiles: development (hot-reloading, debug logging, seeded database), staging (production-like settings, synthetic data), and production (optimized builds, strict security headers, real data). Configuration is managed through `.env` files that are not committed to version control. The Prisma CLI handles database migrations across environments.",
+    "clean_text": "The deployment supports three environment profiles: development (hot-reloading, debug logging, seeded database), staging (production-like settings, synthetic data), and production (optimized builds, strict security headers, real data). Configuration is managed through CODE1 files that are not committed to version control. The Prisma CLI handles database migrations across environments.",
+    "placeholders": {
+      "CODE1": "`.env`"
+    },
+    "words": 47,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 81,
+    "line": 474,
+    "original": "The AI service uses Python's standard logging module configured to write structured JSON logs. Each adaptive layer logs its inputs and outputs at the DEBUG level, enabling post-hoc analysis of the recommendation pipeline's decisions during the evaluation period. The NestJS server logs all API requests with response times, providing the data needed to verify compliance with the latency requirements (NFR1 and NFR2). Redis provides built-in monitoring commands (`INFO`, `MONITOR`) for cache hit-rate analysis.",
+    "clean_text": "The AI service uses Python's standard logging module configured to write structured JSON logs. Each adaptive layer logs its inputs and outputs at the DEBUG level, enabling post-hoc analysis of the recommendation pipeline's decisions during the evaluation period. The NestJS server logs all API requests with response times, providing the data needed to verify compliance with the latency requirements (NFR1 and NFR2). Redis provides built-in monitoring commands (CODE1, CODE2) for cache hit-rate analysis.",
+    "placeholders": {
+      "CODE1": "`INFO`",
+      "CODE2": "`MONITOR`"
+    },
+    "words": 73,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 82,
+    "line": 478,
+    "original": "This chapter described the implementation of the adaptive learning platform, covering the technology stack, knowledge graph construction, the four adaptive layers (BKT, Elo, MAB, FSRS), the optional LLM feedback layer, the frontend components, and the deployment configuration. The implementation translates the architectural design from Chapter 3 into a working system with approximately 2,500 lines of Python code for the adaptive engine, 4,000 lines of TypeScript for the NestJS backend extensions, and 3,000 lines of TypeScript/React for the frontend additions.",
+    "clean_text": "This chapter described the implementation of the adaptive learning platform, covering the technology stack, knowledge graph construction, the four adaptive layers (BKT, Elo, MAB, FSRS), the optional LLM feedback layer, the frontend components, and the deployment configuration. The implementation translates the architectural design from Chapter 3 into a working system with approximately 2,500 lines of Python code for the adaptive engine, 4,000 lines of TypeScript for the NestJS backend extensions, and 3,000 lines of TypeScript/React for the frontend additions.",
+    "placeholders": {},
+    "words": 79,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 83,
+    "line": 480,
+    "original": "Key implementation decisions include the per-difficulty-tier BKT parameter initialization, the dynamic K-factor for Elo that adapts to individual learning trajectories, the multi-component reward function for the MAB that addresses the BKT mastery delta noise problem, and the novel submission-to-rating mapping for FSRS that bridges the gap between programming assessment and spaced repetition. Feature flags enable the system to operate in control-group mode by disabling all adaptive layers, which is essential for the between-subjects evaluation design presented in the next chapter.",
+    "clean_text": "Key implementation decisions include the per-difficulty-tier BKT parameter initialization, the dynamic K-factor for Elo that adapts to individual learning trajectories, the multi-component reward function for the MAB that addresses the BKT mastery delta noise problem, and the novel submission-to-rating mapping for FSRS that bridges the gap between programming assessment and spaced repetition. Feature flags enable the system to operate in control-group mode by disabling all adaptive layers, which is essential for the between-subjects evaluation design presented in the next chapter.",
+    "placeholders": {},
+    "words": 80,
+    "humanized": null,
+    "status": "pending"
+  },
+  {
+    "id": 84,
+    "line": 482,
+    "original": "Chapter 5 describes the evaluation methodology and experimental results, assessing whether the implementation described here delivers the learning improvements that the theoretical design promises.",
+    "clean_text": "Chapter 5 describes the evaluation methodology and experimental results, assessing whether the implementation described here delivers the learning improvements that the theoretical design promises.",
+    "placeholders": {},
+    "words": 24,
+    "humanized": null,
+    "status": "pending"
+  }
+]

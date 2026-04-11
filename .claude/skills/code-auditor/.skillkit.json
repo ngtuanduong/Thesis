@@ -1,0 +1,9 @@
+{
+  "name": "code-auditor",
+  "description": "",
+  "source": "mhattingpete/claude-skills-marketplace",
+  "sourceType": "github",
+  "subpath": "code-auditor",
+  "installedAt": "2026-02-13T07:43:38.321Z",
+  "enabled": true
+}

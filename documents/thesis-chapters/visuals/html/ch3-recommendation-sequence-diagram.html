@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure 3.3 - Recommendation Flow Sequence Diagram</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    color: #222;
+  }
+  .figure-container { text-align: center; margin: 20px 0; }
+  svg text { font-family: 'Times New Roman', Times, serif; }
+  .caption {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="figure-container">
+<svg width="900" height="620" viewBox="0 0 900 620">
+  <defs>
+    <marker id="arseq" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+    <marker id="arseqr" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8 0, 0 3, 8 6" fill="#999"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="22" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Recommendation Flow Sequence Diagram</text>
+
+  <!-- Actor boxes at top -->
+  <rect x="40" y="40" width="80" height="30" rx="3" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="80" y="60" font-size="10" font-weight="bold" fill="#1565c0" text-anchor="middle">Student</text>
+
+  <rect x="180" y="40" width="100" height="30" rx="3" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="230" y="60" font-size="10" font-weight="bold" fill="#1565c0" text-anchor="middle">React Client</text>
+
+  <rect x="340" y="40" width="100" height="30" rx="3" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="390" y="60" font-size="10" font-weight="bold" fill="#e65100" text-anchor="middle">NestJS API</text>
+
+  <rect x="500" y="40" width="100" height="30" rx="3" fill="#fce4ec" stroke="#880e4f" stroke-width="1.5"/>
+  <text x="550" y="60" font-size="10" font-weight="bold" fill="#880e4f" text-anchor="middle">Redis</text>
+
+  <rect x="660" y="40" width="120" height="30" rx="3" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+  <text x="720" y="60" font-size="10" font-weight="bold" fill="#6a1b9a" text-anchor="middle">AI Service</text>
+
+  <!-- Lifelines -->
+  <line x1="80" y1="70" x2="80" y2="590" stroke="#1565c0" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="230" y1="70" x2="230" y2="590" stroke="#1565c0" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="390" y1="70" x2="390" y2="590" stroke="#e65100" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="550" y1="70" x2="550" y2="590" stroke="#880e4f" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="720" y1="70" x2="720" y2="590" stroke="#6a1b9a" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Step 1: Student clicks -->
+  <line x1="80" y1="100" x2="225" y2="100" stroke="#333" stroke-width="1.2" marker-end="url(#arseq)"/>
+  <text x="152" y="95" font-size="9" fill="#333" text-anchor="middle">Click "Get Recommendation"</text>
+
+  <!-- Step 2: Client to NestJS -->
+  <line x1="230" y1="125" x2="385" y2="125" stroke="#333" stroke-width="1.2" marker-end="url(#arseq)"/>
+  <text x="307" y="120" font-size="9" fill="#333" text-anchor="middle">GET /adaptive/recommend/:uid</text>
+
+  <!-- Step 3: NestJS to Redis (cache check) -->
+  <line x1="390" y1="155" x2="545" y2="155" stroke="#333" stroke-width="1.2" marker-end="url(#arseq)"/>
+  <text x="467" y="150" font-size="9" fill="#333" text-anchor="middle">Check cache</text>
+
+  <line x1="550" y1="170" x2="395" y2="170" stroke="#999" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arseqr)"/>
+  <text x="467" y="167" font-size="8" fill="#999" text-anchor="middle">Cache miss</text>
+
+  <!-- Step 4: NestJS to AI Service -->
+  <line x1="390" y1="200" x2="715" y2="200" stroke="#333" stroke-width="1.2" marker-end="url(#arseq)"/>
+  <text x="552" y="195" font-size="9" fill="#333" text-anchor="middle">GET /adaptive/recommend/:uid</text>
+
+  <!-- AI Service internal processing box -->
+  <rect x="680" y="215" width="185" height="200" rx="4" fill="#f9f4ff" stroke="#6a1b9a" stroke-width="1"/>
+  <text x="772" y="232" font-size="9" font-weight="bold" fill="#6a1b9a" text-anchor="middle">Internal Processing</text>
+
+  <text x="695" y="252" font-size="9" fill="#444" text-anchor="start">1. Load Knowledge Graph</text>
+  <text x="695" y="268" font-size="9" fill="#444" text-anchor="start">2. Load BKT states</text>
+  <text x="695" y="284" font-size="9" fill="#444" text-anchor="start">3. Load Elo ratings</text>
+  <text x="695" y="300" font-size="9" fill="#444" text-anchor="start">4. Load FSRS cards</text>
+  <text x="695" y="316" font-size="9" fill="#444" text-anchor="start">5. Compute eligible concepts</text>
+  <text x="695" y="332" font-size="9" fill="#444" text-anchor="start">6. Check FSRS review queue</text>
+  <text x="695" y="348" font-size="9" fill="#e65100" text-anchor="start" font-weight="bold">7. Level-1 Thompson Sampling</text>
+  <text x="695" y="364" font-size="9" fill="#444" text-anchor="start">8. Filter ZPD problems</text>
+  <text x="695" y="380" font-size="9" fill="#e65100" text-anchor="start" font-weight="bold">9. Level-2 Thompson Sampling</text>
+  <text x="695" y="400" font-size="9" fill="#2e7d32" text-anchor="start" font-weight="bold">Return ranked problem list</text>
+
+  <!-- AI Service returns to NestJS -->
+  <line x1="720" y1="430" x2="395" y2="430" stroke="#999" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arseqr)"/>
+  <text x="557" y="425" font-size="9" fill="#999" text-anchor="middle">Ranked problem list</text>
+
+  <!-- NestJS caches result -->
+  <line x1="390" y1="455" x2="545" y2="455" stroke="#333" stroke-width="1.2" marker-end="url(#arseq)"/>
+  <text x="467" y="450" font-size="9" fill="#333" text-anchor="middle">Cache result (TTL: 2 min)</text>
+
+  <!-- NestJS enriches and returns -->
+  <rect x="345" y="472" width="90" height="30" rx="3" fill="#fff3e0" stroke="#e65100" stroke-width="1"/>
+  <text x="390" y="490" font-size="8" fill="#e65100" text-anchor="middle">Enrich with</text>
+  <text x="390" y="499" font-size="8" fill="#e65100" text-anchor="middle">problem details</text>
+
+  <!-- NestJS returns to Client -->
+  <line x1="390" y1="520" x2="235" y2="520" stroke="#999" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arseqr)"/>
+  <text x="312" y="515" font-size="9" fill="#999" text-anchor="middle">Recommendation response</text>
+
+  <!-- Client displays to Student -->
+  <line x1="230" y1="545" x2="85" y2="545" stroke="#999" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arseqr)"/>
+  <text x="157" y="540" font-size="9" fill="#999" text-anchor="middle">Display recommendation</text>
+
+  <!-- Latency annotation -->
+  <rect x="15" y="195" width="50" height="250" rx="0" fill="none" stroke="#2e7d32" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="22" y="330" font-size="8" fill="#2e7d32" transform="rotate(-90, 22, 330)">Target: &lt; 500ms total</text>
+</svg>
+</div>
+
+<div class="caption">
+  <strong>Figure 3.3.</strong> Sequence diagram for the recommendation flow. The process begins with the student requesting a recommendation and traverses through cache check, nine-step adaptive processing in the AI Service (including two rounds of Thompson Sampling), result caching, and enrichment before returning to the student. Target end-to-end latency is under 500ms.
+</div>
+
+</body>
+</html>

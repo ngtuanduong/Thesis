@@ -1,0 +1,146 @@
+/* ── Category Sections ── */
+.categorySection {
+  scroll-margin-top: 80px;
+  margin-bottom: var(--space-6, 32px);
+}
+
+.categoryHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  margin-bottom: var(--space-3, 16px);
+  padding-bottom: var(--space-2, 8px);
+  border-bottom: 2px solid var(--color-border-light, #f0f0f0);
+}
+
+.categoryHeaderDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Term Card ── */
+.termCard {
+  scroll-margin-top: 80px;
+  margin-bottom: 12px;
+  transition: box-shadow 0.3s ease, background-color 1.5s ease;
+}
+
+.termCardHighlight {
+  animation: highlightFlash 1.5s ease-out;
+}
+
+@keyframes highlightFlash {
+  0% {
+    box-shadow: 0 0 0 3px rgba(250, 173, 20, 0.6);
+    background-color: rgba(250, 173, 20, 0.08);
+  }
+  100% {
+    box-shadow: none;
+    background-color: transparent;
+  }
+}
+
+/* ── Scale Bar ── */
+.scaleContainer {
+  margin-top: 12px;
+  margin-bottom: 4px;
+}
+
+.scaleLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #8c8c8c);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.scaleBarTrack {
+  height: 8px;
+  border-radius: 4px;
+  margin: 0 6px;
+}
+
+.scaleStopsTop,
+.scaleStopsBot {
+  position: relative;
+  height: 26px;
+  margin: 0 6px;
+}
+
+.scaleStop {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scaleStopMarker {
+  width: 3px;
+  height: 8px;
+  background: var(--color-text-secondary, #8c8c8c);
+  border-radius: 1px;
+}
+
+.scaleStopLabel {
+  font-size: 10px;
+  color: var(--color-text-secondary, #8c8c8c);
+  white-space: nowrap;
+}
+
+/* ── Where You See It ── */
+.whereSection {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.whereTag {
+  white-space: normal;
+  height: auto;
+  line-height: 1.4;
+}
+
+.whereSectionLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #8c8c8c);
+  margin-right: 2px;
+}
+
+/* ── Related Terms ── */
+.relatedSection {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.relatedSectionLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary, #8c8c8c);
+  margin-right: 2px;
+}
+
+.relatedTag {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.relatedTag:hover {
+  opacity: 0.8;
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  .scaleStopLabel {
+    font-size: 9px;
+  }
+}

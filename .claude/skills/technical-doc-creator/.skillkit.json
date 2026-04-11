@@ -1,0 +1,9 @@
+{
+  "name": "technical-doc-creator",
+  "description": "",
+  "source": "mhattingpete/claude-skills-marketplace",
+  "sourceType": "github",
+  "subpath": "technical-doc-creator",
+  "installedAt": "2026-02-13T07:43:38.327Z",
+  "enabled": true
+}

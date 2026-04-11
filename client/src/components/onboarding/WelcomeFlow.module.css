@@ -1,0 +1,47 @@
+.stepContent {
+  text-align: center;
+  padding: var(--space-6) 0;
+}
+
+.stepIndicator {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.footer {
+  text-align: right;
+  margin-top: var(--space-4);
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  text-align: left;
+  margin-top: 16px;
+}
+
+.featureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.featureItem .anticon {
+  font-size: 18px;
+  color: #1677ff;
+  margin-top: 2px;
+}
+
+.helpTip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f0f5ff;
+  border-radius: 6px;
+  margin-top: 12px;
+}

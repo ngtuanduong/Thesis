@@ -1,10 +1,27 @@
 {
-  "name": "${PROJECT_NAME}",
+  "name": "khoa-luan",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Adaptive Learning Platform - Thesis Project",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run start:dev --workspace=server",
+    "build:client": "npm run build --workspace=client",
+    "build:server": "npm run build --workspace=server",
+    "install:all": "npm install",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui",
+    "test:e2e:headed": "npx playwright test --headed",
+    "test:server": "npm run test --workspace=server",
+    "test:all": "npm run test:server && npx playwright test"
   },
-  "private": true
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
+  }
 }
