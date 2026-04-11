@@ -176,7 +176,8 @@ function WelcomeFlow() {
           current={current}
           items={steps.map((s) => ({ title: s.title, icon: s.icon }))}
           size="small"
-          style={{ marginBottom: 24 }}
+          labelPlacement="vertical"
+          style={{ marginBottom: 24, paddingRight: 24 }}
         />
       )}
 

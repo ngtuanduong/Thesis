@@ -13,16 +13,17 @@ interface PageTourProps {
 }
 
 export default function PageTour({ tourKey, steps, autoOpen = true }: PageTourProps) {
-  const { shouldShowTour, completeTour } = useOnboarding();
+  const { state, shouldShowTour, completeTour } = useOnboarding();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (autoOpen && shouldShowTour(tourKey)) {
+    // Don't open tour while the welcome modal is still showing
+    if (autoOpen && state.welcomeDone && shouldShowTour(tourKey)) {
       // Delay so page content renders and refs attach
       const timer = setTimeout(() => setOpen(true), 600);
       return () => clearTimeout(timer);
     }
-  }, [autoOpen, shouldShowTour, tourKey]);
+  }, [autoOpen, state.welcomeDone, shouldShowTour, tourKey]);
 
   const handleClose = () => {
     setOpen(false);

@@ -35,6 +35,7 @@ function Problems() {
   const { data: user } = useMe();
   const { data: recData, isLoading: recLoading } = useAdaptiveRecommendations(user?.id, 5);
 
+  const recsRef = useRef<HTMLDivElement>(null);
   const filterBarRef = useRef<HTMLDivElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
 
@@ -142,6 +143,16 @@ function Problems() {
   ];
 
   const tourSteps = [
+    ...(recData?.recommendations?.length
+      ? [
+          {
+            title: 'Recommended For You',
+            description:
+              'The adaptive engine analyzes your skill level, mastery, and review schedule to suggest problems that will help you learn most effectively.',
+            target: () => recsRef.current!,
+          },
+        ]
+      : []),
     {
       title: 'Search & Filter',
       description: 'Search problems by title, filter by difficulty level (Easy/Medium/Hard), or narrow down by specific concepts.',
@@ -167,6 +178,7 @@ function Problems() {
           <div className="center-content"><Spin /></div>
         </Card>
       ) : recData?.recommendations && recData.recommendations.length > 0 ? (
+        <div ref={recsRef}>
         <Collapse
           defaultActiveKey={['recs']}
           ghost
@@ -218,6 +230,7 @@ function Problems() {
             ),
           }]}
         />
+        </div>
       ) : null}
 
       {/* Unified search & filter bar */}
