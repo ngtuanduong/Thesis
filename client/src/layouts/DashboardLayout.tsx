@@ -21,6 +21,7 @@ import { useMe } from '../api/queries/useAuth';
 import ErrorBoundary from '../components/ErrorBoundary';
 import HelpMenu from '../components/onboarding/HelpMenu';
 import { useResponsive } from '../hooks/useResponsive';
+import ChatBot from '../components/ChatBot/ChatBot';
 import styles from './DashboardLayout.module.css';
 
 const { Header, Sider, Content } = Layout;
@@ -156,6 +157,7 @@ function DashboardLayout() {
           </ErrorBoundary>
         </Content>
       </Layout>
+      <ChatBot />
     </Layout>
   );
 }

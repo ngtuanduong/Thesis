@@ -16,6 +16,7 @@ import { ConceptsModule } from './concepts/concepts.module';
 import { AdaptiveModule } from './adaptive/adaptive.module';
 import { AdminModule } from './admin/admin.module';
 import { InstructorModule } from './instructor/instructor.module';
+import { ChatbotModule } from './chatbot/chatbot.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { InstructorModule } from './instructor/instructor.module';
     AdaptiveModule,
     AdminModule,
     InstructorModule,
+    ChatbotModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: ThrottlerGuard },

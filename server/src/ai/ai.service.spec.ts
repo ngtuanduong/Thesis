@@ -39,7 +39,7 @@ describe('AiService', () => {
 
   describe('request headers and base URL', () => {
     it('should include correct Content-Type and X-Service-Key headers', async () => {
-      await service.embedProblem({ id: 'p1', title: 'T', description: 'D', tags: [] });
+      await service.embedProblem({ id: 'p1', title: 'T', description: 'D' });
 
       expect(fetchSpy).toHaveBeenCalledWith(
         expect.stringContaining('http://ai-service:8000'),
@@ -59,7 +59,7 @@ describe('AiService', () => {
         id: 'p1',
         title: 'Two Sum',
         description: 'Find two numbers',
-        tags: ['array'],
+        problemConcepts: [{ concept: { name: 'array' } }],
       });
 
       expect(fetchSpy).toHaveBeenCalledWith(
@@ -228,7 +228,7 @@ describe('AiService', () => {
         text: jest.fn().mockResolvedValue('Internal Server Error'),
       });
 
-      await expect(service.embedProblem({ id: 'p1', title: '', description: '', tags: [] }))
+      await expect(service.embedProblem({ id: 'p1', title: '', description: '' }))
         .rejects.toThrow('AI service error 500: Internal Server Error');
     });
 

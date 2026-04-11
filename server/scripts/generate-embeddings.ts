@@ -14,7 +14,7 @@ async function generateEmbeddings() {
       id: true,
       title: true,
       description: true,
-      tags: true,
+      problemConcepts: { select: { concept: { select: { name: true } } } },
     },
   });
 
@@ -34,7 +34,7 @@ async function generateEmbeddings() {
           problem_id: problem.id,
           title: problem.title,
           description: problem.description,
-          tags: problem.tags,
+          tags: problem.problemConcepts.map((pc) => pc.concept.name),
         }),
       });
 

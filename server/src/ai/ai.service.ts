@@ -46,13 +46,14 @@ export class AiService {
     id: string;
     title: string;
     description: string;
-    tags: string[];
+    problemConcepts?: { concept: { name: string } }[];
   }) {
+    const tags = problem.problemConcepts?.map((pc) => pc.concept.name) ?? [];
     return this.request('POST', '/embed/problem', {
       problem_id: problem.id,
       title: problem.title,
       description: problem.description,
-      tags: problem.tags,
+      tags,
     });
   }
 
@@ -62,7 +63,7 @@ export class AiService {
       id: string;
       title: string;
       description: string;
-      tags: string[];
+      problemConcepts?: { concept: { name: string } }[];
     }[],
   ) {
     return this.request('POST', '/embed/batch', {
@@ -70,7 +71,7 @@ export class AiService {
         problem_id: p.id,
         title: p.title,
         description: p.description,
-        tags: p.tags,
+        tags: p.problemConcepts?.map((pc) => pc.concept.name) ?? [],
       })),
     });
   }
@@ -205,6 +206,23 @@ export class AiService {
       code: data.code,
       error_message: data.errorMessage || null,
       hint_level: data.hintLevel || 1,
+    });
+  }
+
+  /** Send a message to the chatbot and receive a response. */
+  async chatbotRespond(data: {
+    message: string;
+    conversationHistory: { role: string; content: string }[];
+    userRole: string;
+  }) {
+    return this.request<{
+      response: string | null;
+      tokens_used: number;
+      error: string | null;
+    }>('POST', '/chatbot/respond', {
+      message: data.message,
+      conversation_history: data.conversationHistory,
+      user_role: data.userRole,
     });
   }
 

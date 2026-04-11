@@ -25,6 +25,13 @@ class Settings(BaseSettings):
     llm_max_tokens: int = 500
     llm_rate_limit_per_minute: int = 30
 
+    # Chatbot configuration
+    enable_chatbot: bool = True
+    chatbot_max_tokens: int = 800
+    chatbot_temperature: float = 0.7
+    chatbot_timeout: float = 20.0
+    chatbot_rate_limit_per_minute: int = 20
+
     # Evaluation/experiment settings
     experiment_mode: bool = False
 

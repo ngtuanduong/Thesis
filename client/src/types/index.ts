@@ -183,3 +183,28 @@ export interface Concept {
   dependents?: { id: number; fromConceptId: number; toConceptId: number }[];
   problemConcepts?: { problemId: string; isPrimary: boolean }[];
 }
+
+// === Chatbot Types ===
+
+export interface ChatMessageType {
+  id: string;
+  userId: string;
+  role: 'user' | 'assistant';
+  content: string;
+  tokens: number;
+  createdAt: string;
+}
+
+export interface ChatSendResponse {
+  id: string;
+  content: string;
+  tokens: number;
+  tokensRemaining: number;
+  createdAt: string;
+}
+
+export interface ChatTokenUsageResponse {
+  tokensUsed: number;
+  tokensLimit: number;
+  date: string;
+}

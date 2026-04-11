@@ -18,7 +18,12 @@ const prisma = new PrismaClient();
 async function run() {
   console.log(`🧠 Batch embedding against ${AI_SERVICE_URL}`);
   const problems = await prisma.problem.findMany({
-    select: { id: true, title: true, description: true, tags: true },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      problemConcepts: { select: { concept: { select: { name: true } } } },
+    },
   });
   console.log(`   Found ${problems.length} problems`);
 
@@ -34,7 +39,7 @@ async function run() {
       problem_id: p.id,
       title: p.title,
       description: p.description,
-      tags: p.tags,
+      tags: p.problemConcepts.map((pc) => pc.concept.name),
     })),
   };
 

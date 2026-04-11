@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from sentence_transformers import SentenceTransformer
 
 from app.config import settings
-from app.routers import embed, profile, recommend, skill_gap, knowledge_tracing, elo, mab, fsrs, adaptive, hints, evaluation
+from app.routers import embed, profile, recommend, skill_gap, knowledge_tracing, elo, mab, fsrs, adaptive, hints, evaluation, chatbot
 from app.services.embedding_service import EmbeddingService
 from app.services.profile_service import ProfileService
 from app.services.cache_service import cache
@@ -35,6 +35,7 @@ app.include_router(fsrs.router)
 app.include_router(adaptive.router)
 app.include_router(hints.router)
 app.include_router(evaluation.router)
+app.include_router(chatbot.router)
 
 
 @app.get("/health")

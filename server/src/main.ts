@@ -40,6 +40,7 @@ async function bootstrap() {
     .addTag('Adaptive', 'Adaptive learning recommendations & state')
     .addTag('Skills', 'User skill embeddings')
     .addTag('Recommendations', 'Content-based recommendations')
+    .addTag('Chatbot', 'AI Q&A chatbot')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, document);
