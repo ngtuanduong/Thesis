@@ -321,6 +321,7 @@ function KnowledgeGraphViz({
   legendRef?: React.Ref<HTMLDivElement>;
 }) {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+  const hoverLeaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [popoverNodeId, setPopoverNodeId] = useState<string | null>(null);
   const [showHint, setShowHint] = useState(true);
@@ -381,11 +382,18 @@ function KnowledgeGraphViz({
   }, [baseEdges, activeNodeId]);
 
   const onNodeMouseEnter = useCallback((_: React.MouseEvent, node: Node) => {
+    if (hoverLeaveTimer.current) {
+      clearTimeout(hoverLeaveTimer.current);
+      hoverLeaveTimer.current = null;
+    }
     setHoveredNodeId(node.id);
   }, []);
 
   const onNodeMouseLeave = useCallback(() => {
-    setHoveredNodeId(null);
+    hoverLeaveTimer.current = setTimeout(() => {
+      setHoveredNodeId(null);
+      hoverLeaveTimer.current = null;
+    }, 50);
   }, []);
 
   const onNodeClick = useCallback((_: React.MouseEvent, node: Node) => {
