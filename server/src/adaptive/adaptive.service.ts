@@ -37,6 +37,16 @@ export class AdaptiveService {
     }
   }
 
+  /** Get ALL FSRS review cards with full statistics for the deck browser. */
+  async getReviewCards(userId: string) {
+    try {
+      return await this.aiService.getReviewCards(userId);
+    } catch (error) {
+      this.logger.error(`Failed to get review cards: ${error}`);
+      return [];
+    }
+  }
+
   /** Update all adaptive layers (BKT, Elo, MAB, FSRS) after a submission is graded. */
   async updateAfterSubmission(data: {
     studentId: string;

@@ -135,6 +135,23 @@ export interface ReviewItem {
   state: string;
 }
 
+export interface ReviewCard {
+  concept_id: number;
+  concept_name: string;
+  display_name: string;
+  topic_group: string;
+  difficulty_tier: number;
+  retrievability: number;
+  stability: number;
+  difficulty: number;
+  state: 'LEARNING' | 'REVIEW' | 'RELEARNING';
+  reps: number;
+  lapses: number;
+  last_review: string | null;
+  due_date: string;
+  memory_status: 'critical' | 'fading' | 'good' | 'strong';
+}
+
 export interface ReviewQueueResponse {
   student_id: string;
   due_now: ReviewItem[];

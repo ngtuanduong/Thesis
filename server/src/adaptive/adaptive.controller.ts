@@ -58,6 +58,12 @@ export class AdaptiveController {
     return this.adaptiveService.getReviewQueue(userId);
   }
 
+  @Get('review-cards/:userId')
+  @ApiOperation({ summary: 'Get all FSRS review cards with full statistics' })
+  getReviewCards(@Param('userId') userId: string) {
+    return this.adaptiveService.getReviewCards(userId);
+  }
+
   @Get('practice/:userId/:conceptId')
   @ApiOperation({ summary: 'Get best practice problem for a concept via MAB' })
   getPracticeForConcept(

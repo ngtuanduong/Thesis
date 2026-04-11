@@ -270,6 +270,59 @@ class FSRSService:
 
         return {"due_now": due_cards, "upcoming": upcoming_cards}
 
+    async def get_all_review_cards(
+        self, session: AsyncSession, student_id: str
+    ) -> list[dict]:
+        """Get ALL FSRS cards with full statistics for the deck browser view."""
+        result = await session.execute(
+            select(FsrsCard, Concept)
+            .join(Concept, FsrsCard.concept_id == Concept.id)
+            .where(
+                FsrsCard.student_id == student_id,
+                FsrsCard.state != "NEW",
+            )
+        )
+        rows = result.all()
+        now = datetime.utcnow()
+
+        cards = []
+        for card, concept in rows:
+            if card.last_review:
+                elapsed_days = (now - card.last_review).total_seconds() / 86400
+            else:
+                elapsed_days = 0.0
+
+            current_r = compute_retrievability(elapsed_days, card.stability)
+
+            if current_r < 0.5:
+                memory_status = "critical"
+            elif current_r < 0.7:
+                memory_status = "fading"
+            elif current_r < 0.9:
+                memory_status = "good"
+            else:
+                memory_status = "strong"
+
+            cards.append({
+                "concept_id": card.concept_id,
+                "concept_name": concept.name,
+                "display_name": concept.display_name,
+                "topic_group": concept.topic_group,
+                "difficulty_tier": concept.difficulty_tier,
+                "retrievability": round(current_r, 4),
+                "stability": round(card.stability, 2),
+                "difficulty": round(card.difficulty, 2),
+                "state": card.state,
+                "reps": card.reps,
+                "lapses": card.lapses,
+                "last_review": card.last_review.isoformat() if card.last_review else None,
+                "due_date": card.due_date.isoformat() if card.due_date else None,
+                "memory_status": memory_status,
+            })
+
+        cards.sort(key=lambda x: x["retrievability"])
+        return cards
+
     async def get_card(
         self, session: AsyncSession, student_id: str, concept_id: int
     ) -> dict | None:

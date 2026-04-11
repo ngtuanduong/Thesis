@@ -1,14 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Table, Tag, Typography, Input, Space, Select } from 'antd';
-import { SearchOutlined, FilterOutlined } from '@ant-design/icons';
+import { Table, Tag, Typography, Input, Space, Select, Card, List, Spin, Collapse } from 'antd';
+import { SearchOutlined, FilterOutlined, BulbOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { useProblemsPaginated } from '../api/queries/useProblems';
-import { useConcepts } from '../api/queries/useAdaptive';
+import { useConcepts, useAdaptiveRecommendations } from '../api/queries/useAdaptive';
+import { useMe } from '../api/queries/useAuth';
 import { useResponsive } from '../hooks/useResponsive';
 import PageTour from '../components/onboarding/PageTour';
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 interface ProblemRow {
   id: string;
@@ -24,11 +25,15 @@ const difficultyColors: Record<string, string> = {
   HARD: 'red',
 };
 
+const { Text } = Typography;
+
 function Problems() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const initialSearch = params.get('search') || '';
   const initialConcept = params.get('concept') || '';
+  const { data: user } = useMe();
+  const { data: recData, isLoading: recLoading } = useAdaptiveRecommendations(user?.id, 5);
 
   const filterBarRef = useRef<HTMLDivElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
@@ -155,6 +160,65 @@ function Problems() {
       <div className="responsive-page-header">
         <Title level={3} style={{ margin: 0 }}>Problems</Title>
       </div>
+
+      {/* Recommended For You */}
+      {recLoading ? (
+        <Card style={{ marginTop: 12, marginBottom: 12 }}>
+          <div className="center-content"><Spin /></div>
+        </Card>
+      ) : recData?.recommendations && recData.recommendations.length > 0 ? (
+        <Collapse
+          defaultActiveKey={['recs']}
+          ghost
+          style={{ marginTop: 12, marginBottom: 12 }}
+          items={[{
+            key: 'recs',
+            label: (
+              <span>
+                <BulbOutlined style={{ color: '#fa8c16', marginRight: 8 }} />
+                <Text strong>Recommended For You</Text>
+                <Text type="secondary" style={{ marginLeft: 8, fontSize: 12 }}>
+                  Powered by Adaptive Engine
+                </Text>
+              </span>
+            ),
+            children: (
+              <List
+                dataSource={recData.recommendations}
+                renderItem={(rec) => (
+                  <List.Item
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate(`/problems/${rec.problem_id}`)}
+                    actions={[
+                      <Tag color="blue">{rec.concept_display_name}</Tag>,
+                    ]}
+                  >
+                    <List.Item.Meta
+                      title={
+                        <span>
+                          {rec.title}{' '}
+                          <Tag
+                            color={
+                              rec.difficulty === 'EASY'
+                                ? 'green'
+                                : rec.difficulty === 'MEDIUM'
+                                  ? 'orange'
+                                  : 'red'
+                            }
+                          >
+                            {rec.difficulty}
+                          </Tag>
+                        </span>
+                      }
+                      description={rec.reason}
+                    />
+                  </List.Item>
+                )}
+              />
+            ),
+          }]}
+        />
+      ) : null}
 
       {/* Unified search & filter bar */}
       <div className="filter-bar" style={{ marginTop: 12 }} ref={filterBarRef}>

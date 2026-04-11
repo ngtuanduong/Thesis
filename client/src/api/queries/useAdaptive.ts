@@ -4,6 +4,7 @@ import type {
   AdaptiveRecommendationsResponse,
   KnowledgeStateResponse,
   ReviewQueueResponse,
+  ReviewCard,
   HintResponse,
   Concept,
 } from '../../types';
@@ -41,6 +42,19 @@ export function useReviewQueue(userId?: string) {
     queryFn: async () => {
       const res = await api.get<ReviewQueueResponse>(
         `/adaptive/review-queue/${userId}`,
+      );
+      return res.data;
+    },
+    enabled: !!userId,
+  });
+}
+
+export function useReviewCards(userId?: string) {
+  return useQuery({
+    queryKey: ['review-cards', userId],
+    queryFn: async () => {
+      const res = await api.get<ReviewCard[]>(
+        `/adaptive/review-cards/${userId}`,
       );
       return res.data;
     },

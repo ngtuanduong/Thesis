@@ -71,3 +71,12 @@ async def get_review_queue(
 ):
     """Get FSRS review queue."""
     return await engine.fsrs.get_review_queue(session, student_id)
+
+
+@router.get("/review-cards/{student_id}")
+async def get_all_review_cards(
+    student_id: str,
+    session: AsyncSession = Depends(get_db_session),
+):
+    """Get ALL FSRS cards with full statistics for the deck browser view."""
+    return await engine.fsrs.get_all_review_cards(session, student_id)

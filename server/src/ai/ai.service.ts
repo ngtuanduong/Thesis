@@ -148,6 +148,11 @@ export class AiService {
     return this.request('GET', `/adaptive/review-queue/${userId}`);
   }
 
+  /** Get ALL FSRS review cards with full statistics. */
+  async getReviewCards(userId: string) {
+    return this.request('GET', `/adaptive/review-cards/${userId}`);
+  }
+
   // === Evaluation Methods ===
 
   /** Log a user interaction event for A/B testing and experiment tracking. */
