@@ -1,0 +1,9 @@
+{
+  "name": "thesis-visual-fixer",
+  "description": "Fix thesis visual HTML files: QA, crop, export PNG, upload to catbox, update VISUAL-GUIDE.md",
+  "source": "local",
+  "sourceType": "local",
+  "subpath": "thesis-visual-fixer",
+  "installedAt": "2026-03-20T15:00:00.000Z",
+  "enabled": true
+}

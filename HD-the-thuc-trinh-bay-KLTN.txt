@@ -1,0 +1,278 @@
+﻿HƯỚNG DẪN 
+THỂ THỨC TRÌNH BÀY KHÓA LUẬN TỐT NGHIỆP 
+CỦA KHOA CÔNG NGHỆ THÔNG TIN
+(Trích từ Hướng dẫn thể thức trình bày luận án, luận văn và khóa luận tốt nghiệp của Trường Đại học Hà Nội ban hành kèm theo Quyết định số 612/QĐ-ĐHHN ngày 07 tháng 4 năm 2021)
+
+I. CẤU TRÚC CỦA KHÓA LUẬN TỐT NGHIỆP
+Khóa luận tốt nghiệp được trình bày bằng tiếng Anh theo thứ tự sau: 
+- Trang bìa chính (theo mẫu); 
+- Trang bìa phụ (theo mẫu); 
+- DECLARATION OF AUTHORSHIP; 
+- ACKNOWLEDGEMENT; 
+- TABLE OF CONTENT; 
+- ABBREVIATIONS 
+- LIST OF TABLES;
+- LIST OF FIGURES;
+- ABSTRACT;
+- Phần nội dung: gồm các chương, mục, tiểu mục, trình bày theo mẫu sau:
+Chapter 1. Chapter title
+1.1. Section title
+1.1.1. Sub-section title
+      .....
+Chapter 2. Chapter title
+2.1. Section title
+2.1.1. Sub-section title
+      ....
+- REFERENCES;
+- APPENDIX;
+- Bản giải trình chỉnh sửa Khóa luận tốt nghiệp.
+
+
+II. YÊU CẦU VỀ TRÌNH BÀY BÌA VÀ VĂN BẢN
+2.1. TRÌNH BÀY BÌA KHÓA LUẬN TỐT NGHIỆP
+2.1.1. TRANG BÌA NGOÀI: 
+Xem mẫu 1
+- Bìa cứng màu xanh lá cây (không bóng kính, không gáy xoắn) in chữ mạ vàng.
+- BỘ GIÁO DỤC VÀ ĐÀO TẠO (chữ in, cỡ chữ 13, Times New Roman)
+- TRƯỜNG ĐẠI HỌC HÀ NỘI (chữ in đậm, cỡ chữ 13, Times New Roman)
+- Logo Trường Đại học Hà Nội: kích thước 2.5cm x 2.5cm
+- KHÓA LUẬN TỐT NGHIỆP (chữ in đậm, cỡ chữ 15, Times New Roman)
+- TÊN ĐỀ TÀI NGHIÊN CỨU TRÌNH BÀY BẰNG TIẾNG VIỆT (chữ in đậm, cỡ chữ 16, Times New Roman)
+- TÊN ĐỀ TÀI NGHIÊN CỨU TRÌNH BÀY BẰNG NGÔN NGỮ CHÍNH VĂN (chữ in đậm, cỡ chữ 16, Times New Roman)
+- Người hướng dẫn: Chức danh. Họ và tên (đầy đủ, cả dấu, nếu có) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+- Họ và tên sinh viên: (đầy đủ, cả dấu, nếu có) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+- Mã số sinh viên: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+- Chuyên ngành: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+- Khoa: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+- Hà Nội, năm 20.. (tính theo năm bảo vệ) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+2.1.2. TRANG BÌA PHỤ: 
+Xem mẫu 2
+* Chất liệu: giấy trắng.
+* Nội dung: Trình bày như bìa ngoài viết bằng tiếng Anh 
+2.1.3 Đóng gáy và nội dung trên gáy:
+* Tài liệu được đóng thành quyển, đóng gáy ở phía bên trái theo chiều dọc khổ giấy, không đóng gáy xoắn.
+* Nội dung in trên gáy gồm những thông tin sau:
+HỌ VÀ TÊN * KHÓA LUẬN * NĂM BẢO VỆ
+
+2.2. TRÌNH BÀY VĂN BẢN 
+2.2.1. BẢN CHÍNH: 
+- Sử dụng kiểu chữ Times New Roman; cỡ chữ 13; mật độ chữ bình thường, không nén hoặc kéo giãn khoảng cách giữa các chữ; giãn dòng đặt ở chế độ 1,5 dòng; lề trên 3cm; lề dưới 3cm; lề trái 3,5cm; lề phải 2cm, căn lề hai bên. 
+- Số thứ tự trang đánh bằng chữ số Ả Rập ở phía dưới, giữa mỗi trang giấy và trang 1 được tính từ nội dung chính, còn các phần trước đó đánh số thứ tự theo chữ cái La Mã thường: i, ii, iii, ... 
+- Tiêu đề các cấp được quy định cách trình bày như sau: 
+Cấp 1: Tên chương 
+Kiểu chữ Times New Roman, viết hoa, in đậm, cỡ chữ 16, canh lề giữa, cách trên 32pt, cách dưới 32pt, giãn dòng 1,5.
+Cấp 2: Mục lớn
+Kiểu đánh số 1.1. Kiểu chữ Times New Roman, viết thường, in đậm, cỡ chữ 14, canh lề 2 bên, cách trên 6pt, cách dưới 6pt, giãn dòng 1,5.
+Cấp 3: Mục nhỏ
+Kiểu đánh số 1.1.1. Kiểu chữ Times New Roman, viết thường, cỡ chữ 13, canh lề 2 bên, cách trên 6pt, cách dưới 6pt, giãn dòng 1,5.
+Cấp 4: Mục nhỏ
+Kiểu đánh số 1.1.1.1. Kiểu chữ Times New Roman, viết thường, in nghiêng, cỡ chữ 13, canh lề 2 bên, cách trên 6pt, cách dưới 6pt, giãn dòng 1,5.
+- Văn bản được in trên một mặt giấy trắng khổ A4 (210x297mm).
+2.2.2. CHÚ GIẢI, CHÚ THÍCH: 
+- Sử dụng font chữ Times New Roman, mật độ chữ bình thường, cỡ chữ 10.
+- Hiển thị cuối trang, sử dụng chữ số Ả rập theo thứ tự tăng dần từ đầu đến cuối khóa luận.
+- Nội dung chú giải ngắn gọn, chỉ tập trung vào một chủ đề và cố gắng giới hạn ý kiến của mình trong một đoạn văn ngắn. Chú giải cũng có thể hướng người đọc đến những nguồn tài liệu tham khảo khác chi tiết hơn. 
+Ví dụ: 1 Xem Blackmur (1995), đặc biệt là chương 3 và chương 4 để tìm hiểu về vấn đề này.
+III. TRÍCH DẪN:
+3.1. TRÍCH DẪN TRỰC TIẾP: 
+Khi các cụm từ có 5 từ trở lên hoặc cả đoạn văn, cần để trong dấu ngoặc kép các cụm hoặc đoạn văn đó. 
+Chú ý: Nếu trích dẫn trực tiếp tài liệu điện tử mà không có số trang thì dùng số đoạn văn, ghi para/đoạn.
+3.1.1. Trích dẫn câu ngắn: 
+Nếu trích dẫn ít hơn 40 từ, cần đặt nội dung trích dẫn trong dấu ngoặc kép. Chỉ trích dẫn trực tiếp/nguyên văn những thông tin tối quan trọng.
+
+
+Theo ..............................: ".............."
+Ví dụ 1: Theo Khoản 7, Điều 5 Luật Giáo dục năm 2019: "Chuẩn đầu ra là yêu cầu cần đạt về phẩm chất và năng lực của người học sau khi hoàn thành một chương trình giáo dục.".
+Ví dụ 2: According to Jones (1998, p.199), "Students often had difficulty using APA style, especially when it was their first time".3.1.2. Trích dẫn câu dài: 
+Nếu trích dẫn từ 40 từ trở lên thì đoạn được trích dẫn được xuống dòng so với câu đề dẫn và lề trái được định dạng các dòng lùi vào 5 spaces so với định dạng chung của văn bản.
+
+   
+   Theo ..............................: 
+      "................."			
+      
+Ví dụ 1: 
+Theo Phan Thanh Long, Trần Quang Cấn và Nguyễn Văn Diện (2010):
+"Quá trình giáo dục là quá trình tác động có mục đích, có tổ chức của nhà giáo dục đến đối tượng giáo dục nhằm thỏa mãn nhu cầu phát triển nhân cách riêng của mỗi học sinh và đáp ứng yêu cầu đào tạo nguồn lực của xã hội."
+Ví dụ 2: 
+To ensure that lifelong learning is exercised by every individual, a timely policy is needed to guide the learning activities sufficiently and effectively. By the same token, Riordan (2004) asserted:
+"It is commonly recognized today that the knowledge and skills endowment of a country's labor force, rather than its physical capital, determines its economic and social progress, and its ability to compete in the world economy. Promoting innovation, productivity, and competitiveness of individuals, enterprises, and countries therefore underlies contemporary learning and training policies and provision." 3.2. TRÍCH DẪN GIÁN TIẾP: Cung cấp thông tin tác giả, năm xuất bản và khuyến khích ghi số trang (không bắt buộc).
+3.2.1. Trích dẫn ý trong bài viết: 
+Lưu ý: Trích dẫn đầy đủ họ tên đối với tác giả người Việt Nam
++ Đối với trích dẫn có một tác giả: 
+
+
+
+
+............. (............., ...............)
+Ví dụ 1: It is commonly agreed that highly satisfied faculty will generally be innovative and motivated to establish and maintain an environment conductive to learning (Joyner, 1998)
+Ví dụ 2: Việc xem nhẹ vốn con người là một sai lầm nghiêm trọng trong kinh tế học giáo dục (Bùi Hiển, 1962). Lưu ý: Khi tác giả chỉ dựa vào ý kiến của người khác, không đưa ra ý kiến hay nhận xét của chính tác giả thì phải dùng từ "xem":  
+Ví dụ: Trình độ học vấn và thu nhập có mối tương quan rất mạnh (xem Bùi Hiển, 1962).+ Đối với trích dẫn có hai và ba tác giả: Trích dẫn cả hai và ba Họ tên của tác giả. Dùng từ (và) hoặc dấu (&) giữa các tác giả và để năm xuất bản trong dấu ngoặc đơn.
+
+
+
+Theo .............. (.........) và .............. (.........), .................................
+
+
+
+
+Ví dụ 1: Joyner and Price (1998), found/showed that highly satisfied faculty will generally be innovative and motivated to establish and maintain an environment conductive to learning.
+Ví dụ 2: Theo Nguyễn Hồng Phan (2006) và Bùi Văn Hiệp (2014), vấn đề định hướng giá trị lối sống đã được nhiều tác giả phân tích.+ Đối với trích dẫn ba đến năm tác giả: 
+Trích dẫn tất cả tác giả trong lần đầu tiên.
+
+
+
+..............., ..............., ...............,................ và .............. (......), .............
+Ví dụ 1: Morreale, Spitzberg, và Barge (2007), Everyone acknowledges that culture influences perception and perceptions of reality.
+Ví dụ 2: Nguyễn Hồng Phan, Bùi Văn Hiệp và Hà Văn Bình (2014), vấn đề định hướng giá trị lối sống đã được nhiều tác giả phân tích.	+ Đối với trích dẫn sáu tác giả trở lên: Chỉ trích dẫn Họ tên của tác giả đầu tiên, tiếp theo là "và những người khác" hoặc "et al."
+
+
+	........ và những người khác. (......) cho rằng.......
+Lưu ý: Trích dẫn đầy đủ họ tên đối với tác giả người Việt Nam
+Ví dụ 1: Gloster et al. (2010) Two different previously published operational atmospheric dispersion models indicate that midges from infected regions in Europe are likely to have reached Sweden by atmospheric transport during an estimated infection window.
+Ví dụ 2: Nguyễn Thị Trang và những người khác (2012) cho rằng trình độ học vấn và thu nhập có mối tương quan rất mạnh	+ Đối với trích dẫn Tập thể tác giả và Tập thể tác giả như là nhà xuất bản: Nếu tên tập thể tác giả dài, nên trích dẫn đầy đủ lần đầu tiên kèm năm xuất bản, sau đó có thể viết tắt.
+Ví dụ: Trích dẫn lần đầu: (American Psychological Association [APA], 2009)
+Trích dẫn lần sau: (APA, 2009)	+ Đối với trích dẫn Nhiều tác phẩm của cùng 1 tác giả : Trích dẫn họ tên của tác giả và năm xuất bản của mỗi ấn bản.
+
+
+	...............(........,.........,.........)
+Lưu ý: Trích dẫn đầy đủ họ tên đối với tác giả người Việt Nam
+Ví dụ 1: ....( Gloster, 2006, 2010)
+Ví dụ 2: ....(Trần Văn Nam, 2006, 2010)Lưu ý : Nhiều tác phẩm của cùng 1 tác giả, cùng năm xuất bản: Trích dẫn họ tên tác giả đó, năm xuất bản và thêm hậu tố a, b, c vào năm đó.
+Ví dụ 1: ....( Gloster, 2006a, 2010b)
+Ví dụ 2: ....(Trần Văn Nam, 2006a, 2006b)	+ Đối với trích dẫn Tác giả khuyết danh: Sử dụng từ "Khuyết danh" HOẶC "Ẩn danh"
+
+
+	...............( Anonymous /Khuyết danh,.......)
+Ví dụ 1: ... (Anonymous, 1997)
+Ví dụ 2: ...(Khuyết danh, 1997)	+ Đối với trích dẫn Không biết tên tác giả: Trích dẫn một vài từ đầu của nhan đề và năm xuất bản. Nếu nhan đề là tên của bài báo hoặc 1 chương của cuốn sách thì đặt trong ngoặc kép (1). Nếu nhan đề là Ấn phẩm định kì, sách nhỏ (book brochure), báo cáo...thì để font chữ in nghiêng (2).
+Ví dụ (1) :...( "Thuốc mới", 2017)
+Ví dụ (2) : ...(Thị trường bất động sản, 2010)
+3.2.2. Trích dẫn nguồn tin thứ 2 (nguồn thứ cấp): Chỉ trích dẫn nguồn thực sự đọc (nguồn thứ 2 - không phải thông tin gốc) và có chỉ dẫn tới nguồn của thông tin gốc.
+
+
+
+	Theo ........ và .......... (......., được trích dẫn từ........., .......), ............
+
+
+
+Ví dụ 1: Farrow (1968, as cited in Ward & Decan, 1988), .....
+Ví dụ 2: Theo Phan Thanh Long và Nguyễn Văn Hà (2018, được trích dẫn từ Bùi Văn Hiệp, 2014), thì nền tảng của kinh tế học giáo dục là giáo dục học và kinh tế học. 
+
+
+IV. TRÌNH BÀY TÀI LIỆU THAM KHẢO: 
+Tài liệu tham khảo được sắp xếp theo trật tự Alphabet họ của tác giả.
+4.1. SÁCH
+Các yếu tố cơ bản trình bày danh mục tài liệu tham khảo dạng sách.
+
+
+Beckett, S. T. (2008). The science of chocolate (2nd ed.). Royal Society of Chemistry.
+
+
+
+Chú ý: Đối với tác giả là người Việt Nam: Trình bày đầy đủ Họ tên tác giả
+4.1.1. Sách in
+Định dạngTên tác giả, A. A. (năm xuất bản). Tên sách. Nhà xuất bản.Ví dụLê, Trọng Đại (2019). Bản lĩnh. Hà Nội : Lao độngChú ý: Đối với tên nhà xuất bản là tên địa danh, tên riêng, tính từ: thêm "Nxb." trước tên nhà xuất bản. Vd. Nxb.Trẻ
+4.1.2. Chương trong một cuốn sách in
+Định dạngTên tác giả, A. A. (năm xuất bản). Tên chương. Trong Tên người biên tập A, Tên sách (tr. xxx-xxx). Nơi xuất bản: Nhà xuất bản.Ví dụTrần, Hồng Hải (2018). Hoạt động marketing. Trong Nguyễn Văn Nam & Bùi Hải Bình biên soạn. Nguyên lý Marketing (tr. 200 - 236). Hà Nội: Khoa học kỹ thuật.4.1.3. Sách biên soạn
+Định dạngTên người biên tập, A. A., (Bs.). (năm xuất bản). Tên sách. Nơi xuất bản: Nhà xuất bản.Ví dụNguyễn, Cường (Bs). (1997).Văn bản hướng dẫn cho sinh viên giáo dục học (tái bản lần thứ 5). Hà Nội: Văn hóa thông tin.4.1.4. Sách điện tử: Cung cấp địa chỉ URL là trang web của nhà xuất bản hoặc nhà cung cấp có uy tín.
+Định dạng
+(Có 2 định dạng)(1) Tên tác giả, A. A. (năm xuất bản). Tên sách. Truy xuất từ URL
+(2) Tên tác giả, A. A. (năm xuất bản). Tên sách. doi:xxxxVí dụ 1
+
+Ví dụ 2Mai, Xuân Sơn  (2010). Nguyên lý marketing trong hoạt động kinh doanh (tái bản lần thứ 3). Truy xuất từ http://www.elib.com.vn
+Mai, Xuân Sơn  (2010). Nguyên lý marketing trong hoạt động kinh doanh (tái bản lần thứ 3). doi: 10.1016/S0300-483X(03)00159-8.4.1.5. Chương trong một cuốn sách điện tử 
+Định dạng
+(có 2 định dạng)Tên tác giả, A. A. (năm xuất bản). Tên chương. Trong Tên người biên tập A, Tên sách (tr. xxx-xxx). Truy xuất từ URL
+Tên tác giả, A. A. (năm xuất bản). Tên chương. Trong Tên người biên tập A, Tên sách (tr. xxx-xxx). doi:xxxxVí dụ 1
+
+
+Ví dụ 2
+
+Mai, Xuân Sơn (2010). Nguyên lý marketing trong hoạt động kinh doanh. Trong Nguyễn Văn Nam & Bùi Hải Bình biên soạn, Ứng dụng nguyên lý marketing trong hoạt động sale (tr.210-250). Truy xuất từ http://www.elib.com.vn/marketing.html
+Mai, Xuân Sơn (2010). Nguyên lý marketing trong hoạt động kinh doanh. Trong Nguyễn Văn Nam & Bùi Hải Bình biên soạn, Ứng dụng nguyên lý marketing trong hoạt động sale (tr.210-250). doi: 10.1016/S0300-483X(03)00159-8.4.2. TẠP CHÍ CHUYÊN NGÀNH
+Các yếu tố cơ bản trình bày danh mục tài liệu tham khảo dạng Bài báo
+
+
+Wolchik, S. A., West, S. G., Sandler, I. N., Tein, J., Coatsworth, D., Lengua, L., ...Griffin, W. A. (2000). An experimental evaluation of theory-based mother and mother-child programs for children of divorce. Journal of Consulting and Clinical Psychology, 68(5), 843-856. 
+
+
+4.2.1. Bài báo có 1 tác giả:
+Định dạngTên tác giả, A. A. (năm xuất bản). Tên bài báo. Tên tạp chí, số tuyển tập, tr-tr.Ví dụVũ, Hữu Hùng. (2018). Cơ sở của tri thức. Tạp chí khoa học và công nghệ, 9, 23-29.4.2.2. Bài báo có từ 2 đến 19 tác giả: Ghi họ, tên 18 tác giả, sau đó là dấu & và tên tác giả cuối cùng
+Định dạngTên tác giả, A. A., B. B., & C. C., (năm xuất bản). Tên bài báo. Tên tạp chí, số tuyển tập, tr-tr. doi:xxxxVí dụĐỗ, Hạnh., Nguyễn, Thành Nam., Bùi, Văn Nam., & Hồ, Chí Bình., (2018). Trí tuệ nhân tạo. Tạp chí khoa học và công nghệ, 9, 23-29. http://dx.doi.org/10.1071/AH131134.2.3. Bài báo có từ 20 tác giả trở lên: Ghi họ, tên 19 tác giả, sau đó là dấu chấm lửng (...), và tên tác giả cuối cùng.
+Định dạngTên tác giả, A. A., B. B.,... & C. C., (năm xuất bản). Tên bài báo. Tên tạp chí, số tuyển tập, tr-tr. doi:xxxxVí dụBùi, Văn Công., Nguyễn, Mạnh Cường., Vũ, Văn Hải., Hoàng, Quốc Việt., Bùi, Việt Bình., Vũ, Minh Vui., ...  Nguyên, Đức Hạnh. (2018). Cơ sở của tri thức. Tạp chí khoa học và công nghệ, 9, 23-29. doi:10.1037//0022-006X.68.5.8434.2.4. Bài báo điện tử không có DOI
+Định dạngTên tác giả, A. A., B. B., & C. C., (năm xuất bản). Tên bài báo. Tên tạp chí, số tuyển tập, tr-tr. Truy xuất từ URL.Ví dụNghiêm, Xuân Huy, Bùi, Văn Thành., & Hà, Đức Chí. (2010). Vai trò của Kiến thức thông tin đối với cán bộ nghiên cứu khoa học. Tạp chí Thư viện Việt Nam, 3, 12-18. Truy xuất từ http://elib.swin.edu.vn/index.php
+4.3. TRANG WEB VÀ PHƯƠNG TIỆN TRUYỀN THÔNG XÃ HỘI
+Nguồn thông tin từ các trang web và các phương tiện truyền thông xã hội như: blog, nhóm tin tức, diễn đàn trực tuyến, Twitter và Facebook...
+4.3.1. Trang mạng 
+Định dạngTên tác giả, A. A. & B. B., (Năm xuất bản). Tên bài. Truy xuất từ URLVí dụBùi, Viết Tiến. (2018). Nói không với đồ nhựa dùng một lần. Truy xuất từ Chung tay bảo vệ môi trường website: http://vimoitruong.hanhdong.com.vn4.3.2. Trang mạng không có tên tác giả
+Định dạng 
+(có 2 định dạng)Tên tổ chức. (Năm xuất bản). Tên bài. Truy xuất từ URL
+HOẶC Tên bài. (Năm xuất bản). Tên bài. Truy xuất từ URLVí dụLàm thế nào để nuôi giống mèo Ba Tư. (1964). Truy xuất từ http://www.catbreeders.co.uk4.3.3. Diễn đàn trực tuyến, nhóm thảo luận hoặc bài đăng trên blog
+Định dạngTên tác giả, A. A., (Năm, Tháng Ngày). Tên bài. Truy xuất từ  http://www.xxxVí dụFreakonomics. (2010, tháng 10 ngày 29). E-ZPass là cuộc sống tiết kiệm [bài viết trên Blog]. Truy xuất từ http://freakonomics.blogs.nytimes.com/2010/10/29/e-zpass-is-alife-saver-literally/4.3.4. Twitter
+Định dạngTên người dùng/nhóm người dùng. (Năm, Tháng Ngày). Tên bài. [Loại bài]. Truy xuất Ngày/Tháng/Năm từ  http://www.twitter.com/specificpageURLVí dụLê Trung Nghĩa. (2019, tháng 11 ngày 21). Đang diễn ra khóa thực hành khai thác OER tại Đại học Tôn Đức Thắng [Chia sẻ].  Truy xuất 28/11/2019, từ https://twitter.com/nghiafoss/status/11974761925944770564.3.5. Facebook
+Định dạngTên người dùng/nhóm người dùng. (Năm, Tháng Ngày). Tên bài. [Loại bài]. Truy xuất Ngày/Tháng/Năm từ  http://www.facebook.com/specificpageURLVí dụ Lê Trung Nghĩa. (29/11/2019). Khuyến cáo của UNESCO về Tài nguyên Giáo dục Mở - OER (Open Educational Resources) [Chia sẻ]. Truy xuất 28/11/2019, từ https://giaoducmo.avnuc.vn/giao-duc/khuyen-cao-cua-unesco-ve-tai-nguyen-giao-duc-mo-oer-open-educational-resources-86.html 4.3.6. Youtube
+Định dạngTên người dùng/nhóm người dùng. (Năm, Tháng Ngày). Tiêu đềe [Tập tin video]. Truy xuất từ https://www.youtube.com/specificpageURLVí dụApsolon, M. (2011, Ngày 9 tháng 9). Con ma cô gái bắt là thật? trên băng Video số 14 [Tập tin video]. Truy xuất từ http://www.youtube.com/watch?v=6nyGCbxD884.4. LUẬN ÁN, LUẬN VĂN, KHÓA LUẬN TỐT NGHIỆP
+4.4.1. Luận án, Luận văn, KLTN đã công bố
+Định dạng
+Có 2 định đạngĐịnh dạng 1:
+Tên tác giả, A. A., (Năm xuất bản).. Tên luận án, luận văn, KLTN (Loại văn bản),. Truy xuất từ CSDL.
+Định dạng 2:
+Tên tác giả, A. A., (Năm xuất bản).. Tên luận án, luận văn, KLTN (Loại văn bản), Nhà xuất bản, Nơi xuất bản.Ví dụ
+(Định dạng 1)Nguyễn Hữu Nghĩa (2017). Hoạt động Marketing trong thư viện công cộng Việt Nam. (Luận án Tiến sĩ). Truy xuất từ http://dlib.huc.edu.vn/handle/123456789/8609Ví dụ
+(Định dạng 2)Hoàng, Thu Trang. (2019). Nghiên cứu ảnh hưởng của Nho giáo trong đời sống người Việt. (Luận văn Thạc sĩ), Trường Đại học Khoa học Xã hội và Nhân văn, Hà Nội.4.4.2. Luận án, Luận văn, KLTN chưa công bố
+Định dạngTên tác giả, A. A., (Năm xuất bản).. Tên luận án, luận văn, KLTN (Loại văn bản), Tên cơ sở đào tạo, Nơi đặt cơ sở đào tạo.Ví dụ Nguyễn, Bá Linh. (2019). Quản lý khu di sản Thành Nhà Hồ huyện Vĩnh Lộc, tỉnh Thanh Hóa (Luận án Tiến sĩ chưa công bố). Trường Đại học Văn hóa Hà Nội, Hà Nội.4.5. KỶ YẾU HỘI THẢO
+Định dạngTên tác giả, A. A. (Năm tổ chức Hội thảo). Tên bài. Tên Hội thảo, Bơi tổ chức Hội thảo.Ví dụ Vũ, Văn Đại. (2019). Áp dụng phương pháp tiếp cận năng lực trong đào tạo hướng nghiệp ở trường đại học. Đổi mới và sáng tạo trong đào tạo nguồn nhân lực toàn cầu, Trường Đại học Hà Nội.
+V. YÊU CẦU NỘP KHÓA LUẬN TỐT NGHIỆP CHO KHOA CÔNG NGHỆ THÔNG TIN VÀ NỘP LƯU CHIỂU CHO THƯ VIỆN
+1. BẢN IN:
+* Nộp 03 bản in hoàn chỉnh sau khi bảo vệ và đã được chỉnh sửa đóng thành quyển. Trong đó:
+- 01 bản in nộp cho Khoa Công nghệ thông tin. Nộp tại Văn phòng Khoa P. 210 nhà C.
+- 02 bản in nộp cho Thư viện.
+2. BẢN FILE MỀM: 
+Tệp mềm khóa luận được lưu vào trong 01 thư mục có tên theo dạng: Mã SV/Mã HV_Họ_và_tên; được lưu trong 01 đĩa CD hoặc gửi vào mail: luuchieutv@hanu.edu.vn. Trong thư mục gồm 02 tệp sau:
+- 02 bản hoàn chỉnh (01 bản định dạng Word và 01 bản định dạng PDF) theo đúng trật tự của bản in.
+
+
+                       BỘ GIÁO DỤC VÀ ĐÀO TẠO
+(CHỮ IN, CỠ CHỮ 13, TIMES NEW ROMAN)
+TRƯỜNG ĐẠI HỌC HÀ NỘI 
+(CHỮ IN ĐẬM, CỠ CHỮ 13, TIMES NEW ROMAN)
+
+KHÓA LUẬN TỐT NGHIỆP 
+(CHỮ IN ĐẬM, CỠ CHỮ 15, TIMES NEW ROMAN)
+TÊN ĐỀ TÀI NGHIÊN CỨU
+TRÌNH BÀY BẰNG TIẾNG VIỆT 
+(CHỮ IN ĐẬM, CỠ CHỮ 16, TIMES NEW ROMAN)
+TÊN ĐỀ TÀI NGHIÊN CỨU TRÌNH BÀY
+BẰNG TIẾNG ANH 
+(CHỮ IN ĐẬM, CỠ CHỮ 16, TIMES NEW ROMAN)
+
+Người hướng dẫn: Chức danh. Họ và tên (đầy đủ, cả dấu) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Họ và tên sinh viên: (đầy đủ, cả dấu) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Mã số sinh viên: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Chuyên ngành: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Khoa: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Hà Nội, năm 20.. (năm bảo vệ)
+(chữ thường đậm, cỡ chữ 14, Times New Roman)                       MINISTRY OF EDUCATION AND TRAINING 
+(CHỮ IN, CỠ CHỮ 13, TIMES NEW ROMAN)
+HANOI UNIVERSITY
+ (CHỮ IN ĐẬM, CỠ CHỮ 13, TIMES NEW ROMAN)
+
+
+TÊN ĐỀ TÀI NGHIÊN CỨU TRÌNH BÀY
+BẰNG TIẾNG ANH
+(CHỮ IN ĐẬM, CỠ CHỮ 16, TIMES NEW ROMAN)
+
+Supervisor: Chức danh. Họ và tên (đầy đủ, cả dấu) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Student: Họ và tên (đầy đủ, cả dấu) (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Student ID: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Specialization: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+Faculty: (chữ thường đậm, cỡ chữ 14, Times New Roman)
+
+
+
+
+Hanoi, 20..(năm bảo vệ) 
+(chữ thường đậm, cỡ chữ 14, Times New Roman)
+2
+
+

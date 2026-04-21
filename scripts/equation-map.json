@@ -1,0 +1,191 @@
+[
+  {
+    "id": "eq3.1",
+    "latex": "E(A) = \\frac{1}{1 + 10^{(R_B - R_A) / 400}} \\tag{3.1}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_1.png",
+    "width_px": 720,
+    "height_px": 70,
+    "catbox_url": "https://files.catbox.moe/x5aaqu.png"
+  },
+  {
+    "id": "eq3.2",
+    "latex": "R_A' = R_A + K_A \\cdot (S_A - E(A)) \\tag{3.2}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_2.png",
+    "width_px": 747,
+    "height_px": 35,
+    "catbox_url": "https://files.catbox.moe/p4golb.png"
+  },
+  {
+    "id": "eq3.3",
+    "latex": "R_B' = R_B + K_B \\cdot (E(A) - S_A) \\tag{3.3}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_3.png",
+    "width_px": 748,
+    "height_px": 35,
+    "catbox_url": "https://files.catbox.moe/yqivup.png"
+  },
+  {
+    "id": "eq3.4",
+    "latex": "K_A = K_{\\text{base}} \\cdot f_{\\text{novelty}}(n) \\cdot f_{\\text{trend}}(\\text{trend}_A) \\tag{3.4}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_4.png",
+    "width_px": 806,
+    "height_px": 35,
+    "catbox_url": "https://files.catbox.moe/dt1dwb.png"
+  },
+  {
+    "id": "eq3.5",
+    "latex": "R_{\\text{student}} + \\delta_{\\min} \\leq R_{\\text{problem}} \\leq R_{\\text{student}} + \\delta_{\\max} \\tag{3.5}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_5.png",
+    "width_px": 835,
+    "height_px": 35,
+    "catbox_url": "https://files.catbox.moe/2ao58s.png"
+  },
+  {
+    "id": "eq3.6",
+    "latex": "r = w_1 \\cdot \\Delta P(L_t) + w_2 \\cdot \\mathbb{1}[\\text{correct}] + w_3 \\cdot (1 - \\text{normalized\\_attempts}) \\tag{3.6}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_6.png",
+    "width_px": 1043,
+    "height_px": 34,
+    "catbox_url": "https://files.catbox.moe/ujkv8s.png"
+  },
+  {
+    "id": "eq3.7",
+    "latex": "R(t) = \\left(1 + \\frac{t}{9 \\cdot S}\\right)^{-1} \\tag{3.7}",
+    "chapter": 3,
+    "png_path": "C:/tmp/equations\\eq3_7.png",
+    "width_px": 691,
+    "height_px": 85,
+    "catbox_url": "https://files.catbox.moe/vgi08s.png"
+  },
+  {
+    "id": "eq4_notag_0",
+    "latex": "E(\\text{student}, \\text{problem}) = \\frac{1}{1 + 10^{(R_{\\text{problem}} - R_{\\text{student}}) / 400}}",
+    "chapter": 4,
+    "png_path": "C:/tmp/equations\\eq4_notag_0.png",
+    "width_px": 684,
+    "height_px": 71,
+    "catbox_url": "https://files.catbox.moe/j2e0kk.png"
+  },
+  {
+    "id": "eq4_notag_1",
+    "latex": "R'_{\\text{student}} = R_{\\text{student}} + K_{\\text{student}} \\times (S - E)",
+    "chapter": 4,
+    "png_path": "C:/tmp/equations\\eq4_notag_1.png",
+    "width_px": 546,
+    "height_px": 35,
+    "catbox_url": "https://files.catbox.moe/inrlow.png"
+  },
+  {
+    "id": "eq4_notag_2",
+    "latex": "R'_{\\text{problem}} = R_{\\text{problem}} + K_{\\text{problem}} \\times (E - S)",
+    "chapter": 4,
+    "png_path": "C:/tmp/equations\\eq4_notag_2.png",
+    "width_px": 567,
+    "height_px": 40,
+    "catbox_url": "https://files.catbox.moe/etmrc2.png"
+  },
+  {
+    "id": "eq4_notag_3",
+    "latex": "R(t, S) = \\left(1 + \\frac{t}{9S}\\right)^{-1}",
+    "chapter": 4,
+    "png_path": "C:/tmp/equations\\eq4_notag_3.png",
+    "width_px": 319,
+    "height_px": 85,
+    "catbox_url": "https://files.catbox.moe/0449rf.png"
+  },
+  {
+    "id": "eq4_notag_4",
+    "latex": "S' = S \\times \\left(1 + e^{w_8} \\times (11 - D)^{w_9} \\times S^{-w_{10}} \\times (e^{(1-R) \\cdot w_{11}} - 1) \\times H \\times B\\right)",
+    "chapter": 4,
+    "png_path": "C:/tmp/equations\\eq4_notag_4.png",
+    "width_px": 968,
+    "height_px": 42,
+    "catbox_url": "https://files.catbox.moe/ud1472.png"
+  },
+  {
+    "id": "eq4_notag_5",
+    "latex": "S' = w_{12} \\times D^{-w_{13}} \\times (S + 1)^{w_{14}} - 1) \\times e^{(1-R) \\cdot w_{15}}",
+    "chapter": 4,
+    "png_path": "C:/tmp/equations\\eq4_notag_5.png",
+    "width_px": 666,
+    "height_px": 39,
+    "catbox_url": "https://files.catbox.moe/02l6sg.png"
+  },
+  {
+    "id": "eq5.1",
+    "latex": "NLG = \\frac{S_{\\text{post}} - S_{\\text{pre}}}{S_{\\text{max}} - S_{\\text{pre}}} \\tag{5.1}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_1.png",
+    "width_px": 679,
+    "height_px": 78,
+    "catbox_url": "https://files.catbox.moe/1x0j7b.png"
+  },
+  {
+    "id": "eq5.2",
+    "latex": "PTM = \\frac{N_{\\text{attempted}}}{N_{\\text{mastered}}} \\tag{5.2}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_2.png",
+    "width_px": 669,
+    "height_px": 73,
+    "catbox_url": "https://files.catbox.moe/wrf74c.png"
+  },
+  {
+    "id": "eq5.3",
+    "latex": "TFM(c) = t_{P(L_t) \\geq 0.85} - t_{\\text{first attempt}} \\tag{5.3}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_3.png",
+    "width_px": 780,
+    "height_px": 36,
+    "catbox_url": "https://files.catbox.moe/cesb11.png"
+  },
+  {
+    "id": "eq5.4",
+    "latex": "\\text{Acceptance Rate} = \\frac{N_{\\text{recommended attempted}}}{N_{\\text{recommended shown}}} \\tag{5.4}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_4.png",
+    "width_px": 822,
+    "height_px": 73,
+    "catbox_url": "https://files.catbox.moe/hph2nc.png"
+  },
+  {
+    "id": "eq5.5",
+    "latex": "\\text{Completion Rate} = \\frac{N_{\\text{recommended solved}}}{N_{\\text{recommended attempted}}} \\tag{5.5}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_5.png",
+    "width_px": 823,
+    "height_px": 78,
+    "catbox_url": "https://files.catbox.moe/nzgh49.png"
+  },
+  {
+    "id": "eq5.6",
+    "latex": "\\text{AUC-ROC}_{BKT} = P(\\hat{y}_{\\text{correct}} > \\hat{y}_{\\text{incorrect}}) \\tag{5.6}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_6.png",
+    "width_px": 808,
+    "height_px": 33,
+    "catbox_url": "https://files.catbox.moe/jwiv4t.png"
+  },
+  {
+    "id": "eq5.7",
+    "latex": "\\text{AUC-ROC}_{Elo} = P(E(A)_{\\text{correct}} > E(A)_{\\text{incorrect}}) \\tag{5.7}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_7.png",
+    "width_px": 858,
+    "height_px": 33,
+    "catbox_url": "https://files.catbox.moe/p4w5wm.png"
+  },
+  {
+    "id": "eq5.8",
+    "latex": "N_{\\text{converge}} = \\min\\{n : \\sigma(R_{n-9}, \\ldots, R_n) < 50\\} \\tag{5.8}",
+    "chapter": 5,
+    "png_path": "C:/tmp/equations\\eq5_8.png",
+    "width_px": 835,
+    "height_px": 35,
+    "catbox_url": "https://files.catbox.moe/oys9wc.png"
+  }
+]

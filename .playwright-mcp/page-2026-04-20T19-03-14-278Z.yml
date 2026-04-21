@@ -1,0 +1,26 @@
+- generic [ref=e2]:
+  - img [ref=e4]:
+    - generic [ref=e5]: Five-Layer Adaptive Engine
+    - generic [ref=e6]: "Logical dependency ordering: bottom to top"
+    - generic [ref=e8]: "Layer 5: LLM Feedback Engine (Optional)"
+    - generic [ref=e9]: RAG + Socratic hints grounded in knowledge state
+    - generic [ref=e11]: "Layer 4: Review Scheduler (FSRS)"
+    - generic [ref=e12]: Power-law forgetting curve, review urgency scheduling
+    - generic [ref=e14]: "Layer 3: Problem Selector (Hierarchical MAB)"
+    - generic [ref=e15]: "Thompson Sampling: concept selection + problem selection"
+    - generic [ref=e17]: "Layer 2: Difficulty Calibrator (Dynamic Elo)"
+    - generic [ref=e18]: Student + problem rating on shared scale, ZPD filtering
+    - generic [ref=e20]: "Layer 1: Knowledge Tracer (BKT)"
+    - generic [ref=e21]: Per-concept mastery estimation via Hidden Markov Model
+    - generic [ref=e23]: Knowledge Graph Foundation
+    - generic [ref=e24]: ~30 concepts, prerequisite DAG, concept-problem mapping
+    - generic [ref=e25]: Data flows upward
+    - generic [ref=e26]: P(L_t) mastery
+    - generic [ref=e27]: Elo ratings
+    - generic [ref=e28]: Recommendation
+    - generic [ref=e29]: Review schedule
+    - generic [ref=e30]: Socratic hints
+    - generic [ref=e31]: "Input: Code submission outcomes (correctness, attempts, time)"
+  - generic [ref=e32]:
+    - strong [ref=e33]: Figure 1.3.
+    - text: Five-layer adaptive architecture overview. Layers are ordered by logical dependency from bottom (Knowledge Graph Foundation) to top (optional LLM Feedback). Each layer consumes data from below and produces outputs that feed upper layers.

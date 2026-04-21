@@ -1,0 +1,130 @@
+{
+  "ch1-closed-loop-workflow.png": {
+    "freeimage_url": "https://iili.io/Brx3Bje.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch1-closed-loop-workflow.png"
+  },
+  "ch1-five-layer-architecture-overview.png": {
+    "freeimage_url": "https://iili.io/Brx3xGj.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch1-five-layer-architecture-overview.png"
+  },
+  "ch1-platform-comparison-table.png": {
+    "freeimage_url": "https://iili.io/Brx3uaV.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch1-platform-comparison-table.png"
+  },
+  "ch1-research-gap-diagram.png": {
+    "freeimage_url": "https://iili.io/Brx3YwF.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch1-research-gap-diagram.png"
+  },
+  "ch1-thesis-structure-roadmap.png": {
+    "freeimage_url": "https://iili.io/Brx30MJ.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch1-thesis-structure-roadmap.png"
+  },
+  "ch2-detailed-comparison-table.png": {
+    "freeimage_url": "https://iili.io/Brx3V8N.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch2-detailed-comparison-table.png"
+  },
+  "ch2-kt-evolution-timeline.png": {
+    "freeimage_url": "https://iili.io/Brx3jwX.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch2-kt-evolution-timeline.png"
+  },
+  "ch2-literature-landscape-map.png": {
+    "freeimage_url": "https://iili.io/Brx3Ons.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch2-literature-landscape-map.png"
+  },
+  "ch2-spaced-repetition-evolution.png": {
+    "freeimage_url": "https://iili.io/Brx3US2.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch2-spaced-repetition-evolution.png"
+  },
+  "ch2-technique-complementarity-table.png": {
+    "freeimage_url": "https://iili.io/Brx3LMb.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch2-technique-complementarity-table.png"
+  },
+  "ch3-caching-strategy-table.png": {
+    "freeimage_url": "https://iili.io/Brx3DcQ.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-caching-strategy-table.png"
+  },
+  "ch3-cold-start-flowchart.png": {
+    "freeimage_url": "https://iili.io/Brx3yAP.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-cold-start-flowchart.png"
+  },
+  "ch3-database-schema-erd.png": {
+    "freeimage_url": "https://iili.io/BrxF9N1.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-database-schema-erd.png"
+  },
+  "ch3-functional-requirements-table.png": {
+    "freeimage_url": "https://iili.io/BrxF3iJ.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-functional-requirements-table.png"
+  },
+  "ch3-hyperparameter-summary-table.png": {
+    "freeimage_url": "https://iili.io/BrxFqSp.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-hyperparameter-summary-table.png"
+  },
+  "ch3-knowledge-graph-diagram.png": {
+    "freeimage_url": "https://iili.io/BrxFxDX.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-knowledge-graph-diagram.png"
+  },
+  "ch3-layer-interaction-matrix.png": {
+    "freeimage_url": "https://iili.io/BrxF5l4.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-layer-interaction-matrix.png"
+  },
+  "ch3-recommendation-sequence-diagram.png": {
+    "freeimage_url": "https://iili.io/BrxF0b9.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-recommendation-sequence-diagram.png"
+  },
+  "ch3-requirements-traceability-table.png": {
+    "freeimage_url": "https://iili.io/BrxFWfj.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-requirements-traceability-table.png"
+  },
+  "ch3-submission-processing-flow.png": {
+    "freeimage_url": "https://iili.io/BrxFeb1.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-submission-processing-flow.png"
+  },
+  "ch3-system-architecture-diagram.png": {
+    "freeimage_url": "https://iili.io/BrxFSsa.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch3-system-architecture-diagram.png"
+  },
+  "ch4-adaptive-engine-sequence.png": {
+    "freeimage_url": "https://iili.io/BrxFr0v.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-adaptive-engine-sequence.png"
+  },
+  "ch4-bkt-params-table.png": {
+    "freeimage_url": "https://iili.io/BrxFi5N.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-bkt-params-table.png"
+  },
+  "ch4-bkt-state-transition.png": {
+    "freeimage_url": "https://iili.io/BrxFyg4.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-bkt-state-transition.png"
+  },
+  "ch4-fsrs-card-lifecycle.png": {
+    "freeimage_url": "https://iili.io/BrxKKXe.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-fsrs-card-lifecycle.png"
+  },
+  "ch4-fsrs-retrievability-curve.png": {
+    "freeimage_url": "https://iili.io/BrxKBqb.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-fsrs-retrievability-curve.png"
+  },
+  "ch4-mab-decision-flow.png": {
+    "freeimage_url": "https://iili.io/BrxKAI1.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-mab-decision-flow.png"
+  },
+  "ch4-tech-stack-table.png": {
+    "freeimage_url": "https://iili.io/BrxK17p.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch4-tech-stack-table.png"
+  },
+  "ch5-evaluation-metrics-table.png": {
+    "freeimage_url": "https://iili.io/BrxKWhX.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch5-evaluation-metrics-table.png"
+  },
+  "ch5-experiment-timeline.png": {
+    "freeimage_url": "https://iili.io/BrxKN4f.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch5-experiment-timeline.png"
+  },
+  "ch5-group-comparison-table.png": {
+    "freeimage_url": "https://iili.io/BrxKi4j.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch5-group-comparison-table.png"
+  },
+  "ch5-research-questions-table.png": {
+    "freeimage_url": "https://iili.io/BrxKQYQ.png",
+    "png_path": "C:\\Users\\duong\\WebstormProjects\\Thesis\\documents\\thesis-chapters\\visuals\\png\\ch5-research-questions-table.png"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "vercel-react-native-skills",
+  "description": "",
+  "source": "vercel-labs/agent-skills",
+  "sourceType": "github",
+  "subpath": "vercel-react-native-skills",
+  "installedAt": "2026-02-13T07:43:29.069Z",
+  "enabled": true
+}

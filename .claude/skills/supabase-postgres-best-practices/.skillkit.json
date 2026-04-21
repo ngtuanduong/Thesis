@@ -1,0 +1,9 @@
+{
+  "name": "supabase-postgres-best-practices",
+  "description": "",
+  "source": "supabase/agent-skills",
+  "sourceType": "github",
+  "subpath": "supabase-postgres-best-practices",
+  "installedAt": "2026-02-13T07:43:23.924Z",
+  "enabled": true
+}
