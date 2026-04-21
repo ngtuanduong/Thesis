@@ -26,9 +26,10 @@ class EmbeddingService:
         problem_id: str,
         title: str,
         description: str,
-        tags: list[str],
+        concepts: list[str] | None = None,
     ) -> list[float]:
-        content = f"{title}\n{description}\n{' '.join(tags)}"
+        concept_text = ' '.join(concepts) if concepts else ''
+        content = f"{title}\n{description}\n{concept_text}"
         embedding = self.encode(content)
 
         # Upsert into problem_embeddings (both Float[] and vector columns)
@@ -56,7 +57,7 @@ class EmbeddingService:
         problems: list[dict],
     ) -> list[dict]:
         contents = [
-            f"{p['title']}\n{p['description']}\n{' '.join(p.get('tags', []))}"
+            f"{p['title']}\n{p['description']}\n{' '.join(p.get('concepts', p.get('tags', [])))}"
             for p in problems
         ]
         embeddings = self.encode_batch(contents)

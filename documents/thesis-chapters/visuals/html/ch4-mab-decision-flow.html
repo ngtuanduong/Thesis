@@ -7,6 +7,17 @@ body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman
 .container { max-width: 800px; margin: 0 auto; }
 .caption { text-align: center; font-size: 12pt; margin-top: 10px; font-style: italic; }
 .caption .label { font-weight: bold; font-style: italic; }
+
+/* Auto-fix: text halo for readability over lines */
+svg text {
+  paint-order: stroke fill;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+svg .state-label, svg rect + text, svg [font-weight="bold"] {
+  stroke-width: 0;  /* Don't apply halo to state box labels */
+}
 </style>
 </head>
 <body>

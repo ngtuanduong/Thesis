@@ -24,7 +24,7 @@ async def embed_problem(
         problem_id=body.problem_id,
         title=body.title,
         description=body.description,
-        tags=body.tags,
+        concepts=body.tags,
     )
     return EmbeddingResponse(problem_id=body.problem_id, embedding=embedding)
 

@@ -1,0 +1,194 @@
+{
+  "ch1-closed-loop-workflow": {
+    "url": "https://iili.io/BrxMFu2.png",
+    "w": 1380,
+    "h": 1130,
+    "file": "ch1-closed-loop-workflow.png"
+  },
+  "ch1-five-layer-architecture-overview": {
+    "url": "https://iili.io/BrxMfZ7.png",
+    "w": 1380,
+    "h": 1090,
+    "file": "ch1-five-layer-architecture-overview.png"
+  },
+  "ch1-platform-comparison-table": {
+    "url": "https://iili.io/Brx3uaV.png",
+    "w": 1360,
+    "h": 956,
+    "file": "ch1-platform-comparison-table.png"
+  },
+  "ch1-research-gap-diagram": {
+    "url": "https://iili.io/BrxMx3b.png",
+    "w": 1560,
+    "h": 1250,
+    "file": "ch1-research-gap-diagram.png"
+  },
+  "ch1-thesis-structure-roadmap": {
+    "url": "https://iili.io/BrxMM9R.png",
+    "w": 1380,
+    "h": 1008,
+    "file": "ch1-thesis-structure-roadmap.png"
+  },
+  "ch2-detailed-comparison-table": {
+    "url": "https://iili.io/Brx3V8N.png",
+    "w": 2800,
+    "h": 1800,
+    "file": "ch2-detailed-comparison-table.png"
+  },
+  "ch2-kt-evolution-timeline": {
+    "url": "https://iili.io/BrxMWwN.png",
+    "w": 1800,
+    "h": 648,
+    "file": "ch2-kt-evolution-timeline.png"
+  },
+  "ch2-literature-landscape-map": {
+    "url": "https://iili.io/BrxMeFs.png",
+    "w": 1800,
+    "h": 1128,
+    "file": "ch2-literature-landscape-map.png"
+  },
+  "ch2-spaced-repetition-evolution": {
+    "url": "https://iili.io/BrxMS94.png",
+    "w": 1600,
+    "h": 708,
+    "file": "ch2-spaced-repetition-evolution.png"
+  },
+  "ch2-technique-complementarity-table": {
+    "url": "https://iili.io/Brx3LMb.png",
+    "w": 2800,
+    "h": 1800,
+    "file": "ch2-technique-complementarity-table.png"
+  },
+  "ch3-caching-strategy-table": {
+    "url": "https://iili.io/Brx3DcQ.png",
+    "w": 2800,
+    "h": 1800,
+    "file": "ch3-caching-strategy-table.png"
+  },
+  "ch3-cold-start-flowchart": {
+    "url": "https://iili.io/BrxM6o7.png",
+    "w": 1500,
+    "h": 928,
+    "file": "ch3-cold-start-flowchart.png"
+  },
+  "ch3-database-schema-erd": {
+    "url": "https://iili.io/BrxMLKu.png",
+    "w": 1900,
+    "h": 1168,
+    "file": "ch3-database-schema-erd.png"
+  },
+  "ch3-functional-requirements-table": {
+    "url": "https://iili.io/BrxF3iJ.png",
+    "w": 2800,
+    "h": 1800,
+    "file": "ch3-functional-requirements-table.png"
+  },
+  "ch3-hyperparameter-summary-table": {
+    "url": "https://iili.io/BrxFqSp.png",
+    "w": 2800,
+    "h": 1822,
+    "file": "ch3-hyperparameter-summary-table.png"
+  },
+  "ch3-knowledge-graph-diagram": {
+    "url": "https://iili.io/BrxVfHv.png",
+    "w": 1800,
+    "h": 1048,
+    "file": "ch3-knowledge-graph-diagram.png"
+  },
+  "ch3-layer-interaction-matrix": {
+    "url": "https://iili.io/BrxF5l4.png",
+    "w": 1700,
+    "h": 948,
+    "file": "ch3-layer-interaction-matrix.png"
+  },
+  "ch3-recommendation-sequence-diagram": {
+    "url": "https://iili.io/BrxVuls.png",
+    "w": 1900,
+    "h": 1248,
+    "file": "ch3-recommendation-sequence-diagram.png"
+  },
+  "ch3-requirements-traceability-table": {
+    "url": "https://iili.io/BrxFWfj.png",
+    "w": 2800,
+    "h": 1818,
+    "file": "ch3-requirements-traceability-table.png"
+  },
+  "ch3-submission-processing-flow": {
+    "url": "https://iili.io/BrxV0W7.png",
+    "w": 1700,
+    "h": 1168,
+    "file": "ch3-submission-processing-flow.png"
+  },
+  "ch3-system-architecture-diagram": {
+    "url": "https://iili.io/BrxVXJj.png",
+    "w": 2400,
+    "h": 1508,
+    "file": "ch3-system-architecture-diagram.png"
+  },
+  "ch4-adaptive-engine-sequence": {
+    "url": "https://iili.io/BrxVeWP.png",
+    "w": 1760,
+    "h": 1332,
+    "file": "ch4-adaptive-engine-sequence.png"
+  },
+  "ch4-bkt-params-table": {
+    "url": "https://iili.io/BrxFi5N.png",
+    "w": 1600,
+    "h": 628,
+    "file": "ch4-bkt-params-table.png"
+  },
+  "ch4-bkt-state-transition": {
+    "url": "https://iili.io/BrxVrdJ.png",
+    "w": 1400,
+    "h": 940,
+    "file": "ch4-bkt-state-transition.png"
+  },
+  "ch4-fsrs-card-lifecycle": {
+    "url": "https://iili.io/BrxVszN.png",
+    "w": 1560,
+    "h": 1060,
+    "file": "ch4-fsrs-card-lifecycle.png"
+  },
+  "ch4-fsrs-retrievability-curve": {
+    "url": "https://iili.io/BrxVbgs.png",
+    "w": 1440,
+    "h": 996,
+    "file": "ch4-fsrs-retrievability-curve.png"
+  },
+  "ch4-mab-decision-flow": {
+    "url": "https://iili.io/BrxWHml.png",
+    "w": 1600,
+    "h": 1460,
+    "file": "ch4-mab-decision-flow.png"
+  },
+  "ch4-tech-stack-table": {
+    "url": "https://iili.io/BrxK17p.png",
+    "w": 1800,
+    "h": 652,
+    "file": "ch4-tech-stack-table.png"
+  },
+  "ch5-evaluation-metrics-table": {
+    "url": "https://iili.io/BrxKWhX.png",
+    "w": 1840,
+    "h": 1272,
+    "file": "ch5-evaluation-metrics-table.png"
+  },
+  "ch5-experiment-timeline": {
+    "url": "https://iili.io/BrxWxmQ.png",
+    "w": 1800,
+    "h": 628,
+    "file": "ch5-experiment-timeline.png"
+  },
+  "ch5-group-comparison-table": {
+    "url": "https://iili.io/BrxKi4j.png",
+    "w": 1800,
+    "h": 636,
+    "file": "ch5-group-comparison-table.png"
+  },
+  "ch5-research-questions-table": {
+    "url": "https://iili.io/BrxKQYQ.png",
+    "w": 1800,
+    "h": 588,
+    "file": "ch5-research-questions-table.png"
+  }
+}

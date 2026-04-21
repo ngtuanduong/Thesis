@@ -5,7 +5,7 @@ from sentence_transformers import SentenceTransformer
 from sqlalchemy import select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.tables import Problem, Submission, SubmissionStatus
+from app.models.tables import Concept, Problem, ProblemConcept, Submission, SubmissionStatus
 
 
 DIFFICULTY_WEIGHTS = {
@@ -35,7 +35,7 @@ class ProfileService:
         # Convert string UUID to UUID object
         user_uuid = uuid.UUID(user_id)
 
-        # Fetch accepted submissions with problem info
+        # Fetch accepted submissions with problem and concept info
         result = await session.execute(
             select(Submission, Problem)
             .join(Problem, Submission.problem_id == Problem.id)
@@ -46,18 +46,29 @@ class ProfileService:
         )
         rows = result.all()
 
-        # Group by tags and compute weighted scores
+        # Collect problem IDs to look up their concepts
+        problem_ids = {problem.id for _, problem in rows}
+
+        # Fetch concept names for these problems via problem_concepts
+        concept_result = await session.execute(
+            select(ProblemConcept.problem_id, Concept.name)
+            .join(Concept, ProblemConcept.concept_id == Concept.id)
+            .where(ProblemConcept.problem_id.in_(problem_ids))
+        )
+        problem_concepts: dict[str, list[str]] = defaultdict(list)
+        for pid, concept_name in concept_result.all():
+            problem_concepts[str(pid)].append(concept_name)
+
+        # Group by concepts and compute weighted scores
         skill_scores: dict[str, float] = defaultdict(float)
         skill_counts: dict[str, int] = defaultdict(int)
 
         for submission, problem in rows:
             weight = DIFFICULTY_WEIGHTS.get(problem.difficulty.value, 1.0)
-            tags = problem.tags or []
-            if not tags:
-                tags = ["general"]
-            for tag in tags:
-                skill_scores[tag] += weight
-                skill_counts[tag] += 1
+            concepts = problem_concepts.get(str(problem.id), ["general"])
+            for concept_name in concepts:
+                skill_scores[concept_name] += weight
+                skill_counts[concept_name] += 1
 
         # Normalize scores to a 0-1 range against a fixed saturation cap
         # (NOT against the max of the user's own scores — that produced

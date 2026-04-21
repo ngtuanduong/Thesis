@@ -8,11 +8,12 @@ class SkillGapService:
         session: AsyncSession,
         user_id: str,
     ) -> list[dict]:
-        # Get all unique tags from problems as the "ideal" skill set
+        # Get all unique concept names as the "ideal" skill set
         all_tags_result = await session.execute(
             text("""
-                SELECT DISTINCT UNNEST(tags) AS tag
-                FROM problems
+                SELECT DISTINCT c.name AS tag
+                FROM concepts c
+                INNER JOIN problem_concepts pc ON pc.concept_id = c.id
                 ORDER BY tag
             """)
         )

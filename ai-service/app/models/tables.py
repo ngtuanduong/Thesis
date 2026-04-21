@@ -70,7 +70,6 @@ class Problem(Base):
     description = Column(Text, nullable=False)
     difficulty = Column(Enum(Difficulty, name="Difficulty", schema="public"), nullable=False, default=Difficulty.MEDIUM)
     course_id = Column("courseId", UUID(as_uuid=True), ForeignKey("courses.id"), nullable=True)
-    tags = Column(ARRAY(String), default=[])
     created_at = Column("createdAt", DateTime, server_default=func.now())
     updated_at = Column("updatedAt", DateTime, server_default=func.now(), onupdate=func.now())
 
