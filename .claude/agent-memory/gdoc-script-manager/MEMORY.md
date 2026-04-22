@@ -1,4 +1,5 @@
 - [Reference: thesis gdoc + auth](reference_thesis_gdoc.md) - thesis Google Doc ID and service-account credential path
+- [Reference: conference paper gdoc](reference_conference_paper_gdoc.md) - separate Google Doc for the "NỀN TẢNG HỌC TẬP THÍCH ỨNG" bilingual conference paper
 - [Reference: gdoc script layout](reference_gdoc_scripts.md) - where gdoc-* scripts live and naming convention in this repo
 - [Feedback: Windows stdout UTF-8](feedback_windows_utf8_stdout.md) - wrap sys.stdout in utf-8 writer on Windows before printing doc content
 - [Reference: doc TOC is plain text](reference_doc_toc_is_plain.md) - the thesis doc's Table of Contents is a single text line, not a generated TOC

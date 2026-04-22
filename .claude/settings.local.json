@@ -120,7 +120,13 @@
       "mcp__plugin_figma_figma__generate_figma_design",
       "Bash(start:*)",
       "mcp__plugin_playwright_playwright__browser_run_code",
-      "mcp__plugin_playwright_playwright__browser_tabs"
+      "mcp__plugin_playwright_playwright__browser_tabs",
+      "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs OUT_PATH=/Users/avada/WebstormProjects/Thesis/documents/conference-paper-revision/00-anchors-before.txt python3 scripts/gdoc-find-conf-anchors.py)",
+      "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs python3 scripts/gdoc-write-conf-content.py)",
+      "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs OUT_PATH=/Users/avada/WebstormProjects/Thesis/documents/conference-paper-revision/30-after-content-snapshot.txt python3 scripts/gdoc-read-conf-paper.py)",
+      "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs python3 scripts/gdoc-write-conf-format.py)",
+      "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs OUT_PATH=/Users/avada/WebstormProjects/Thesis/documents/conference-paper-revision/40-anchors-after-format.txt python3 scripts/gdoc-find-conf-anchors.py)",
+      "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs OUT_PATH=/Users/avada/WebstormProjects/Thesis/documents/conference-paper-revision/50-after-snapshot.txt python3 scripts/gdoc-read-conf-paper.py)"
     ]
   }
 }

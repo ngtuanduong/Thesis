@@ -1,0 +1,12 @@
+Diff: Google Doc (before-snapshot) vs reference .txt at ~/Downloads/Bài báo tham dự hội thảo khoa học.txt
+
+Method: Both files normalised by stripping UTF-8 BOM and dropping blank lines, then compared line-by-line with difflib.unified_diff.
+
+Reference non-blank lines: 78
+Snapshot  non-blank lines: 78
+Unified diff:               IDENTICAL
+
+Notes:
+- The raw reference .txt has 85 physical lines because it contains 7 empty-paragraph separators (blank lines between a figure/table caption anchor and the caption text). The Google Doc body has the same semantic content but the empty paragraphs are rendered as blank-text paragraphs that the reader script skips.
+- No content drift detected. Safe to proceed with the revision plan.
+- The raw `diff(1)` output showed every line as different only because the reference file starts with a UTF-8 BOM character and has the 7 extra blank-line anchors; once those are normalised, content matches perfectly.
