@@ -17,15 +17,15 @@ svg { display: block; margin: 0 auto; }
 .phase-washout { fill: #f3e5f5; }
 .phase-retention { fill: #fce4ec; }
 
-.phase-label { font-family: 'Times New Roman', serif; font-size: 13px; font-weight: bold; fill: #333; }
-.phase-week { font-family: 'Times New Roman', serif; font-size: 11px; fill: #666; }
-.phase-detail { font-family: 'Times New Roman', serif; font-size: 10px; fill: #555; }
+.phase-label { font-family: 'Times New Roman', serif; font-size: 16px; font-weight: bold; fill: #333; }
+.phase-week { font-family: 'Times New Roman', serif; font-size: 14px; fill: #666; }
+.phase-detail { font-family: 'Times New Roman', serif; font-size: 13px; fill: #555; }
 
 .arrow { fill: none; stroke: #4A90D9; stroke-width: 2; marker-end: url(#arrowhead); }
 .timeline-bar { fill: #4A90D9; opacity: 0.15; }
-.week-marker { font-family: 'Times New Roman', serif; font-size: 10px; fill: #999; text-anchor: middle; }
+.week-marker { font-family: 'Times New Roman', serif; font-size: 13px; fill: #999; text-anchor: middle; }
 
-.group-label { font-family: 'Times New Roman', serif; font-size: 10px; fill: #1565c0; font-weight: bold; }
+.group-label { font-family: 'Times New Roman', serif; font-size: 13px; fill: #1565c0; font-weight: bold; }
 .group-e { fill: #e65100; }
 .group-c { fill: #2e7d32; }
 
@@ -79,7 +79,7 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
 <text x="315" y="88" text-anchor="middle" class="phase-label">Intervention Period</text>
 <text x="315" y="105" text-anchor="middle" class="phase-detail">4 weeks of platform use</text>
 <text x="315" y="118" text-anchor="middle" class="phase-detail">Min. 3 problems / week</text>
-<text x="240" y="140" text-anchor="middle" class="phase-detail group-e" style="fill:#e65100">E: Full adaptive (5 layers)</text>
+<text x="240" y="140" text-anchor="middle" class="phase-detail group-e" style="fill:#e65100">E: Adaptive (4 layers)</text>
 <text x="240" y="153" text-anchor="middle" class="phase-detail" style="fill:#2e7d32">C: Content-based filtering</text>
 <text x="390" y="140" text-anchor="middle" class="phase-detail" style="fill:#666">6 data categories</text>
 <text x="390" y="153" text-anchor="middle" class="phase-detail" style="fill:#666">logged continuously</text>
@@ -134,12 +134,10 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
 <!-- Legend -->
 <rect x="40" y="235" width="780" height="35" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
 <rect x="55" y="246" width="12" height="12" fill="#e65100" rx="2"/>
-<text x="72" y="256" class="phase-detail" style="font-weight:bold">E = Experimental</text>
-<text x="155" y="256" class="phase-detail">(5-layer adaptive)</text>
-<rect x="275" y="246" width="12" height="12" fill="#2e7d32" rx="2"/>
-<text x="292" y="256" class="phase-detail" style="font-weight:bold">C = Control</text>
-<text x="352" y="256" class="phase-detail">(content-based filtering)</text>
-<text x="530" y="256" class="phase-detail" style="fill:#999">Intent-to-treat protocol | Bonferroni-corrected comparisons (alpha' = 0.0125)</text>
+<text x="72" y="257" class="phase-detail" style="font-weight:bold">E: 4-layer adaptive</text>
+<rect x="230" y="246" width="12" height="12" fill="#2e7d32" rx="2"/>
+<text x="247" y="257" class="phase-detail" style="font-weight:bold">C: Content-based</text>
+<text x="400" y="257" class="phase-detail" style="fill:#999; font-size:11px">Intent-to-treat | Bonferroni-corrected (α' = 0.0125)</text>
 </svg>
 </div>
 </body>

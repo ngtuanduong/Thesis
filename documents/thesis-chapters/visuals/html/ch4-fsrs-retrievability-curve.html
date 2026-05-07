@@ -8,15 +8,17 @@ body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman
 .caption { text-align: center; font-size: 12pt; margin-top: 10px; font-style: italic; }
 .caption .label { font-weight: bold; font-style: italic; }
 
-/* Auto-fix: text halo for readability over lines */
+/* Text halo for readability over lines and curves */
 svg text {
   paint-order: stroke fill;
   stroke: white;
-  stroke-width: 3px;
+  stroke-width: 3.5px;
   stroke-linejoin: round;
+  stroke-linecap: round;
 }
-svg .state-label, svg rect + text, svg [font-weight="bold"] {
-  stroke-width: 0;  /* Don't apply halo to state box labels */
+/* Strip halo only from labels inside opaque background rects (legend / formula box) */
+svg .no-halo {
+  stroke-width: 0;
 }
 </style>
 </head>
@@ -70,43 +72,39 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
 
     <!-- R = 0.9 threshold line -->
     <line x1="0" y1="30" x2="570" y2="30" stroke="#e65100" stroke-width="1" stroke-dasharray="6,3"/>
-    <text x="575" y="28" font-size="9" fill="#e65100" font-weight="bold">R = 0.9 (review threshold)</text>
+    <text x="566" y="44" text-anchor="end" font-size="9" fill="#e65100" font-weight="bold">R = 0.9 (review threshold)</text>
 
     <!-- Curve 1: S = 1 day (red, steep decay) -->
-    <!-- R(t,1) = (1 + t/9)^(-1) -->
-    <!-- t=0: 1.0, t=1: 0.9, t=2: 0.818, t=5: 0.643, t=10: 0.474, t=15: 0.375, t=20: 0.310, t=30: 0.231 -->
-    <polyline points="0,0 19,30 38,54.6 57,73.2 76,88.2 95,107.1 114,122.4 133,135.6 152,146.4 190,163.8 228,177.6 285,195 380,213 475,225 570,231" fill="none" stroke="#c62828" stroke-width="2.5"/>
+    <!-- R(t,1) = (1 + t/9)^(-1); y = (1-R)*300 -->
+    <polyline points="0,0 19,30 38,54.5 57,75 76,92.3 95,107.1 114,120 133,131.3 152,141.2 190,157.9 228,171.4 285,187.5 380,206.9 475,220.6 570,230.8" fill="none" stroke="#c62828" stroke-width="2.5"/>
     <!-- Review at t=1 -->
     <circle cx="19" cy="30" r="5" fill="#c62828"/>
-    <text x="30" y="25" font-size="9" fill="#c62828" font-weight="bold">S=1d</text>
+    <text x="7" y="50" font-size="10" fill="#c62828" font-weight="bold">S=1d</text>
 
     <!-- Curve 2: S = 3 days (orange, moderate decay) -->
-    <!-- R(t,3) = (1 + t/27)^(-1) -->
-    <!-- t=0: 1.0, t=3: 0.9, t=5: 0.844, t=10: 0.730, t=15: 0.643, t=20: 0.574, t=30: 0.474 -->
-    <polyline points="0,0 19,12 38,24 57,30 76,40.8 95,46.8 114,55.2 133,62.4 152,68.4 190,81 228,91.8 285,107.1 380,127.8 475,145.2 570,157.8" fill="none" stroke="#e65100" stroke-width="2.5"/>
+    <!-- R(t,3) = (1 + t/27)^(-1); y = (1-R)*300 -->
+    <polyline points="0,0 19,10.7 38,20.7 57,30 76,38.7 95,46.9 114,54.5 133,61.8 152,68.6 190,81.1 228,92.3 285,107.1 380,127.7 475,144.2 570,157.9" fill="none" stroke="#e65100" stroke-width="2.5"/>
     <!-- Review at t=3 -->
     <circle cx="57" cy="30" r="5" fill="#e65100"/>
-    <text x="68" y="25" font-size="9" fill="#e65100" font-weight="bold">S=3d</text>
+    <text x="50" y="22" font-size="10" fill="#e65100" font-weight="bold">S=3d</text>
 
-    <!-- Curve 3: S = 10 days (green, slow decay) -->
-    <!-- R(t,10) = (1 + t/90)^(-1) -->
-    <!-- t=0: 1.0, t=10: 0.9, t=15: 0.857, t=20: 0.818, t=30: 0.75 -->
-    <polyline points="0,0 19,6 38,12 57,18 76,22.8 95,28.2 114,33 133,37.2 152,40.8 190,48 228,54.6 285,66 380,81 475,93 570,102" fill="none" stroke="#ff9800" stroke-width="2.5"/>
+    <!-- Curve 3: S = 10 days (orange, slow decay) -->
+    <!-- R(t,10) = (1 + t/90)^(-1); y = (1-R)*300 -->
+    <polyline points="0,0 19,3.3 38,6.5 57,9.7 76,12.8 95,15.8 114,18.8 133,21.6 152,24.5 190,30 228,35.3 285,42.9 380,54.5 475,65.2 570,75" fill="none" stroke="#ff9800" stroke-width="2.5"/>
     <!-- Review at t=10 -->
     <circle cx="190" cy="30" r="5" fill="#ff9800"/>
-    <text x="203" y="25" font-size="9" fill="#ff9800" font-weight="bold">S=10d</text>
+    <text x="180" y="23" font-size="10" fill="#ff9800" font-weight="bold">S=10d</text>
 
     <!-- Curve 4: S = 30 days (dark green, very slow decay) -->
-    <!-- R(t,30) = (1 + t/270)^(-1) -->
-    <!-- t=0: 1.0, t=10: 0.964, t=20: 0.931, t=30: 0.9 -->
-    <polyline points="0,0 19,2 38,4 57,6 76,7.8 95,9.6 114,11.4 133,13 152,14.4 190,18 228,21 285,25.2 380,33 475,39.6 570,45.6" fill="none" stroke="#2e7d32" stroke-width="2.5"/>
+    <!-- R(t,30) = (1 + t/270)^(-1); y = (1-R)*300 -->
+    <polyline points="0,0 19,1.1 38,2.2 57,3.3 76,4.4 95,5.5 114,6.5 133,7.6 152,8.6 190,10.7 228,12.8 285,15.8 380,20.7 475,25.4 570,30" fill="none" stroke="#2e7d32" stroke-width="2.5"/>
     <!-- Review at t=30 -->
     <circle cx="570" cy="30" r="5" fill="#2e7d32"/>
-    <text x="555" y="20" font-size="9" fill="#2e7d32" font-weight="bold">S=30d</text>
+    <text x="565" y="20" text-anchor="end" font-size="10" fill="#2e7d32" font-weight="bold">S=30d</text>
 
     <!-- Legend -->
     <rect x="340" y="200" width="220" height="90" rx="4" fill="#fafafa" stroke="#ddd"/>
-    <text x="355" y="218" font-size="10" fill="#333" font-weight="bold">Stability Progression</text>
+    <text x="355" y="218" class="no-halo" font-size="10" fill="#333" font-weight="bold">Stability Progression</text>
     <line x1="355" y1="233" x2="380" y2="233" stroke="#c62828" stroke-width="2.5"/>
     <text x="390" y="237" font-size="9" fill="#555">S = 1 day (new card, first review)</text>
     <line x1="355" y1="250" x2="380" y2="250" stroke="#e65100" stroke-width="2.5"/>

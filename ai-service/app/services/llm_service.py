@@ -172,8 +172,7 @@ def _build_hint_prompt(
         parts.append("\nProvide a more specific hint. Point to the exact concept or technique needed.")
     elif hint_level >= 3:
         parts.append(
-            "\nProvide a detailed hint. Explain the algorithm or data structure step-by-step, "
-            "but still don't give the complete code. Use pseudocode if needed."
+            "\nGive a detailed hint that addresses the specific bug or misconception. Describe the type of error without giving the fix. if the student's code has a specific bug. Otherwise, provide a step-by-step hint that leads them to the solution."
         )
 
     return "\n".join(parts)
@@ -220,6 +219,8 @@ async def generate_hint(
 
         user_prompt = _build_hint_prompt(context, student_code, error_message, hint_level)
 
+        logger.info(f"Generating hint for student {student_id} on problem {problem_id} at level {hint_level} with promtpt: {user_prompt[:500]}")
+
         response = await asyncio.wait_for(
             client.chat.completions.create(
                 model=settings.llm_model,
@@ -234,6 +235,12 @@ async def generate_hint(
         )
 
         hint_text = response.choices[0].message.content
+        finish_reason = response.choices[0].finish_reason
+        if finish_reason == "length":
+            logger.warning(
+                f"Hint truncated by max_tokens={settings.llm_max_tokens} "
+                f"(student={student_id}, problem={problem_id}, level={hint_level})"
+            )
 
         concepts_referenced = [c["name"] for c in context.get("concepts", [])]
 

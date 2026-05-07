@@ -81,8 +81,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 2.3 — Technique Complementarity Table (Table 2.3)
 - **File:** `html/ch2-technique-complementarity-table.html`
-- **PNG Export:** `png/ch2-technique-complementarity-table.png`
-- **Catbox URL:** https://files.catbox.moe/8ulh9q.png
+- **PNG Export:** `png/ch2-technique-complementarity-table.png` (810×284, tight-cropped)
+- **Direct URL:** https://lh3.googleusercontent.com/d/1FCdCor_aHfZYl-bAQgr8dppMy4kzH9Qi  _(personal Drive — catbox had a CDN bug for this hash)_
 - **Type:** Formatted HTML table (APA style, 3 columns)
 - **Section:** 2.4.2 Identified Gaps — Gap 1
 - **Why table:** The "addresses vs. does not address" structure for 6 techniques is inherently tabular. Color coding (green for addresses, red for blind spots) provides quick visual scanning.
@@ -121,8 +121,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 3.2 — System Architecture Diagram (Figure 3.1)
 - **File:** `html/ch3-system-architecture-diagram.html`
-- **PNG Export:** `png/ch3-system-architecture-diagram.png`
-- **Catbox URL:** https://files.catbox.moe/1j18y7.png
+- **PNG Export:** `png/ch3-system-architecture-diagram.png` (2110×1563, enlarged fonts + 2x capture)
+- **Direct URL:** https://lh3.googleusercontent.com/d/12WThyTAlnGaMIBYRjyxK_QPOgaqQfhSh  _(personal Drive)_
 - **Type:** SVG architecture diagram showing four components and five layers
 - **Section:** 3.2 System Architecture / 3.3 Five-Layer Adaptive Architecture
 - **Why architecture diagram:** This is the central technical figure of the thesis. It shows how the four platform components (React, NestJS, FastAPI, Docker) interact and where the five adaptive layers sit within the AI Service. No other format can communicate system topology this effectively.
@@ -263,8 +263,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 4.7 — FSRS Retrievability Decay Curves (Figure 4.5)
 - **File:** `html/ch4-fsrs-retrievability-curve.html`
-- **PNG Export:** `png/ch4-fsrs-retrievability-curve.png`
-- **Catbox URL:** https://files.catbox.moe/4g1sh7.png
+- **PNG Export:** `png/ch4-fsrs-retrievability-curve.png` (1482×1030, 2x capture)
+- **Catbox URL:** https://files.catbox.moe/1ejrtt.png  _(latest: manual label repositioning by author for cleaner spacing; supersedes `a7oiz9.png`, `aq3as4.png`, `4g1sh7.png`)_
 - **Type:** SVG chart with multiple decay curves
 - **Section:** 4.6.1 FSRS-5 Algorithm
 - **Why chart:** The power-law retrievability decay is the core mechanism of FSRS. Showing four curves with different stability values demonstrates how stability increases with successful reviews, lengthening the interval between reviews.
@@ -285,8 +285,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 5.2 -- Eight-Week Experiment Protocol Timeline (Figure 5.1)
 - **File:** `html/ch5-experiment-timeline.html`
-- **PNG Export:** `png/ch5-experiment-timeline.png`
-- **Catbox URL:** https://files.catbox.moe/xaopkb.png
+- **PNG Export:** `png/ch5-experiment-timeline.png` (1624×663, 2x capture, auto-cropped)
+- **Catbox URL:** https://files.catbox.moe/d63fut.png  _(latest: drops "L5 off" annotation to avoid overflow; superseded `frbd59.png` and prior Drive copy)_
 - **Type:** SVG timeline with phase boxes, arrows, and RQ mapping
 - **Section:** 5.2.2 Protocol
 - **Why timeline:** The 8-week experiment has 5 distinct phases (Baseline, Intervention, Post-Assessment, Washout, Retention) with specific activities in each. A timeline with phase boxes, group labels, and RQ data collection mapping communicates the temporal structure at a glance.
@@ -294,8 +294,8 @@ No visuals required. The cover page is text-only per university formatting stand
 
 ### Visual 5.3 -- Group Feature Comparison Table (Table 5.2)
 - **File:** `html/ch5-group-comparison-table.html`
-- **PNG Export:** `png/ch5-group-comparison-table.png`
-- **Catbox URL:** https://files.catbox.moe/wjmwg9.png
+- **PNG Export:** `png/ch5-group-comparison-table.png` (1860×690, 2x capture)
+- **Catbox URL:** https://files.catbox.moe/pyk0v3.png  _(re-upload after L5-off-in-pilot fix; supersedes `wjmwg9.png`)_
 - **Type:** Formatted HTML table with color-coded group badges
 - **Section:** 5.2.2 Protocol
 - **Why table:** 8 features compared between Experimental and Control groups. Orange/green color coding for adaptive vs. non-adaptive, with blue italic for identical features. A table enables precise cross-referencing of what each group receives.

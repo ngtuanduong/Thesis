@@ -2,3 +2,5 @@
 - [Reference: gdoc script layout](reference_gdoc_scripts.md) - where gdoc-* scripts live and naming convention in this repo
 - [Feedback: Windows stdout UTF-8](feedback_windows_utf8_stdout.md) - wrap sys.stdout in utf-8 writer on Windows before printing doc content
 - [Reference: doc TOC is plain text](reference_doc_toc_is_plain.md) - the thesis doc's Table of Contents is a single text line, not a generated TOC
+- [Reference: DOCX-to-GoogleDoc import script](reference_docx_import_script.md) - use Drive files.update with DOCX media to replace a Google Doc in place while preserving formatting
+- [Reference: APA->IEEE nested citation gotcha](reference_apa_ieee_conversion.md) - paren-anchored replaceAllText misses nested citations; follow up with regex-scan fixup (`gdoc-apa-to-ieee-fixup.py`)

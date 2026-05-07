@@ -31,6 +31,11 @@ def get_docs_service():
     return build("docs", "v1", credentials=creds)
 
 
+def get_drive_service():
+    creds = service_account.Credentials.from_service_account_file(KEY_FILE, scopes=SCOPES)
+    return build("drive", "v3", credentials=creds)
+
+
 def get_document(service=None, doc_id=None):
     service = service or get_docs_service()
     return service.documents().get(documentId=doc_id or DOC_ID).execute()

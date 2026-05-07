@@ -1,0 +1,173 @@
+# Front Matter
+
+<!-- TITLE_VI_BEGIN -->
+NỀN TẢNG HỌC TẬP THÍCH ỨNG CHO CÁC MÔN LẬP TRÌNH BẬC ĐẠI HỌC: TÍCH HỢP TRUY VẾT TRI THỨC BAYES, XẾP HẠNG ELO, BANDIT ĐA CÁNH TAY VÀ LỊCH LẶP LẠI CÁCH QUÃNG FSRS
+<!-- TITLE_VI_END -->
+
+<!-- TITLE_EN_BEGIN -->
+AN ADAPTIVE LEARNING PLATFORM FOR UNIVERSITY PROGRAMMING COURSES: INTEGRATING BAYESIAN KNOWLEDGE TRACING, ELO RATING, MULTI-ARMED BANDITS, AND FSRS
+<!-- TITLE_EN_END -->
+
+<!-- AUTHORS_BEGIN -->
+Nguyễn Tuấn Dương
+Lớp 1C22, Khoa Công Nghệ Thông Tin
+Email: ntduongvbhp@gmail.com
+
+Giáo viên hướng dẫn: ThS. Bùi Quốc Khánh
+<!-- AUTHORS_END -->
+
+<!-- ABSTRACT_VI_BEGIN -->
+**Tóm tắt:** Các môn lập trình đại học có tỉ lệ rớt 30–40% do mâu thuẫn giữa tính cá nhân hoá của kỹ năng lập trình và giảng dạy đại trà. Nền tảng trực tuyến hiện có kho bài tập phong phú nhưng dừng ở độ khó tĩnh, thiếu cơ chế thích ứng khép kín. Bốn kỹ thuật — Truy vết tri thức Bayes (BKT), xếp hạng Elo, bandit đa cánh tay (MAB) và lặp lại cách quãng FSRS — được nghiên cứu riêng lẻ, song chưa tích hợp đồng thời cho giáo dục lập trình. Bài báo đề xuất nền tảng học tập thích ứng năm lớp trên đồ thị tri thức 28 khái niệm, kèm phản hồi Socratic tuỳ chọn. Mỗi lần nộp mã nguồn, hệ thống cập nhật bất đồng bộ bốn lớp. Đóng góp: (i) kiến trúc tích hợp đầu tiên cho giáo dục lập trình; (ii) bandit phân cấp theo điều kiện tiên quyết BKT; (iii) lần đầu áp dụng FSRS cho lập trình qua ánh xạ nộp bài sang mức ôn tập. Bài báo là công trình triển khai kèm giao thức đánh giá thí điểm đã đăng ký trước; thực nghiệm chưa tiến hành.
+<!-- ABSTRACT_VI_END -->
+
+<!-- KEYWORDS_VI_BEGIN -->
+**Từ khoá:** Bandit đa cánh tay; Giáo dục lập trình; Học tập thích ứng; Lặp lại cách quãng; Truy vết tri thức Bayes.
+<!-- KEYWORDS_VI_END -->
+
+<!-- ABSTRACT_EN_BEGIN -->
+**Abstract:** Introductory programming courses worldwide report failure rates of 30–40%, driven by a persistent mismatch between the individualized, practice-intensive nature of programming skill acquisition and the uniform delivery model of large-class instruction. Existing online coding platforms provide extensive problem libraries but rely on static difficulty classifications and offer no closed-loop mechanism for learner adaptation. Individual adaptive techniques — Bayesian Knowledge Tracing (BKT), Elo rating, Multi-Armed Bandits (MAB), and the Free Spaced Repetition Scheduler (FSRS) — have each been studied in isolation, but no prior system integrates them for programming education. This paper presents a five-layer adaptive platform unified by a knowledge graph of 28 programming concepts, complemented by an optional large-language-model-based Socratic feedback layer. A closed-loop pipeline triggers asynchronous updates to all four adaptive layers on every code submission. The paper contributes (i) the first integrated adaptive architecture combining all four techniques for programming; (ii) a prerequisite-constrained hierarchical bandit with BKT-based mastery gating; and (iii) the first application of FSRS to programming skill retention through a novel code-submission-to-rating mapping. This paper should be read as an implementation paper accompanied by a pre-registered pilot evaluation protocol, not as a completed classroom study.
+<!-- ABSTRACT_EN_END -->
+
+<!-- KEYWORDS_EN_BEGIN -->
+**Keywords:** Adaptive learning; Bayesian knowledge tracing; Multi-armed bandit; Programming education; Spaced repetition.
+<!-- KEYWORDS_EN_END -->
+
+# 1. Introduction
+
+Introductory programming courses at universities remain one of the most persistent pain points in undergraduate computing education. A systematic literature review by Luxton-Reilly et al. (2018) reported global failure rates of 30–40% in CS1 courses, a figure that has remained remarkably stable across several decades of pedagogical experimentation. The root cause is not a shortage of practice material but a structural mismatch between how programming skill is acquired and how it is taught: acquisition is individualized and practice-intensive, while delivery is uniform and resource-constrained.
+
+The adaptive learning literature offers mature individual remedies for this mismatch. Bayesian Knowledge Tracing (BKT) estimates per-concept mastery from interaction traces (Corbett & Anderson, 1995). Elo-style rating dynamically calibrates problem difficulty relative to learner ability (Pelánek, 2016). Multi-Armed Bandit (MAB) formulations with Thompson Sampling balance exploration and exploitation when selecting the next learning activity (Chapelle & Li, 2011; Rollinson & Brunskill, 2015). The Free Spaced Repetition Scheduler (FSRS) optimizes review intervals to counter skill decay (Ye et al., 2022). Meanwhile, commercial coding platforms such as LeetCode, HackerRank, and Codeforces provide very large problem libraries but rely on static difficulty tags and offer no closed-loop mechanism for personalization; large-scale adaptive platforms such as Duolingo demonstrate the scalability of adaptive techniques in language learning, which suggests potential transfer to programming education.
+
+Despite this maturity of the components, no prior work integrates all four techniques into a unified, closed-loop system for programming education. Each component has been studied in isolation or in pairs, and claims about individual gains do not automatically compose. The integration itself — how a BKT mastery estimate gates MAB arm availability, how Elo narrows the candidate set to a learner's zone of proximal development, and how FSRS schedules review of previously mastered concepts — requires architectural work that the literature has not yet reported for this domain.
+
+This paper presents the design and implementation of an Adaptive Learning Platform for University Programming Courses that addresses this integration gap. The platform is organized as a five-layer adaptive engine unified by a knowledge graph of 28 programming concepts connected by prerequisite relationships. Each code submission triggers an asynchronous update across all four adaptive layers, with an optional fifth layer that provides LLM-based Socratic hints grounded in the current knowledge state.
+
+The paper makes three contributions. First, it presents the first integrated multi-layer adaptive architecture combining BKT, Elo, hierarchical MAB, and FSRS for programming education. Second, it introduces a prerequisite-constrained hierarchical bandit in which arm eligibility is gated by BKT mastery estimates and further filtered by Elo-based ZPD constraints. Third, it reports the first application of FSRS to programming skill retention, achieved through a novel mapping from code submission outcomes to FSRS review ratings. A fourth, engineering-level contribution is a fully deployed open-source platform comprising a React frontend, a NestJS API, a FastAPI adaptive engine, a PostgreSQL database, and a Docker-based sandboxed code execution environment.
+
+This paper should be read as an implementation paper accompanied by a pre-registered pilot evaluation protocol, not as a completed classroom study. Contribution 1 — the integrated platform — is implemented and demonstrated technically. The pilot evaluation protocol is specified in Section 3.8 and IRB-reviewed, but the classroom study itself is planned rather than completed. Results from that study will be reported separately.
+
+The remainder of the paper is organized as follows. Section 2 reviews the theoretical foundations and related work. Section 3 details the methodology and system architecture. Section 4 reports the implemented artifact and discusses design choices against literature benchmarks. Section 5 concludes.
+
+# 2. Related Work and Theoretical Background
+
+This section reviews the four adaptive techniques that the proposed platform integrates and situates our work with respect to prior programming-education systems. Each subsection closes with the specific design implication that the literature carries for this paper.
+
+## 2.1. Knowledge tracing
+
+Bayesian Knowledge Tracing (Corbett & Anderson, 1995) models mastery of a skill as a two-state hidden Markov process with four parameters: prior knowledge P(L₀), transition P(T), guess P(G), and slip P(S). BKT is interpretable, data-efficient, and remains the reference baseline in modern intelligent tutoring systems (Ma et al., 2014). Deep Knowledge Tracing (Piech et al., 2015) and subsequent neural variants improve raw predictive accuracy but require orders of magnitude more interaction data and sacrifice the interpretability that instructors need to trust the mastery estimate. **Relevance to this work:** BKT is chosen as Layer 1 because this platform must operate with cold-start populations of a few hundred learners, and because the mastery estimate is consumed downstream by a bandit that benefits from calibrated uncertainty rather than raw point accuracy.
+
+## 2.2. Difficulty calibration and the Zone of Proximal Development
+
+Pelánek (2016) formalized Elo-style rating for adaptive educational systems, showing that dual student–item ratings converge within roughly twenty attempts per learner and stabilize faster than Item Response Theory alternatives in small cohorts. The framework operationalizes Vygotsky's (1978) Zone of Proximal Development (ZPD) and Bjork and Bjork's (2011) desirable-difficulties principle, both of which argue that optimal learning occurs when task difficulty modestly exceeds current ability. **Relevance to this work:** Layer 2 adopts dual Elo ratings as the difficulty-calibration mechanism, and the Elo deltas are used to filter the candidate pool to the learner's ZPD before the bandit selects.
+
+## 2.3. Multi-Armed Bandits in education
+
+Thompson Sampling (Chapelle & Li, 2011) is the de facto choice for exploration–exploitation problems with small effective sample sizes, as is typical in one-semester classroom deployments. Rollinson and Brunskill (2015) demonstrated that bandit policies can outperform fixed curricula when combined with a learner model; Segal et al. (2018) extended this to structured action spaces using hierarchical bandits. **Relevance to this work:** Layer 3 uses a two-level hierarchical Thompson-sampling bandit in which the outer level selects the next concept to practise and the inner level selects a specific problem within that concept, with both levels constrained by the knowledge graph and the ZPD filter.
+
+## 2.4. Spaced repetition and FSRS
+
+The spacing effect — that distributed practice produces better long-term retention than massed practice — is among the most robust findings in cognitive psychology (Cepeda et al., 2006). Algorithmic schedulers have evolved from heuristic SM-2 to machine-learned models (Settles & Meeder, 2016) and, most recently, to the Free Spaced Repetition Scheduler (Ye et al., 2022), which formulates the scheduling problem as a stochastic shortest-path and reports 20–30% fewer reviews than SM-2 for the same retention target. Crucially, the existing FSRS literature evaluates on vocabulary and factual-recall tasks; programming is a procedural skill whose decay dynamics are less well understood. **Relevance to this work:** Layer 4 applies FSRS to programming skill retention, which, to the best of our knowledge, has not been reported previously; Section 3.6 describes the novel submission-to-rating mapping this application requires.
+
+## 2.5. Programming platforms and the integration gap
+
+Commercial platforms such as LeetCode, HackerRank, and Codeforces provide large problem libraries but rely on static difficulty tags and static taxonomies; none of them closes the loop from learner outcome back to problem selection. Research prototypes have examined individual adaptive components in programming education, but the literature does not report a system that simultaneously integrates knowledge tracing, dynamic difficulty calibration, bandit-based selection, and spaced repetition under a shared knowledge graph. **Relevance to this work:** this gap is the paper's core motivation; Table 1 summarizes the four techniques and their complementary roles, and the remainder of the paper describes the integrated architecture that fills the gap.
+
+[TABLE_1_HERE]  *Table 1. Complementary roles of the four integrated adaptive techniques. Source: authors' own synthesis.*
+
+# 3. Methodology
+
+## 3.1. System overview and closed-loop architecture
+
+The platform is organized as a four-component full-stack web application: a React 18 frontend, a NestJS 10 API gateway, a FastAPI adaptive engine written in Python 3.11, and a PostgreSQL 16 database with a Redis 7 cache. A Docker-based sandbox executes submitted code under strict resource limits (256 MB memory, five-second CPU timeout, unprivileged user, no network). Inside the adaptive engine sits a five-layer adaptive stack, shown in Figure 1. Each code submission triggers an asynchronous event that updates Layers 1–4 in parallel, after which the bandit re-ranks the candidate pool for the next recommendation. This closed-loop behaviour is the central architectural property of the platform: the learner model is never stale.
+
+[FIGURE_1_HERE]  *Figure 1. Five-layer adaptive architecture. Source: authors' own work.*
+
+## 3.2. Knowledge graph foundation
+
+All five layers share a single learning artefact: a knowledge graph of 28 programming concepts connected by approximately 45 prerequisite edges, grouped into five difficulty tiers and seven topic clusters (control flow, functions, data structures, recursion, and so on). Every problem in the bank is tagged with one primary concept and zero or more secondary concepts. The graph is authored manually; automated construction from curriculum documents is left as future work. The graph provides the substrate on which BKT estimates are maintained, prerequisite gating is enforced, and FSRS review schedules are aligned.
+
+## 3.3. Layer 1 — Bayesian Knowledge Tracing
+
+Layer 1 maintains a per-learner, per-concept mastery posterior using the four-parameter BKT formulation of Corbett and Anderson (1995). Default parameters are tiered by problem difficulty, with easier concepts initialized to higher P(L₀) and P(T) and more challenging concepts initialized to lower priors. A concept is considered mastered when its posterior mastery exceeds the threshold θ_m = 0.85. The mastery threshold θ_m = 0.85 is a design choice informed by the intelligent-tutoring-systems literature, not an optimum obtained by empirical tuning on this dataset; the follow-up pilot will treat it as a calibration target.
+
+## 3.4. Layer 2 — Dynamic Elo rating
+
+Layer 2 maintains dual Elo ratings: every learner has a rating initialized at 1200, and every problem has a rating initialized at 1000, 1200, or 1400 for Easy, Medium, and Hard tiers respectively, with values clamped to [400, 2800]. A dynamic K-factor in [10, 40] adjusts update magnitude based on recent trend: learners with rapidly changing ratings receive larger updates while stable learners receive smaller ones. The base value K = 25 is a heuristic midpoint chosen for moderate volatility in educational settings, not a tuned optimum. A ZPD filter restricts the candidate pool to problems whose rating differs from the learner's current rating by δ ∈ [50, 250] rating points; this operationalizes the desirable-difficulties principle in a form directly usable by Layer 3.
+
+## 3.5. Layer 3 — Hierarchical MAB with Thompson Sampling
+
+Layer 3 uses a two-level Thompson-sampling bandit. The outer arm selects the next concept to practise; the inner arm selects a specific problem within that concept. Arm eligibility at the outer level is gated by a prerequisite constraint derived from the knowledge graph: a concept becomes eligible only when every one of its prerequisite concepts has reached the mastery threshold θ_m. At the inner level, the ZPD filter from Section 3.4 removes out-of-range problems. The reward function combines three components into a scalar in [0, 1]: expected BKT learning gain with weight w₁ = 0.5, correctness signal w₂ = 0.3, and solve-time efficiency w₃ = 0.2. These weights are a heuristic weighting combining learning gain, difficulty match, and efficiency; they are not learned from empirical data, and re-estimating them from the pilot traces is explicitly listed as future work.
+
+## 3.6. Layer 4 — FSRS and the submission-to-rating mapping
+
+Layer 4 maintains an FSRS-5 state (19 parameters, defaults from Ye et al., 2022) per learner–concept pair, scheduling reviews when retrievability drops below 0.9. The technical novelty at this layer is the mapping from a code submission outcome to an FSRS rating. FSRS was designed for flashcard recall and expects one of four discrete ratings: Again, Hard, Good, Easy. Programming submissions offer a richer signal space: correctness on hidden tests, number of attempts, and time spent. We map this signal space to FSRS ratings through a decision rule that combines correctness (all tests passed vs partial vs failed), attempt count (first-try vs retries), and time relative to the learner's median on problems of the same difficulty tier. To the best of our knowledge, this is the first reported application of FSRS to programming skill retention.
+
+## 3.7. Layer 5 — Optional LLM feedback
+
+Layer 5 provides Socratic-style hints via a retrieval-augmented generation pipeline grounded in the learner's current BKT state (Wang et al., 2023). The layer is designed as a feature-flagged capability that is disabled by default during evaluation to prevent confounding the effect of Layers 1–4.
+
+## 3.8. Pre-registered pilot evaluation protocol
+
+A between-subjects, pre-test/post-test design with a control group is pre-registered. The experimental group uses the four-layer adaptive engine — Layers 1–4 (BKT, Elo, Hierarchical MAB, FSRS); Layer 5 LLM hints are feature-flagged off in the pilot so that the measured treatment effect is attributable to the core adaptive layers and not confounded by generative-AI assistance. The control group uses the identical platform with the adaptive layers replaced by legacy content-based filtering. The control group is constructed to hold constant the platform interface and problem environment while varying only the recommendation logic. The protocol targets n = 40–60 Hanoi University undergraduates across four weeks of intervention with a Week 8 retention follow-up, and IRB review has been completed. Figure 2 summarizes the eight-week timeline. The primary research question (RQ1) concerns predictive validity: whether BKT and Elo mastery estimates predict post-intervention item correctness with AUC ≥ 0.70. Acceptance rate and convergence speed are treated as supporting indicators for RQ1 rather than primary outcomes.
+
+[FIGURE_2_HERE]  *Figure 2. Eight-week pilot evaluation timeline. Source: authors' own work.*
+
+# 4. Results and Discussion
+
+This paper adopts a design-paper framing. Accordingly, Section 4.1 reports the implemented artefact and its operational characteristics as the primary results, and Section 4.2 discusses the design relative to literature benchmarks. Empirical learning-outcome results will be reported separately after the pre-registered pilot (Section 3.8) is executed.
+
+## 4.1. Results — the implemented artefact
+
+**Deployment and code metrics.** The platform is deployed and operational. The adaptive engine comprises approximately 2,500 lines of Python; the NestJS backend extensions add approximately 4,000 lines of TypeScript; and the React frontend additions contribute approximately 3,000 lines of TypeScript and TSX. The knowledge graph encodes 28 programming concepts with 45 prerequisite edges across five difficulty tiers and seven topic clusters. The code execution sandbox runs each submission under a 256 MB memory limit, a five-second CPU timeout, an unprivileged user, and a disabled network. Under load testing, the recommendation endpoint produces a new Thompson-sampled choice in under 500 ms at a target of 100 concurrent users, satisfying the non-functional requirement established at design time. The source repository, Docker Compose deployment, and configuration templates are packaged as a single open-source release. This is the concrete evidence that the system has been built rather than merely specified.
+
+**Closed-loop walk-through.** Figure 3 illustrates the submission pipeline for one concrete scenario. A learner submits a solution to a problem tagged with the primary concept *recursion*. The sandbox runs the submission against hidden test cases, produces a correctness signal, an attempt count, and a wall-clock solve time. An asynchronous event then triggers four updates in parallel. Layer 1 updates the learner's BKT posterior for *recursion*; Layer 2 updates both the learner's Elo rating and the problem's Elo rating; Layer 4 computes an FSRS rating from the correctness–attempts–time triple and rewrites the next review date; and Layer 3 receives the updated learner state and re-ranks the candidate pool for the next recommendation. Every subsequent recommendation issued to this learner reflects the full updated state. No layer operates on stale information.
+
+[FIGURE_3_HERE]  *Figure 3. Closed-loop submission pipeline executed after every code submission. Source: authors' own work.*
+
+**Evaluation protocol status.** The evaluation described in Section 3.8 is a pre-registered pilot, not a completed study. The study design is fully specified, the instruments and timeline are in place (Figure 2), and IRB review has been completed. Enrolment and intervention have not yet commenced; results will be reported in a follow-up publication.
+
+## 4.2. Discussion
+
+**Layer-by-layer comparison against literature benchmarks.** The design targets for each adaptive layer are drawn from prior empirical work rather than from this platform's own data. For Layer 1, BKT is expected to exceed AUC-ROC 0.70 on post-intervention item correctness, the threshold reported as acceptable across the ITS meta-analysis of Ma et al. (2014). For Layer 2, dual Elo is expected to converge to within one rating tier of ground truth within approximately twenty attempts per learner, matching the convergence behaviour observed by Pelánek (2016). For Layer 4, FSRS is expected to deliver retention comparable to SM-2 with roughly twenty to thirty percent fewer reviews, replicating the scheduling gain reported by Ye et al. (2022) on flashcard corpora. These are *design targets*: they anchor the pilot's analysis plan but they are not claims about system performance.
+
+**Why the integration is more than the sum of its parts.** Each layer produces an output that is consumed by another layer. The BKT posterior directly controls which arms are even eligible for the bandit to sample: a learner whose mastery of *recursion*'s prerequisite concepts has not yet exceeded θ_m cannot be recommended a *recursion* problem, regardless of how interesting that problem would be for exploration. The Elo ratings then narrow the eligible arms to the learner's ZPD, removing both trivially easy and prohibitively hard options. FSRS imposes a separate channel of urgency: when a previously mastered concept's retrievability falls below threshold, the bandit's sampling is overridden in favour of review. Each handoff is simple, but their composition produces an emergent recommendation policy that no single technique achieves alone. This is the structural claim the paper makes: integration, not any individual layer, is the contribution.
+
+**Limitations.** No empirical learning-gain data is reported in this paper. The planned evaluation is single-site, which limits external validity, and the between-subjects comparison will measure the effect of the bundled four-layer treatment against a non-adaptive baseline rather than isolating individual layer contributions. Contribution 1 — the integrated platform — is implemented and demonstrated technically. Contribution 2 — the evaluation — is specified but not yet empirically executed. The thesis from which this paper is drawn will report the pilot in full; this conference paper records the design and the deployable artefact.
+
+# 5. Conclusion
+
+This paper has presented the design and implementation of a five-layer adaptive learning platform for university programming courses. The platform integrates Bayesian Knowledge Tracing, dynamic Elo rating, hierarchical Multi-Armed Bandits with Thompson Sampling, and the Free Spaced Repetition Scheduler into a single closed-loop system unified by a knowledge graph of 28 programming concepts. The paper contributes the first integrated architecture combining all four adaptive techniques for programming education, a prerequisite-constrained hierarchical bandit with BKT-based mastery gating, and the first application of FSRS to programming skill retention via a novel code-submission-to-rating mapping. An open-source implementation accompanies the design.
+
+The artefact-versus-plan distinction deserves explicit restatement. Contribution 1 — the integrated platform — is implemented and demonstrated technically: the system is deployed, meets its latency and sandboxing non-functional requirements, and is released as open-source software. Contribution 2 — the empirical evaluation — is specified in Section 3.8, IRB-reviewed, and pre-registered, but the classroom pilot has not yet been conducted. The follow-up thesis and subsequent publications will report the pilot results.
+
+Future work follows directly. The immediate priority is executing the pre-registered pilot (n = 40–60 Hanoi University undergraduates across four weeks of intervention with a Week 8 retention follow-up) and reporting BKT and Elo predictive-validity AUC, FSRS review efficiency, and normalized learning gain. Medium-term work includes a multi-site replication to address the single-site limitation, a within-system ablation that quantifies each adaptive layer's marginal contribution, and a full evaluation of the optional LLM Layer 5. By integrating four adaptive techniques that have, until now, been studied in isolation, this paper offers a concrete architectural step toward the long-standing ambition of individualized programming education at scale.
+
+# References
+
+1. Bjork, R. A., & Bjork, E. L. (2011). Making things hard on yourself, but in a good way: Creating desirable difficulties to enhance learning. In M. A. Gernsbacher, R. W. Pew, L. M. Hough, & J. R. Pomerantz (Eds.), *Psychology and the real world: Essays illustrating fundamental contributions to society* (pp. 56–64). Worth Publishers.
+
+2. Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. *Psychological Bulletin, 132*(3), 354–380. https://doi.org/10.1037/0033-2909.132.3.354
+
+3. Chapelle, O., & Li, L. (2011). An empirical evaluation of Thompson sampling. In *Advances in Neural Information Processing Systems* (Vol. 24, pp. 2249–2257). Curran Associates.
+
+4. Corbett, A. T., & Anderson, J. R. (1995). Knowledge tracing: Modeling the acquisition of procedural knowledge. *User Modeling and User-Adapted Interaction, 4*(4), 253–278. https://doi.org/10.1007/BF01099821
+
+5. Luxton-Reilly, A., Simon, Albluwi, I., Becker, B. A., Giannakos, M., Kumar, A. N., Ott, L., Paterson, J., Scott, M. J., Sheard, J., & Szabo, C. (2018). Introductory programming: A systematic literature review. In *Proceedings of the 2018 ITiCSE Conference on Working Group Reports* (pp. 55–106). ACM. https://doi.org/10.1145/3293881.3295779
+
+6. Ma, W., Adesope, O. O., Nesbit, J. C., & Liu, Q. (2014). Intelligent tutoring systems and learning outcomes: A meta-analysis. *Journal of Educational Psychology, 106*(4), 901–918. https://doi.org/10.1037/a0037123
+
+7. Pelánek, R. (2016). Applications of the Elo rating system in adaptive educational systems. *Computers & Education, 98*, 169–179. https://doi.org/10.1016/j.compedu.2016.03.017
+
+8. Piech, C., Bassen, J., Huang, J., Ganguli, S., Sahami, M., Guibas, L., & Sohl-Dickstein, J. (2015). Deep knowledge tracing. In *Advances in Neural Information Processing Systems* (Vol. 28, pp. 505–513). Curran Associates.
+
+9. Rollinson, J., & Brunskill, E. (2015). From predictive models to instructional policies. In *Proceedings of the 8th International Conference on Educational Data Mining* (pp. 179–186). International Educational Data Mining Society.
+
+10. Segal, A., Gal, Y., Kamar, E., Horvitz, E., & Miller, G. (2018). Optimizing interventions via offline policy evaluation: Studies in citizen science. In *Proceedings of the AAAI Conference on Artificial Intelligence* (Vol. 32, pp. 3893–3900). AAAI Press. https://doi.org/10.1609/aaai.v32i1.11852
+
+11. Settles, B., & Meeder, B. (2016). A trainable spaced repetition model for language learning. In *Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics* (pp. 1848–1858). ACL. https://doi.org/10.18653/v1/P16-1174
+
+12. Vygotsky, L. S. (1978). *Mind in society: The development of higher psychological processes*. Harvard University Press.
+
+13. Wang, R. E., Wirawarn, Q., Goodman, N., & Demszky, D. (2023). SocraticLM: Exploring Socratic questioning strategies in language models. In *Findings of the Association for Computational Linguistics: EMNLP 2023* (pp. 3070–3084). ACL.
+
+14. Ye, J., Su, J., & Cao, Y. (2022). A stochastic shortest path algorithm for optimizing spaced repetition scheduling. In *Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining* (pp. 4381–4390). ACM. https://doi.org/10.1145/3534678.3539081

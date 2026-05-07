@@ -120,7 +120,10 @@
       "mcp__plugin_figma_figma__generate_figma_design",
       "Bash(start:*)",
       "mcp__plugin_playwright_playwright__browser_run_code",
-      "mcp__plugin_playwright_playwright__browser_tabs"
+      "mcp__plugin_playwright_playwright__browser_tabs",
+      "Bash(rm documents/thesis-chapters/visuals/png/ch4-adaptive-engine-sequence-raw.png)",
+      "Bash(rm documents/thesis-chapters/visuals/png/ch4-seq-preview.png)",
+      "Bash(GDOC_DOC_ID=\"1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs\" python scripts/gdoc-read-full.py)"
     ]
   }
 }

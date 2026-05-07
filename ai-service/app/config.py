@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     llm_base_url: str = ""  # Override for non-OpenAI providers (e.g. Gemini)
     llm_model: str = "gpt-4o-mini"
-    llm_max_tokens: int = 500
+    llm_max_tokens: int = 800
     llm_rate_limit_per_minute: int = 30
 
     # Chatbot configuration

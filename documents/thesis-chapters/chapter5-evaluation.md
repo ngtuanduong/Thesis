@@ -10,10 +10,10 @@ The evaluation of the adaptive learning platform employs a mixed-methods researc
 
 The study employs a between-subjects, pre-test / post-test design with a control group. Participants are randomly assigned, after stratification by pre-test score, to one of two conditions:
 
-- **Experimental group (E):** The complete adaptive platform, with all five layers enabled. This means that all five components are active: Bayesian Knowledge Tracing (Layer 1), Dynamic Elo difficulty calibration (Layer 2), Hierarchical MAB problem selection (Layer 3), FSRS spaced repetition scheduling (Layer 4), and LLM-based Socratic hints (Layer 5).
+- **Experimental group (E):** The adaptive platform with the four core adaptive layers enabled: Bayesian Knowledge Tracing (Layer 1), Dynamic Elo difficulty calibration (Layer 2), Hierarchical MAB problem selection (Layer 3), and FSRS spaced repetition scheduling (Layer 4). Layer 5 (LLM-based Socratic hints) is implemented in the system but feature-flagged **off** during the pilot, so that the measured treatment effect is attributable to Layers 1–4 alone and not confounded by generative-AI assistance. Full evaluation of Layer 5 is deferred to follow-up work.
 - **Control group (C):** The same platform interface, but with all the adaptive layers disabled. The problem recommendations are instead provided by the legacy content-based filtering system, which relies on cosine similarity between sentence-transformer embeddings. The students in this group will be given the same set of problems, will use the same code execution environment, and will have access to the same basic statistics dashboard, but without any knowledge tracing, Elo-based difficulty matching, spaced repetition scheduling, or adaptive hints.
 
-This design holds constant the effect of the five-layer adaptive engine while varying for other potential influences such as platform newness, problem content, or practicing with the online system itself. Both groups use the same interface; the only difference is the algorithm that operates behind the interface.
+This design holds constant the effect of the four-layer adaptive engine evaluated in this pilot while varying for other potential influences such as platform newness, problem content, or practicing with the online system itself. Both groups use the same interface; the only difference is the algorithm that operates behind the interface.
 
 ### Research Questions and Measurements
 
@@ -80,7 +80,7 @@ Week 1          Weeks 2--5            Week 6           Weeks 6--7      Week 8
 | Difficulty matching | Dynamic Elo ratings | Static labels (EASY / MEDIUM / HARD) |
 | Review scheduling | FSRS spaced repetition | No scheduled reviews |
 | Knowledge tracking | BKT per concept | None |
-| Hints | LLM Socratic hints (Layer 5) | No hints |
+| Hints | Disabled in pilot (Layer 5 off; deferred to follow-up) | No hints |
 | Dashboard | Full mastery visualization, Elo trajectory, review queue | Basic submission statistics only |
 | Problem set | Identical | Identical |
 | Code execution | Identical sandbox | Identical sandbox |
@@ -95,7 +95,7 @@ The system accumulates six types of data during the intervention process. First,
 
 The experiment involves one independent variable, multiple dependent variables, and several covariates.
 
-**Independent variable.** The treatment condition is a two-level between-subjects factor: adaptive (the experimental group E receives the full five-layer pipeline), and non-adaptive (the control group C receives content-based filtering only). This variable is implemented through the feature flags described in Section 4.9.1: `ENABLE_BKT`, `ENABLE_ELO`, `ENABLE_MAB`, `ENABLE_FSRS`, `ENABLE_LLM_HINTS`.
+**Independent variable.** The treatment condition is a two-level between-subjects factor: adaptive (the experimental group E receives the four-layer pipeline — BKT, Elo, MAB, FSRS), and non-adaptive (the control group C receives content-based filtering only). This variable is implemented through the feature flags described in Section 4.9.1: `ENABLE_BKT`, `ENABLE_ELO`, `ENABLE_MAB`, `ENABLE_FSRS` are enabled for E and disabled for C; `ENABLE_LLM_HINTS` is set to `false` for both groups in the pilot to isolate the effect of Layers 1–4.
 
 **Dependent variables.** The dependent variables fall into four categories, all of which are related to the research questions. First, for learning effectiveness (RQ2), we have Normalized Learning Gain and Problems-to-Mastery ratio. Second, for model accuracy (RQ1), we have BKT prediction AUC-ROC, Elo prediction AUC-ROC, and Elo convergence speed. For engagement: session frequency, session duration, problems per session, voluntary return rate, dropout rate, and abandonment rate. Last, for usability (RQ4), we have SUS composite score and TAM subscale means for Perceived Usefulness and Perceived Ease of Use.
 

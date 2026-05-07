@@ -24,6 +24,11 @@
   - Unhedged FSRS novelty claim (line 289) -- same pattern as Ch1
   - Missing: security for AI service API, scalability beyond caching, data consistency under concurrent updates, knowledge graph validation rules, hyperparameter summary table
   - Writing quality remains consistently strong
+- Conference abstract reviewed (2026-04-22, HTKH GV-SV 2025 target): MINOR-TO-MODERATE REVISION
+  - Good: honesty framing (implementation paper disclaimer), technical precision, hedged novelty ("no equivalent system was identified in the literature surveyed")
+  - Issues: ~275 words (cap is 200-250), contribution (1) is a 70-word sentence lumping 3 contributions, missing artifact/scale indicators (tech stack, problem count, pilot size), 3 consecutive sentences start with "This paper"
+  - Keywords missing: Intelligent tutoring systems, Elo rating, Knowledge graph, CS1
+  - Pattern confirmed: author consistently uses hedged novelty claims now (improvement from Ch1 round-1)
 
 ## Patterns to Watch
 - Author tends to make absolute novelty claims -- now mostly hedged, but verify in future chapters (Ch3 line 289 still unhedged)
