@@ -1,0 +1,19 @@
+Word & line counts for key sections (post-revision, after all Priority-5 trims + Relevance restoration)
+=================================================================================================
+
+Measurement basis: non-blank paragraph lines exported from the Google Doc body via scripts/gdoc-read-conf-paper.py into 50-after-snapshot.txt.
+Word count = len(re.findall(r'\\S+', line)), summed across lines that belong to the section.
+
+  §2 Related Work (incl. Table 1 caption): 12 non-blank paragraph lines, 483 words
+  §2 Related Work (body only, excluding Table 1 caption): 11 non-blank paragraph lines, 469 words
+  §3 Methodology: 18 non-blank paragraph lines, 1209 words
+  §4 Implemented Artifact and Design Discussion: 10 non-blank paragraph lines, 880 words
+  TOTAL body (incl. VN tóm tắt + EN abstract + References): 78 lines, 4569 words
+
+Plan's Priority-5 acceptance target:
+  §2 Related Work body target: 450-480 words.  Measured: 469 words -> PASS
+  (Table 1 caption is a standalone paragraph under §2 but is conventionally counted separately from the prose body.)
+  §2 incl. Table-1 caption: 483 words.
+
+Pre-revision baseline (from /Users/avada/Downloads/Bài báo tham dự hội thảo khoa học.txt):
+  §2 body was ~565 words. Net trim: -96 words (-17% reduction), hitting the plan's 15-20% target.
