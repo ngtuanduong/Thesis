@@ -129,7 +129,31 @@
       "Bash(GDOC_KEY_FILE=/Users/avada/Downloads/infra-inkwell-465003-f2-369235afe5ac.json GDOC_DOC_ID=1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs OUT_PATH=/Users/avada/WebstormProjects/Thesis/documents/conference-paper-revision/50-after-snapshot.txt python3 scripts/gdoc-read-conf-paper.py)",
       "Bash(rm documents/thesis-chapters/visuals/png/ch4-adaptive-engine-sequence-raw.png)",
       "Bash(rm documents/thesis-chapters/visuals/png/ch4-seq-preview.png)",
-      "Bash(GDOC_DOC_ID=\"1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs\" python scripts/gdoc-read-full.py)"
+      "Bash(GDOC_DOC_ID=\"1b21l8G9SXiXSYP_2k9Up3ic11OK08yus557vb8gsPhs\" python scripts/gdoc-read-full.py)",
+      "Bash(echo \"---exit $?\")",
+      "Bash(pandoc --version)",
+      "PowerShell(pandoc --version 2>&1)",
+      "PowerShell(python -c \"import docx; print\\('python-docx', docx.__version__\\)\" 2>&1)",
+      "PowerShell(\"---\")",
+      "PowerShell(python -m pip install python-docx --quiet 2>&1)",
+      "PowerShell(python -c \"import docx; print\\('OK python-docx', docx.__version__\\)\")",
+      "PowerShell(python scripts/build-reference-docx.py)",
+      "PowerShell(python scripts/build-fixed-thesis-docx.py --dry-run)",
+      "PowerShell(python C:\\\\Users\\\\duong\\\\WebstormProjects\\\\Thesis\\\\scripts\\\\build-fixed-thesis-docx.py --dry-run)",
+      "PowerShell(winget install --id JohnMacFarlane.Pandoc -e --accept-source-agreements --accept-package-agreements --silent 2>&1)",
+      "PowerShell($env:Path += \";$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\\\\Packages\\\\JohnMacFarlane.Pandoc_Microsoft.Winget.Source_8wekyb3d8bbwe\"; pandoc --version 2>&1 | Select-Object -First 2)",
+      "PowerShell(Get-ChildItem -Path \"$env:LOCALAPPDATA\\\\Microsoft\\\\WinGet\\\\Packages\" -Filter \"pandoc.exe\" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 3 FullName; \"\"; Get-ChildItem -Path \"$env:ProgramFiles\" -Filter \"pandoc.exe\" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 3 FullName)",
+      "PowerShell(cmd /c \"where pandoc 2>nul\")",
+      "PowerShell(winget list --id JohnMacFarlane.Pandoc 2>&1)",
+      "PowerShell(python C:\\\\Users\\\\duong\\\\WebstormProjects\\\\Thesis\\\\scripts\\\\build-reference-docx.py)",
+      "PowerShell(python C:\\\\tmp\\\\inspect_styles.py)",
+      "PowerShell(\"\")",
+      "PowerShell(\"=== Verify Table style XML ===\")",
+      "PowerShell(python C:\\\\tmp\\\\verify_table_style.py)",
+      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'C:\\\\Users\\\\duong\\\\WebstormProjects\\\\Thesis\\\\scripts\\\\build-fixed-thesis-docx.py', encoding='utf-8'\\).read\\(\\)\\); print\\('build-fixed-thesis-docx.py: syntax OK'\\)\")",
+      "PowerShell(python C:\\\\tmp\\\\preflight_code_lines.py)",
+      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'C:\\\\Users\\\\duong\\\\WebstormProjects\\\\Thesis\\\\scripts\\\\build-reference-docx.py', encoding='utf-8'\\).read\\(\\)\\); print\\('build-reference-docx.py: syntax OK'\\)\")",
+      "PowerShell(python C:\\\\tmp\\\\verify_code_styles.py)"
     ]
   }
 }

@@ -30,9 +30,9 @@ svg .no-halo {
       <polygon points="0 0, 8 3, 0 6" fill="#333"/>
     </marker>
     <linearGradient id="curve-grad" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#2e7d32"/>
-      <stop offset="50%" stop-color="#ff9800"/>
-      <stop offset="100%" stop-color="#c62828"/>
+      <stop offset="0%" stop-color="#222"/>
+      <stop offset="50%" stop-color="#222"/>
+      <stop offset="100%" stop-color="#222"/>
     </linearGradient>
   </defs>
 
@@ -71,56 +71,55 @@ svg .no-halo {
     <text x="285" y="340" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Elapsed Time (days)</text>
 
     <!-- R = 0.9 threshold line -->
-    <line x1="0" y1="30" x2="570" y2="30" stroke="#e65100" stroke-width="1" stroke-dasharray="6,3"/>
-    <text x="566" y="44" text-anchor="end" font-size="9" fill="#e65100" font-weight="bold">R = 0.9 (review threshold)</text>
+    <line x1="0" y1="30" x2="570" y2="30" stroke="#222" stroke-width="1" stroke-dasharray="6,3"/>
+    <text x="566" y="44" text-anchor="end" font-size="9" fill="#222" font-weight="bold">R = 0.9 (review threshold)</text>
 
     <!-- Curve 1: S = 1 day (red, steep decay) -->
     <!-- R(t,1) = (1 + t/9)^(-1); y = (1-R)*300 -->
-    <polyline points="0,0 19,30 38,54.5 57,75 76,92.3 95,107.1 114,120 133,131.3 152,141.2 190,157.9 228,171.4 285,187.5 380,206.9 475,220.6 570,230.8" fill="none" stroke="#c62828" stroke-width="2.5"/>
+    <polyline points="0,0 19,30 38,54.5 57,75 76,92.3 95,107.1 114,120 133,131.3 152,141.2 190,157.9 228,171.4 285,187.5 380,206.9 475,220.6 570,230.8" fill="none" stroke="#222" stroke-width="2.5"/>
     <!-- Review at t=1 -->
-    <circle cx="19" cy="30" r="5" fill="#c62828"/>
-    <text x="7" y="50" font-size="10" fill="#c62828" font-weight="bold">S=1d</text>
+    <circle cx="19" cy="30" r="5" fill="#222"/>
+    <text x="7" y="50" font-size="10" fill="#222" font-weight="bold">S=1d</text>
 
     <!-- Curve 2: S = 3 days (orange, moderate decay) -->
     <!-- R(t,3) = (1 + t/27)^(-1); y = (1-R)*300 -->
-    <polyline points="0,0 19,10.7 38,20.7 57,30 76,38.7 95,46.9 114,54.5 133,61.8 152,68.6 190,81.1 228,92.3 285,107.1 380,127.7 475,144.2 570,157.9" fill="none" stroke="#e65100" stroke-width="2.5"/>
+    <polyline points="0,0 19,10.7 38,20.7 57,30 76,38.7 95,46.9 114,54.5 133,61.8 152,68.6 190,81.1 228,92.3 285,107.1 380,127.7 475,144.2 570,157.9" fill="none" stroke="#222" stroke-width="2.5"/>
     <!-- Review at t=3 -->
-    <circle cx="57" cy="30" r="5" fill="#e65100"/>
-    <text x="50" y="22" font-size="10" fill="#e65100" font-weight="bold">S=3d</text>
+    <circle cx="57" cy="30" r="5" fill="#222"/>
+    <text x="50" y="22" font-size="10" fill="#222" font-weight="bold">S=3d</text>
 
     <!-- Curve 3: S = 10 days (orange, slow decay) -->
     <!-- R(t,10) = (1 + t/90)^(-1); y = (1-R)*300 -->
-    <polyline points="0,0 19,3.3 38,6.5 57,9.7 76,12.8 95,15.8 114,18.8 133,21.6 152,24.5 190,30 228,35.3 285,42.9 380,54.5 475,65.2 570,75" fill="none" stroke="#ff9800" stroke-width="2.5"/>
+    <polyline points="0,0 19,3.3 38,6.5 57,9.7 76,12.8 95,15.8 114,18.8 133,21.6 152,24.5 190,30 228,35.3 285,42.9 380,54.5 475,65.2 570,75" fill="none" stroke="#222" stroke-width="2.5"/>
     <!-- Review at t=10 -->
-    <circle cx="190" cy="30" r="5" fill="#ff9800"/>
-    <text x="180" y="23" font-size="10" fill="#ff9800" font-weight="bold">S=10d</text>
+    <circle cx="190" cy="30" r="5" fill="#222"/>
+    <text x="180" y="23" font-size="10" fill="#222" font-weight="bold">S=10d</text>
 
     <!-- Curve 4: S = 30 days (dark green, very slow decay) -->
     <!-- R(t,30) = (1 + t/270)^(-1); y = (1-R)*300 -->
-    <polyline points="0,0 19,1.1 38,2.2 57,3.3 76,4.4 95,5.5 114,6.5 133,7.6 152,8.6 190,10.7 228,12.8 285,15.8 380,20.7 475,25.4 570,30" fill="none" stroke="#2e7d32" stroke-width="2.5"/>
+    <polyline points="0,0 19,1.1 38,2.2 57,3.3 76,4.4 95,5.5 114,6.5 133,7.6 152,8.6 190,10.7 228,12.8 285,15.8 380,20.7 475,25.4 570,30" fill="none" stroke="#222" stroke-width="2.5"/>
     <!-- Review at t=30 -->
-    <circle cx="570" cy="30" r="5" fill="#2e7d32"/>
-    <text x="565" y="20" text-anchor="end" font-size="10" fill="#2e7d32" font-weight="bold">S=30d</text>
+    <circle cx="570" cy="30" r="5" fill="#222"/>
+    <text x="565" y="20" text-anchor="end" font-size="10" fill="#222" font-weight="bold">S=30d</text>
 
     <!-- Legend -->
     <rect x="340" y="200" width="220" height="90" rx="4" fill="#fafafa" stroke="#ddd"/>
     <text x="355" y="218" class="no-halo" font-size="10" fill="#333" font-weight="bold">Stability Progression</text>
-    <line x1="355" y1="233" x2="380" y2="233" stroke="#c62828" stroke-width="2.5"/>
+    <line x1="355" y1="233" x2="380" y2="233" stroke="#222" stroke-width="2.5"/>
     <text x="390" y="237" font-size="9" fill="#555">S = 1 day (new card, first review)</text>
-    <line x1="355" y1="250" x2="380" y2="250" stroke="#e65100" stroke-width="2.5"/>
+    <line x1="355" y1="250" x2="380" y2="250" stroke="#222" stroke-width="2.5"/>
     <text x="390" y="254" font-size="9" fill="#555">S = 3 days (after 2nd review)</text>
-    <line x1="355" y1="267" x2="380" y2="267" stroke="#ff9800" stroke-width="2.5"/>
+    <line x1="355" y1="267" x2="380" y2="267" stroke="#222" stroke-width="2.5"/>
     <text x="390" y="271" font-size="9" fill="#555">S = 10 days (consolidating)</text>
-    <line x1="355" y1="284" x2="380" y2="284" stroke="#2e7d32" stroke-width="2.5"/>
+    <line x1="355" y1="284" x2="380" y2="284" stroke="#222" stroke-width="2.5"/>
     <text x="390" y="288" font-size="9" fill="#555">S = 30 days (well-learned)</text>
 
     <!-- Formula -->
-    <rect x="15" y="200" width="280" height="32" rx="4" fill="#e8f5e9" stroke="#2e7d32"/>
-    <text x="155" y="215" text-anchor="middle" font-size="11" fill="#2e7d32" font-family="Cambria Math, serif" font-style="italic">R(t, S) = (1 + t / (9 &#215; S))<tspan font-size="8" baseline-shift="super">&#8722;1</tspan></text>
+    <rect x="15" y="200" width="280" height="32" rx="4" fill="#f5f5f5" stroke="#222"/>
+    <text x="155" y="215" text-anchor="middle" font-size="11" fill="#222" font-family="Cambria Math, serif" font-style="italic">R(t, S) = (1 + t / (9 &#222; S))<tspan font-size="8" baseline-shift="super">&#8722;1</tspan></text>
     <text x="155" y="228" text-anchor="middle" font-size="9" fill="#666">Review due at t = S (when R = 0.9)</text>
   </g>
 </svg>
-<div class="caption"><span class="label">Figure 4.5.</span> FSRS retrievability decay curves for four stability values. Each curve shows how recall probability decreases over time. The review threshold R = 0.9 is marked; the review is scheduled exactly at t = S days, where retrievability first drops to 0.9.</div>
 </div>
 </body>
 </html>

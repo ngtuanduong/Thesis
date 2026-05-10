@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table 3.3 - Hyperparameter Summary</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    max-width: 1200px;
+    margin: 10px auto;
+    padding: 10px;
+    background: #fff;
+    color: #222;
+    font-size: 18px;
+  }
+  .table-title { font-weight: bold; margin-bottom: 10px; font-size: 17px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 14px; font-size: 15px; }
+  td:nth-child(1), td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(6),
+  th:nth-child(1), th:nth-child(2), th:nth-child(3), th:nth-child(4), th:nth-child(6) { white-space: nowrap; }
+  td:nth-child(6), th:nth-child(6) { text-align: center; }
+  thead { border-top: 2px solid #000; border-bottom: 1px solid #000; }
+  tbody { border-bottom: 2px solid #000; }
+  th { font-weight: bold; text-align: left; padding: 9px 8px; font-size: 15px; vertical-align: bottom; }
+  td { padding: 7px 8px; vertical-align: top; line-height: 1.4; }
+  .layer-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #fff;
+  }
+  .l1 { background: #283593; }
+  .l2 { background: #880e4f; }
+  .l3 { background: #e65100; }
+  .l4 { background: #6a1b9a; }
+  .lx { background: #666; }
+  tr.section-break td { border-top: 1px solid #ccc; }
+  .note { font-size: 14px; font-style: italic; margin-top: 8px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<div class="table-title">Table 3.3. Hyperparameter summary for the five-layer adaptive architecture.</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Symbol</th>
+      <th>Default</th>
+      <th>Valid Range</th>
+      <th>Source / Justification</th>
+      <th>Layer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mastery threshold</td>
+      <td>&theta;<sub>m</sub></td>
+      <td>0.85</td>
+      <td>[0.80, 0.95]</td>
+      <td>Corbett & Anderson [16]; standard BKT mastery range</td>
+      <td><span class="layer-badge l1">L1</span></td>
+    </tr>
+    <tr>
+      <td>Initial prior knowledge</td>
+      <td>P(L<sub>0</sub>)</td>
+      <td>0.1</td>
+      <td>[0.01, 0.30]</td>
+      <td>Corbett & Anderson [16]; pyBKT defaults [56]</td>
+      <td><span class="layer-badge l1">L1</span></td>
+    </tr>
+    <tr>
+      <td>Transition probability</td>
+      <td>P(T)</td>
+      <td>0.2</td>
+      <td>[0.05, 0.40]</td>
+      <td>Corbett & Anderson [16]; pyBKT defaults [56]</td>
+      <td><span class="layer-badge l1">L1</span></td>
+    </tr>
+    <tr>
+      <td>Guess probability</td>
+      <td>P(G)</td>
+      <td>0.15</td>
+      <td>[0.05, 0.30]</td>
+      <td>Corbett & Anderson [16]; multi-test-case constraint</td>
+      <td><span class="layer-badge l1">L1</span></td>
+    </tr>
+    <tr>
+      <td>Slip probability</td>
+      <td>P(S)</td>
+      <td>0.1</td>
+      <td>[0.01, 0.20]</td>
+      <td>Corbett & Anderson [16]; pyBKT defaults [56]</td>
+      <td><span class="layer-badge l1">L1</span></td>
+    </tr>
+    <tr class="section-break">
+      <td>Base K-factor</td>
+      <td>K<sub>base</sub></td>
+      <td>25</td>
+      <td>[16, 40]</td>
+      <td>Elo [17]; midpoint of K=32 (new) and K=16 (established)</td>
+      <td><span class="layer-badge l2">L2</span></td>
+    </tr>
+    <tr>
+      <td>ZPD lower bound</td>
+      <td>&delta;<sub>min</sub></td>
+      <td>50</td>
+      <td>[0, 150]</td>
+      <td>Eq. 3.1 yields P(correct) ~ 0.43; flow theory [57]</td>
+      <td><span class="layer-badge l2">L2</span></td>
+    </tr>
+    <tr>
+      <td>ZPD upper bound</td>
+      <td>&delta;<sub>max</sub></td>
+      <td>250</td>
+      <td>[150, 400]</td>
+      <td>Eq. 3.1 yields P(correct) ~ 0.15; desirable difficulty [21]</td>
+      <td><span class="layer-badge l2">L2</span></td>
+    </tr>
+    <tr>
+      <td>Student initial Elo</td>
+      <td>--</td>
+      <td>1200</td>
+      <td>--</td>
+      <td>Standard Elo center [17]</td>
+      <td><span class="layer-badge l2">L2</span></td>
+    </tr>
+    <tr>
+      <td>Problem initial Elo</td>
+      <td>--</td>
+      <td>1000/1200/1400</td>
+      <td>--</td>
+      <td>Mapped from EASY/MEDIUM/HARD labels</td>
+      <td><span class="layer-badge l2">L2</span></td>
+    </tr>
+    <tr class="section-break">
+      <td>Learning gain weight</td>
+      <td>w<sub>1</sub></td>
+      <td>0.5</td>
+      <td>[0.3, 0.7]</td>
+      <td>Prioritizes mastery improvement; tuned in Sec. 5.5</td>
+      <td><span class="layer-badge l3">L3</span></td>
+    </tr>
+    <tr>
+      <td>Correctness weight</td>
+      <td>w<sub>2</sub></td>
+      <td>0.3</td>
+      <td>[0.1, 0.5]</td>
+      <td>Secondary signal; tuned in Sec. 5.5</td>
+      <td><span class="layer-badge l3">L3</span></td>
+    </tr>
+    <tr>
+      <td>Efficiency weight</td>
+      <td>w<sub>3</sub></td>
+      <td>0.2</td>
+      <td>[0.1, 0.4]</td>
+      <td>Penalizes excessive attempts; tuned in Sec. 5.5</td>
+      <td><span class="layer-badge l3">L3</span></td>
+    </tr>
+    <tr>
+      <td>Max attempts cap</td>
+      <td>M</td>
+      <td>5</td>
+      <td>[3, 10]</td>
+      <td>Attempt penalty saturation point</td>
+      <td><span class="layer-badge l3">L3</span></td>
+    </tr>
+    <tr>
+      <td>MAB initial prior</td>
+      <td>&alpha;<sub>0</sub>, &beta;<sub>0</sub></td>
+      <td>1.0, 1.0</td>
+      <td>--</td>
+      <td>Uniform Beta(1,1); standard uninformative prior</td>
+      <td><span class="layer-badge l3">L3</span></td>
+    </tr>
+    <tr class="section-break">
+      <td>Review threshold</td>
+      <td>&theta;<sub>r</sub></td>
+      <td>0.7</td>
+      <td>[0.5, 0.9]</td>
+      <td>FSRS default target retrievability [12]</td>
+      <td><span class="layer-badge l4">L4</span></td>
+    </tr>
+    <tr>
+      <td>FSRS initial difficulty</td>
+      <td>D<sub>0</sub></td>
+      <td>5.0</td>
+      <td>[1, 10]</td>
+      <td>FSRS midpoint default [12]</td>
+      <td><span class="layer-badge l4">L4</span></td>
+    </tr>
+    <tr>
+      <td>FSRS initial stability</td>
+      <td>S<sub>0</sub></td>
+      <td>1.0 day</td>
+      <td>[0.5, 3.0]</td>
+      <td>Conservative initial interval</td>
+      <td><span class="layer-badge l4">L4</span></td>
+    </tr>
+    <tr class="section-break">
+      <td>Cold-start round-robin</td>
+      <td>--</td>
+      <td>3 interactions</td>
+      <td>[2, 5]</td>
+      <td>Minimum for BKT differentiation; Clement et al. [22]</td>
+      <td><span class="layer-badge lx">--</span></td>
+    </tr>
+    <tr>
+      <td>Full pipeline threshold</td>
+      <td>--</td>
+      <td>10 submissions</td>
+      <td>[5, 15]</td>
+      <td>BKT convergence from prior + ~10 observations [16]</td>
+      <td><span class="layer-badge lx">--</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  Note. L1 = Knowledge Tracer (BKT), L2 = Difficulty Calibrator (Elo), L3 = Problem Selector (MAB), L4 = Review Scheduler (FSRS). Parameters grouped by visual section dividers. Valid ranges define bounds for sensitivity analysis in Section 5.5.
+</div>
+
+</body>
+</html>

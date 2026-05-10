@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table 2.2 - Detailed Comparison of Adaptive Capabilities</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    color: #222;
+    font-size: 14px;
+  }
+  .table-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: 11px;
+  }
+  thead { border-top: 2px solid #000; border-bottom: 1px solid #000; }
+  tbody { border-bottom: 2px solid #000; }
+  th {
+    font-weight: bold;
+    text-align: center;
+    padding: 8px 5px;
+    font-size: 11px;
+    vertical-align: bottom;
+  }
+  th:first-child { text-align: left; }
+  td {
+    padding: 5px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  td:first-child { text-align: left; }
+  td:last-child { text-align: center; }
+  tr.highlight { background-color: #e8f4e8; font-weight: bold; }
+  tr.highlight td { font-weight: bold; }
+  .section-sep td { border-top: 1px solid #bbb; }
+  .domain-prog { color: #1565c0; font-weight: bold; }
+  .domain-lang { color: #6a1b9a; font-weight: bold; }
+  .domain-math { color: #e65100; font-weight: bold; }
+  .domain-multi { color: #2e7d32; font-weight: bold; }
+  .domain-gen { color: #555; font-weight: bold; }
+  .domain-vocab { color: #880e4f; font-weight: bold; }
+  .none { color: #bbb; }
+  .note {
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="table-title">Table 2.2. Detailed comparison of adaptive capabilities across existing systems and this thesis.</div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:13%">System</th>
+      <th>Knowledge<br>Tracing</th>
+      <th>Difficulty<br>Calibration</th>
+      <th>Problem<br>Selection</th>
+      <th>Spaced<br>Repetition</th>
+      <th>LLM</th>
+      <th>Knowledge<br>Graph</th>
+      <th>Domain</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LeetCode</td>
+      <td class="none">None</td>
+      <td>Static tiers</td>
+      <td>Manual</td>
+      <td class="none">None</td>
+      <td>Premium</td>
+      <td class="none">None</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+    <tr>
+      <td>HackerRank</td>
+      <td class="none">None</td>
+      <td>Static badges</td>
+      <td>Curated</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+    <tr>
+      <td>Codeforces</td>
+      <td class="none">None</td>
+      <td>Elo (ranking)</td>
+      <td>Manual</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+    <tr>
+      <td>CodeSignal</td>
+      <td class="none">None</td>
+      <td>Elo-IRT</td>
+      <td>Fixed tests</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+    <tr>
+      <td>CodeWorkout [55]</td>
+      <td>Mastery</td>
+      <td>Implicit</td>
+      <td>Adaptive</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td>Partial</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+    <tr class="section-sep">
+      <td>Duolingo</td>
+      <td>Implicit</td>
+      <td>Implicit</td>
+      <td>Internal</td>
+      <td>FSRS</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-lang">Lang.</td>
+    </tr>
+    <tr>
+      <td>Khan Academy</td>
+      <td>Mastery</td>
+      <td>Mastery</td>
+      <td>Sequential</td>
+      <td class="none">None</td>
+      <td>Khanmigo</td>
+      <td class="none">None</td>
+      <td class="domain-math">Math</td>
+    </tr>
+    <tr>
+      <td>ALEKS</td>
+      <td>KST</td>
+      <td>Implicit</td>
+      <td>KST-based</td>
+      <td>Reassess.</td>
+      <td class="none">None</td>
+      <td>Partial</td>
+      <td class="domain-math">Math</td>
+    </tr>
+    <tr>
+      <td>Carnegie MATHia</td>
+      <td>BKT</td>
+      <td>Implicit</td>
+      <td>Model-trace</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-math">Math</td>
+    </tr>
+    <tr>
+      <td>Knewton Alta</td>
+      <td>IRT</td>
+      <td>IRT</td>
+      <td>Adaptive</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td>Partial</td>
+      <td class="domain-multi">Multi</td>
+    </tr>
+    <tr class="section-sep">
+      <td>Clement et al. [44]</td>
+      <td class="none">None</td>
+      <td>Fixed</td>
+      <td>MAB (TS)</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-gen">General</td>
+    </tr>
+    <tr>
+      <td>DKT2 [35]</td>
+      <td>xLSTM+IRT</td>
+      <td>IRT</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="domain-gen">General</td>
+    </tr>
+    <tr>
+      <td>Chen et al. [53]</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td>KG+RAG+LLM</td>
+      <td>Yes</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+    <tr>
+      <td>LECTOR [47]</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td class="none">None</td>
+      <td>FSRS+LLM</td>
+      <td>LLM</td>
+      <td class="none">None</td>
+      <td class="domain-vocab">Vocab.</td>
+    </tr>
+    <tr class="highlight">
+      <td>This Thesis</td>
+      <td>BKT</td>
+      <td>Dyn. Elo</td>
+      <td>H-MAB</td>
+      <td>FSRS</td>
+      <td>RAG+LLM</td>
+      <td>Yes</td>
+      <td class="domain-prog">Prog.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  Note. KST = Knowledge Space Theory; IRT = Item Response Theory; TS = Thompson Sampling; H-MAB = Hierarchical Multi-Armed Bandit; HLR = Half-Life Regression. Domain abbreviations: Prog. = Programming, Lang. = Language learning, Vocab. = Vocabulary. Systems above the first divider are programming-focused; systems between dividers are adaptive platforms from other domains; systems below the second divider are academic research prototypes.
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table 4.3 - Submission-to-FSRS-rating mapping</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    color: #222;
+    font-size: 14px;
+  }
+  .table-title { font-weight: bold; margin-bottom: 8px; font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+  thead { border-top: 2px solid #000; border-bottom: 1px solid #000; }
+  tbody { border-bottom: 2px solid #000; }
+  th { font-weight: bold; text-align: left; padding: 8px 10px; font-size: 12px; }
+  td { padding: 6px 10px; font-size: 12px; vertical-align: top; line-height: 1.3; }
+  td.center { text-align: center; }
+  .note { font-size: 11px; font-style: italic; margin-top: 6px; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width:28%">Submission outcome</th>
+      <th style="width:18%" class="center">Attempt</th>
+      <th style="width:24%" class="center">Time spent</th>
+      <th style="width:30%" class="center">FSRS rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Correct</td>
+      <td class="center">1</td>
+      <td class="center">&lt; 120 s</td>
+      <td class="center"><strong>4 (Easy)</strong></td>
+    </tr>
+    <tr>
+      <td>Correct</td>
+      <td class="center">1</td>
+      <td class="center">120 &ndash; 300 s</td>
+      <td class="center"><strong>3 (Good)</strong></td>
+    </tr>
+    <tr>
+      <td>Correct</td>
+      <td class="center">1</td>
+      <td class="center">&ge; 300 s</td>
+      <td class="center"><strong>2 (Hard)</strong></td>
+    </tr>
+    <tr>
+      <td>Correct</td>
+      <td class="center">2 &ndash; 3</td>
+      <td class="center">any</td>
+      <td class="center"><strong>2 (Hard)</strong></td>
+    </tr>
+    <tr>
+      <td>Correct</td>
+      <td class="center">&ge; 4</td>
+      <td class="center">any</td>
+      <td class="center"><strong>2 (Hard)</strong></td>
+    </tr>
+    <tr>
+      <td>Wrong (final)</td>
+      <td class="center">any</td>
+      <td class="center">any</td>
+      <td class="center"><strong>1 (Again)</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  Note. Two observable signals from a code submission &mdash; correctness and effort (attempts and time) &mdash; replace the self-reported recall rating used in flashcard FSRS. Time thresholds (120&nbsp;s, 300&nbsp;s) and the multi-attempt threshold (3) are design choices informed by typical introductory Python solve times; sensitivity is evaluated in &sect;5.4.
+</div>
+
+</body>
+</html>

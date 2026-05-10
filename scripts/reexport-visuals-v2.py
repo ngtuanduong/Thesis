@@ -1,7 +1,13 @@
 """
 Re-export thesis visuals from HTML at 2x DPI, cropped to content only.
 Uses Playwright to screenshot the #tight-container element (or body if no container).
+
+Usage:
+    python scripts/reexport-visuals-v2.py
+    python scripts/reexport-visuals-v2.py --output-dir documents/fixed-final-thesis-paper/images
+    python scripts/reexport-visuals-v2.py --only ch1-thesis-structure-roadmap.html
 """
+import argparse
 import asyncio
 import importlib.util
 import io
@@ -14,10 +20,10 @@ from PIL import Image
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 HTML_DIR = "C:/Users/duong/WebstormProjects/Thesis/documents/thesis-chapters/visuals/html"
-PNG_DIR = "C:/Users/duong/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png"
+DEFAULT_PNG_DIR = "C:/Users/duong/WebstormProjects/Thesis/documents/thesis-chapters/visuals/png"
 
 
-async def export_all():
+async def export_all(output_dir, only_filename=None):
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         # Use 2x device scale for high DPI
@@ -27,13 +33,22 @@ async def export_all():
         )
         page = await context.new_page()
 
-        html_files = sorted(f for f in os.listdir(HTML_DIR) if f.endswith(".html"))
+        os.makedirs(output_dir, exist_ok=True)
+        all_html_files = sorted(f for f in os.listdir(HTML_DIR) if f.endswith(".html"))
+        if only_filename:
+            html_files = [f for f in all_html_files if f == only_filename]
+            if not html_files:
+                print(f"ERROR: --only file '{only_filename}' not found in {HTML_DIR}", file=sys.stderr)
+                await browser.close()
+                return []
+        else:
+            html_files = all_html_files
         results = []
 
         for fname in html_files:
             html_path = os.path.join(HTML_DIR, fname)
             png_name = fname.replace(".html", ".png")
-            png_path = os.path.join(PNG_DIR, png_name)
+            png_path = os.path.join(output_dir, png_name)
 
             url = f"file:///{html_path.replace(os.sep, '/')}"
             try:
@@ -96,11 +111,30 @@ async def export_all():
         return results
 
 
-print("=== Re-exporting all visuals (2x DPI, content-cropped) ===")
-visuals = asyncio.run(export_all())
-print(f"\nExported {len(visuals)} visuals")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output-dir",
+        default=DEFAULT_PNG_DIR,
+        help=f"Where to save exported PNGs (default: {DEFAULT_PNG_DIR})",
+    )
+    parser.add_argument(
+        "--only",
+        default=None,
+        metavar="FILENAME",
+        help="Export only this single HTML (e.g., ch1-thesis-structure-roadmap.html)",
+    )
+    args = parser.parse_args()
 
-# Report resolution improvement
-for v in visuals:
-    status = "OK" if v["w"] >= 1200 else "STILL_LOW"
-    print(f"  {v['png']:50s} {v['w']:5d}x{v['h']:5d}px  {status}")
+    target = "single file" if args.only else "all visuals"
+    print(f"=== Re-exporting {target} (2x DPI, content-cropped) -> {args.output_dir} ===")
+    visuals = asyncio.run(export_all(args.output_dir, args.only))
+    print(f"\nExported {len(visuals)} visual(s)")
+
+    for v in visuals:
+        status = "OK" if v["w"] >= 1200 else "STILL_LOW"
+        print(f"  {v['png']:55s} {v['w']:5d}x{v['h']:5d}px  {status}")
+
+
+if __name__ == "__main__":
+    main()

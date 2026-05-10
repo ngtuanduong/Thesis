@@ -11,23 +11,23 @@ body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman
 svg { display: block; margin: 0 auto; }
 
 .phase-box { stroke: #333; stroke-width: 1.5; rx: 6; ry: 6; }
-.phase-baseline { fill: #e3f2fd; }
-.phase-intervention { fill: #fff3e0; }
-.phase-post { fill: #e8f5e9; }
-.phase-washout { fill: #f3e5f5; }
-.phase-retention { fill: #fce4ec; }
+.phase-baseline { fill: #f5f5f5; }
+.phase-intervention { fill: #f5f5f5; }
+.phase-post { fill: #f5f5f5; }
+.phase-washout { fill: #f5f5f5; }
+.phase-retention { fill: #f5f5f5; }
 
 .phase-label { font-family: 'Times New Roman', serif; font-size: 16px; font-weight: bold; fill: #333; }
 .phase-week { font-family: 'Times New Roman', serif; font-size: 14px; fill: #666; }
 .phase-detail { font-family: 'Times New Roman', serif; font-size: 13px; fill: #555; }
 
-.arrow { fill: none; stroke: #4A90D9; stroke-width: 2; marker-end: url(#arrowhead); }
-.timeline-bar { fill: #4A90D9; opacity: 0.15; }
+.arrow { fill: none; stroke: #222; stroke-width: 2; marker-end: url(#arrowhead); }
+.timeline-bar { fill: #222; opacity: 0.15; }
 .week-marker { font-family: 'Times New Roman', serif; font-size: 13px; fill: #999; text-anchor: middle; }
 
-.group-label { font-family: 'Times New Roman', serif; font-size: 13px; fill: #1565c0; font-weight: bold; }
-.group-e { fill: #e65100; }
-.group-c { fill: #2e7d32; }
+.group-label { font-family: 'Times New Roman', serif; font-size: 13px; fill: #222; font-weight: bold; }
+.group-e { fill: #222; }
+.group-c { fill: #222; }
 
 /* Auto-fix: text halo for readability over lines */
 svg text {
@@ -36,18 +36,26 @@ svg text {
   stroke-width: 3px;
   stroke-linejoin: round;
 }
-svg .state-label, svg rect + text, svg [font-weight="bold"] {
-  stroke-width: 0;  /* Don't apply halo to state box labels */
+svg .state-label,
+svg rect + text,
+svg [font-weight="bold"],
+svg text[fill="#fff"],
+svg text[fill="#FFF"],
+svg text[fill="white"],
+svg text[fill="#f5f5f5"],
+svg text[fill="#F5F5F5"],
+svg text[fill="#ebebeb"],
+svg text[fill="#e0e0e0"] {
+  stroke-width: 0;  /* No halo on box labels OR on light-fill text inside dark blocks */
 }
 </style>
 </head>
 <body>
 <div class="container">
-<div class="caption"><span class="label">Figure 5.1.</span> Eight-Week Experiment Protocol Timeline</div>
 <svg width="860" height="280" viewBox="0 0 860 280">
 <defs>
 <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-<polygon points="0 0, 8 3, 0 6" fill="#4A90D9"/>
+<polygon points="0 0, 8 3, 0 6" fill="#222"/>
 </marker>
 </defs>
 
@@ -79,8 +87,8 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
 <text x="315" y="88" text-anchor="middle" class="phase-label">Intervention Period</text>
 <text x="315" y="105" text-anchor="middle" class="phase-detail">4 weeks of platform use</text>
 <text x="315" y="118" text-anchor="middle" class="phase-detail">Min. 3 problems / week</text>
-<text x="240" y="140" text-anchor="middle" class="phase-detail group-e" style="fill:#e65100">E: Adaptive (4 layers)</text>
-<text x="240" y="153" text-anchor="middle" class="phase-detail" style="fill:#2e7d32">C: Content-based filtering</text>
+<text x="240" y="140" text-anchor="middle" class="phase-detail group-e" style="fill:#222">E: Adaptive (4 layers)</text>
+<text x="240" y="153" text-anchor="middle" class="phase-detail" style="fill:#222">C: Content-based filtering</text>
 <text x="390" y="140" text-anchor="middle" class="phase-detail" style="fill:#666">6 data categories</text>
 <text x="390" y="153" text-anchor="middle" class="phase-detail" style="fill:#666">logged continuously</text>
 
@@ -119,23 +127,23 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
 <text x="780" y="151" text-anchor="middle" class="phase-detail">P(L) >= 0.85</text>
 
 <!-- RQ labels along bottom -->
-<rect x="40" y="185" width="120" height="30" rx="4" fill="#e3f2fd" stroke="#90caf9" stroke-width="1"/>
-<text x="100" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#1565c0">Stratification</text>
+<rect x="40" y="185" width="120" height="30" rx="4" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+<text x="100" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#222">Stratification</text>
 
-<rect x="190" y="185" width="250" height="30" rx="4" fill="#fff3e0" stroke="#ffcc80" stroke-width="1"/>
-<text x="315" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#e65100">RQ1 + RQ2 data collection</text>
+<rect x="190" y="185" width="250" height="30" rx="4" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+<text x="315" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#222">RQ1 + RQ2 data collection</text>
 
-<rect x="470" y="185" width="120" height="30" rx="4" fill="#e8f5e9" stroke="#a5d6a7" stroke-width="1"/>
-<text x="530" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#2e7d32">RQ4 data</text>
+<rect x="470" y="185" width="120" height="30" rx="4" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+<text x="530" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#222">RQ4 data</text>
 
-<rect x="740" y="185" width="80" height="30" rx="4" fill="#fce4ec" stroke="#f48fb1" stroke-width="1"/>
-<text x="780" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#880e4f">RQ3 data</text>
+<rect x="740" y="185" width="80" height="30" rx="4" fill="#f5f5f5" stroke="#e0e0e0" stroke-width="1"/>
+<text x="780" y="204" text-anchor="middle" class="phase-detail" style="font-weight:bold; fill:#222">RQ3 data</text>
 
 <!-- Legend -->
 <rect x="40" y="235" width="780" height="35" rx="4" fill="#fafafa" stroke="#ddd" stroke-width="1"/>
-<rect x="55" y="246" width="12" height="12" fill="#e65100" rx="2"/>
+<rect x="55" y="246" width="12" height="12" fill="#222" rx="2"/>
 <text x="72" y="257" class="phase-detail" style="font-weight:bold">E: 4-layer adaptive</text>
-<rect x="230" y="246" width="12" height="12" fill="#2e7d32" rx="2"/>
+<rect x="230" y="246" width="12" height="12" fill="#222" rx="2"/>
 <text x="247" y="257" class="phase-detail" style="font-weight:bold">C: Content-based</text>
 <text x="400" y="257" class="phase-detail" style="fill:#999; font-size:11px">Intent-to-treat | Bonferroni-corrected (α' = 0.0125)</text>
 </svg>

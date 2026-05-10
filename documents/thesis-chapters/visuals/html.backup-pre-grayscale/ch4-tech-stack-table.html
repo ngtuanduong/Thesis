@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman', serif; }
+.table-container { max-width: 900px; margin: 0 auto; }
+.caption { text-align: center; font-size: 12pt; margin-bottom: 12px; }
+.caption .label { font-weight: bold; }
+table { width: 100%; border-collapse: collapse; font-size: 11pt; }
+thead tr { border-top: 2px solid #000; border-bottom: 1px solid #000; }
+thead th { padding: 8px 10px; text-align: left; font-weight: bold; }
+tbody td { padding: 7px 10px; vertical-align: top; }
+tbody tr:last-child { border-bottom: 2px solid #000; }
+.tech { font-family: 'Courier New', monospace; font-size: 10pt; color: #1565c0; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 9pt; color: #fff; font-weight: bold; margin-right: 4px; }
+.badge-frontend { background: #1565c0; }
+.badge-backend { background: #2e7d32; }
+.badge-ai { background: #e65100; }
+.badge-db { background: #6a1b9a; }
+.badge-cache { background: #00838f; }
+.badge-exec { background: #880e4f; }
+</style>
+</head>
+<body>
+<div class="table-container">
+<div class="caption"><span class="label">Table 4.1.</span> Technology Stack Summary</div>
+<table>
+<thead>
+<tr>
+<th style="width:16%">Component</th>
+<th style="width:28%">Technology</th>
+<th style="width:14%">Version</th>
+<th style="width:42%">Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="badge badge-frontend">Frontend</span></td>
+<td><span class="tech">React + TypeScript + Ant Design</span></td>
+<td>React 18, Vite 5</td>
+<td>Student and instructor UI, adaptive dashboards, knowledge graph visualization</td>
+</tr>
+<tr>
+<td><span class="badge badge-backend">Backend</span></td>
+<td><span class="tech">NestJS + Prisma</span></td>
+<td>NestJS 10, Prisma 6</td>
+<td>REST API, JWT authentication, submission orchestration, adaptive proxy</td>
+</tr>
+<tr>
+<td><span class="badge badge-ai">AI Service</span></td>
+<td><span class="tech">FastAPI + Python</span></td>
+<td>Python 3.11, FastAPI 0.104</td>
+<td>BKT, Elo, MAB, FSRS adaptive layers; recommendation pipeline</td>
+</tr>
+<tr>
+<td><span class="badge badge-db">Database</span></td>
+<td><span class="tech">PostgreSQL + pgvector</span></td>
+<td>PG 16, pgvector 0.7</td>
+<td>Persistent storage, vector similarity search for embeddings</td>
+</tr>
+<tr>
+<td><span class="badge badge-cache">Cache</span></td>
+<td><span class="tech">Redis</span></td>
+<td>7.x</td>
+<td>Recommendation caching, MAB state, session management</td>
+</tr>
+<tr>
+<td><span class="badge badge-exec">Execution</span></td>
+<td><span class="tech">Docker</span></td>
+<td>24.x</td>
+<td>Sandboxed code execution (no network, 256MB, 5s timeout)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</body>
+</html>

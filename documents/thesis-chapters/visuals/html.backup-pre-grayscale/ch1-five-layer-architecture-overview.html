@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure 1.3 - Five-Layer Adaptive Architecture Overview</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    color: #222;
+  }
+  #tight-container {
+    display: inline-block;
+    width: 690px;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  .figure-container { text-align: center; margin: 0; }
+  svg text { font-family: 'Times New Roman', Times, serif; }
+  .caption {
+    font-size: 15px;
+    text-align: center;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+
+/* Auto-fix: text halo for readability over lines */
+svg text {
+  paint-order: stroke fill;
+  stroke: white;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+svg .state-label, svg rect + text, svg [font-weight="bold"] {
+  stroke-width: 0;  /* Don't apply halo to state box labels */
+}
+</style>
+</head>
+<body>
+<div id="tight-container">
+<div class="figure-container">
+<svg width="680" height="460" viewBox="0 0 680 460">
+  <defs>
+    <marker id="a1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Title at top -->
+  <text x="340" y="28" font-size="20" font-weight="bold" fill="#222" text-anchor="middle">Five-Layer Adaptive Engine</text>
+  <text x="340" y="48" font-size="14" fill="#666" text-anchor="middle">Logical dependency ordering: bottom to top</text>
+
+  <!-- Layer 5: LLM (top) -->
+  <rect x="100" y="68" width="440" height="52" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="320" y="90" font-size="15" font-weight="bold" fill="#2e7d32" text-anchor="middle">Layer 5: LLM Feedback Engine (Optional)</text>
+  <text x="320" y="108" font-size="14" fill="#444" text-anchor="middle">RAG + Socratic hints grounded in knowledge state</text>
+
+  <!-- Layer 4: FSRS -->
+  <rect x="100" y="132" width="440" height="52" rx="6" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2"/>
+  <text x="320" y="154" font-size="15" font-weight="bold" fill="#6a1b9a" text-anchor="middle">Layer 4: Review Scheduler (FSRS)</text>
+  <text x="320" y="172" font-size="14" fill="#444" text-anchor="middle">Power-law forgetting curve, review urgency scheduling</text>
+
+  <!-- Layer 3: MAB -->
+  <rect x="100" y="196" width="440" height="52" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
+  <text x="320" y="218" font-size="15" font-weight="bold" fill="#e65100" text-anchor="middle">Layer 3: Problem Selector (Hierarchical MAB)</text>
+  <text x="320" y="236" font-size="14" fill="#444" text-anchor="middle">Thompson Sampling: concept selection + problem selection</text>
+
+  <!-- Layer 2: Elo -->
+  <rect x="100" y="260" width="440" height="52" rx="6" fill="#fce4ec" stroke="#880e4f" stroke-width="2"/>
+  <text x="320" y="282" font-size="15" font-weight="bold" fill="#880e4f" text-anchor="middle">Layer 2: Difficulty Calibrator (Dynamic Elo)</text>
+  <text x="320" y="300" font-size="14" fill="#444" text-anchor="middle">Student + problem rating on shared scale, ZPD filtering</text>
+
+  <!-- Layer 1: BKT -->
+  <rect x="100" y="324" width="440" height="52" rx="6" fill="#e8eaf6" stroke="#283593" stroke-width="2"/>
+  <text x="320" y="346" font-size="15" font-weight="bold" fill="#283593" text-anchor="middle">Layer 1: Knowledge Tracer (BKT)</text>
+  <text x="320" y="364" font-size="14" fill="#444" text-anchor="middle">Per-concept mastery estimation via Hidden Markov Model</text>
+
+  <!-- Foundation: Knowledge Graph -->
+  <rect x="100" y="388" width="440" height="52" rx="6" fill="#e0f2f1" stroke="#00695c" stroke-width="2"/>
+  <text x="320" y="410" font-size="15" font-weight="bold" fill="#00695c" text-anchor="middle">Knowledge Graph Foundation</text>
+  <text x="320" y="428" font-size="14" fill="#444" text-anchor="middle">~30 concepts, prerequisite DAG, concept-problem mapping</text>
+
+  <!-- Data flow arrow on left side -->
+  <line x1="78" y1="415" x2="78" y2="92" stroke="#555" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="60" y="255" font-size="14" fill="#555" text-anchor="middle" transform="rotate(-90, 60, 255)">Data flows upward</text>
+
+  <!-- Labels on right side showing outputs -->
+  <text x="558" y="350" font-size="14" fill="#283593" text-anchor="start">P(L_t) mastery</text>
+  <line x1="540" y1="345" x2="554" y2="345" stroke="#283593" stroke-width="1.5"/>
+
+  <text x="558" y="286" font-size="14" fill="#880e4f" text-anchor="start">Elo ratings</text>
+  <line x1="540" y1="281" x2="554" y2="281" stroke="#880e4f" stroke-width="1.5"/>
+
+  <text x="558" y="222" font-size="14" fill="#e65100" text-anchor="start">Recommendation</text>
+  <line x1="540" y1="217" x2="554" y2="217" stroke="#e65100" stroke-width="1.5"/>
+
+  <text x="558" y="158" font-size="14" fill="#6a1b9a" text-anchor="start">Review schedule</text>
+  <line x1="540" y1="153" x2="554" y2="153" stroke="#6a1b9a" stroke-width="1.5"/>
+
+  <text x="558" y="94" font-size="14" fill="#2e7d32" text-anchor="start">Socratic hints</text>
+  <line x1="540" y1="89" x2="554" y2="89" stroke="#2e7d32" stroke-width="1.5"/>
+
+  <!-- Input arrow at bottom -->
+  <text x="340" y="456" font-size="14" fill="#666" text-anchor="middle" font-style="italic">Input: Code submission outcomes (correctness, attempts, time)</text>
+</svg>
+</div>
+
+<div class="caption">
+  <strong>Figure 1.3.</strong> Five-layer adaptive architecture overview. Layers are ordered by logical dependency from bottom (Knowledge Graph Foundation) to top (optional LLM Feedback). Each layer consumes data from below and produces outputs that feed upper layers.
+</div>
+</div>
+
+</body>
+</html>

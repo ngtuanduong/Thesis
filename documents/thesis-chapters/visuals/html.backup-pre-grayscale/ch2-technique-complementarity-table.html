@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table 2.3 - How Each Adaptive Technique Addresses Limitations of Others</title>
+<style>
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    color: #222;
+    font-size: 14px;
+  }
+  .table-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 13px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+  }
+  thead { border-top: 2px solid #000; border-bottom: 1px solid #000; }
+  tbody { border-bottom: 2px solid #000; }
+  th {
+    font-weight: bold;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  td {
+    padding: 7px 10px;
+    font-size: 12px;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  td:first-child {
+    font-weight: bold;
+    white-space: nowrap;
+    width: 22%;
+  }
+  .addresses { color: #2e7d32; }
+  .does-not { color: #c62828; }
+  .note {
+    font-size: 11px;
+    font-style: italic;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="table-title">Table 2.3. How each adaptive technique addresses limitations of the others.</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Technique</th>
+      <th>Addresses</th>
+      <th>Does Not Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BKT (Knowledge Tracing)</td>
+      <td class="addresses">What the student knows</td>
+      <td class="does-not">What to teach next, how hard to make it</td>
+    </tr>
+    <tr>
+      <td>Elo (Difficulty Calibration)</td>
+      <td class="addresses">How hard each problem is for this student</td>
+      <td class="does-not">Knowledge growth, what concept to focus on</td>
+    </tr>
+    <tr>
+      <td>MAB (Problem Selection)</td>
+      <td class="addresses">Optimal concept and problem to recommend</td>
+      <td class="does-not">Student knowledge state, forgetting</td>
+    </tr>
+    <tr>
+      <td>FSRS (Spaced Repetition)</td>
+      <td class="addresses">When to review to prevent forgetting</td>
+      <td class="does-not">What to teach, how hard</td>
+    </tr>
+    <tr>
+      <td>KG (Knowledge Graph)</td>
+      <td class="addresses">Concept structure and prerequisites</td>
+      <td class="does-not">Adaptation to individual differences</td>
+    </tr>
+    <tr>
+      <td>LLM (Feedback)</td>
+      <td class="addresses">Natural language scaffolding</td>
+      <td class="does-not">Structured learner modeling</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note">
+  Note. Each technique has specific blind spots that other techniques compensate for. The integration produces emergent adaptive behavior: BKT mastery estimates feed prerequisite gating in the MAB; Elo ratings constrain problem selection to the ZPD; FSRS review urgency interrupts MAB exploration; and the KG provides structural coherence.
+</div>
+
+</body>
+</html>

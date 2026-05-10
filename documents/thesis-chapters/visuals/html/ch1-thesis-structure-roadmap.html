@@ -34,15 +34,24 @@ svg text {
   stroke-width: 3px;
   stroke-linejoin: round;
 }
-svg .state-label, svg rect + text, svg [font-weight="bold"] {
-  stroke-width: 0;  /* Don't apply halo to state box labels */
+svg .state-label,
+svg rect + text,
+svg [font-weight="bold"],
+svg text[fill="#fff"],
+svg text[fill="#FFF"],
+svg text[fill="white"],
+svg text[fill="#f5f5f5"],
+svg text[fill="#F5F5F5"],
+svg text[fill="#ebebeb"],
+svg text[fill="#e0e0e0"] {
+  stroke-width: 0;  /* No halo on box labels OR on light-fill text inside dark blocks */
 }
 </style>
 </head>
 <body>
 <div id="tight-container">
 <div class="figure-container">
-<svg width="680" height="440" viewBox="0 0 680 440">
+<svg width="680" height="350" viewBox="0 0 680 350">
   <defs>
     <marker id="ar" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
       <polygon points="0 0, 8 3, 0 6" fill="#555"/>
@@ -56,8 +65,8 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
   <!-- Chapter boxes arranged in 2 rows of 3 for better readability -->
   <!-- Row 1: Ch1, Ch2, Ch3 -->
   <!-- Ch1 -->
-  <rect x="18" y="62" width="100" height="82" rx="6" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
-  <text x="68" y="82" font-size="14" font-weight="bold" fill="#1565c0" text-anchor="middle">Chapter 1</text>
+  <rect x="18" y="62" width="100" height="82" rx="6" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="68" y="82" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Chapter 1</text>
   <text x="68" y="98" font-size="13" fill="#444" text-anchor="middle">Introduction</text>
   <text x="68" y="114" font-size="12" fill="#666" text-anchor="middle">Problem, RQs,</text>
   <text x="68" y="128" font-size="12" fill="#666" text-anchor="middle">Objectives</text>
@@ -65,8 +74,8 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
   <line x1="118" y1="103" x2="134" y2="103" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- Ch2 -->
-  <rect x="140" y="62" width="100" height="82" rx="6" fill="#fce4ec" stroke="#880e4f" stroke-width="2"/>
-  <text x="190" y="82" font-size="14" font-weight="bold" fill="#880e4f" text-anchor="middle">Chapter 2</text>
+  <rect x="140" y="62" width="100" height="82" rx="6" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="190" y="82" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Chapter 2</text>
   <text x="190" y="98" font-size="13" fill="#444" text-anchor="middle">Literature</text>
   <text x="190" y="114" font-size="12" fill="#666" text-anchor="middle">Theory, tech,</text>
   <text x="190" y="128" font-size="12" fill="#666" text-anchor="middle">gap analysis</text>
@@ -74,8 +83,8 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
   <line x1="240" y1="103" x2="256" y2="103" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- Ch3 -->
-  <rect x="262" y="62" width="100" height="82" rx="6" fill="#e8eaf6" stroke="#283593" stroke-width="2"/>
-  <text x="312" y="82" font-size="14" font-weight="bold" fill="#283593" text-anchor="middle">Chapter 3</text>
+  <rect x="262" y="62" width="100" height="82" rx="6" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="312" y="82" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Chapter 3</text>
   <text x="312" y="98" font-size="13" fill="#444" text-anchor="middle">Architecture</text>
   <text x="312" y="114" font-size="12" fill="#666" text-anchor="middle">Requirements,</text>
   <text x="312" y="128" font-size="12" fill="#666" text-anchor="middle">5-layer design</text>
@@ -83,8 +92,8 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
   <line x1="362" y1="103" x2="378" y2="103" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- Ch4 -->
-  <rect x="384" y="62" width="100" height="82" rx="6" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
-  <text x="434" y="82" font-size="14" font-weight="bold" fill="#e65100" text-anchor="middle">Chapter 4</text>
+  <rect x="384" y="62" width="100" height="82" rx="6" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="434" y="82" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Chapter 4</text>
   <text x="434" y="98" font-size="13" fill="#444" text-anchor="middle">Implementation</text>
   <text x="434" y="114" font-size="12" fill="#666" text-anchor="middle">Algorithms,</text>
   <text x="434" y="128" font-size="12" fill="#666" text-anchor="middle">tech stack</text>
@@ -92,8 +101,8 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
   <line x1="484" y1="103" x2="500" y2="103" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- Ch5 -->
-  <rect x="506" y="62" width="100" height="82" rx="6" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2"/>
-  <text x="556" y="82" font-size="14" font-weight="bold" fill="#6a1b9a" text-anchor="middle">Chapter 5</text>
+  <rect x="506" y="62" width="100" height="82" rx="6" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="556" y="82" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Chapter 5</text>
   <text x="556" y="98" font-size="13" fill="#444" text-anchor="middle">Evaluation</text>
   <text x="556" y="114" font-size="12" fill="#666" text-anchor="middle">Experiment,</text>
   <text x="556" y="128" font-size="12" fill="#666" text-anchor="middle">results</text>
@@ -101,60 +110,43 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
   <line x1="606" y1="103" x2="622" y2="103" stroke="#555" stroke-width="2" marker-end="url(#ar)"/>
 
   <!-- Ch6 -->
-  <rect x="628" y="62" width="48" height="82" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
-  <text x="652" y="82" font-size="13" font-weight="bold" fill="#2e7d32" text-anchor="middle">Ch 6</text>
+  <rect x="628" y="62" width="48" height="82" rx="6" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="652" y="82" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">Ch 6</text>
   <text x="652" y="98" font-size="12" fill="#444" text-anchor="middle">Concl.</text>
   <text x="652" y="114" font-size="11" fill="#666" text-anchor="middle">Future</text>
   <text x="652" y="128" font-size="11" fill="#666" text-anchor="middle">work</text>
 
-  <!-- Contribution mappings below -->
-  <text x="340" y="178" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Contributions Mapped to Chapters</text>
+  <!-- Contribution mappings (2 contributions) -->
+  <text x="340" y="174" font-size="16" font-weight="bold" fill="#000" text-anchor="middle">Contributions</text>
 
-  <!-- C1 -->
-  <rect x="20" y="192" width="310" height="38" rx="4" fill="#f5f5f5" stroke="#666" stroke-width="1.5"/>
-  <text x="175" y="210" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">C1: Integrated multi-layer architecture</text>
-  <text x="175" y="225" font-size="12" fill="#666" text-anchor="middle">Chapters 3--4</text>
+  <!-- Contribution 1: Integrated platform -->
+  <rect x="80" y="186" width="240" height="68" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="200" y="206" font-size="14" fill="#000" text-anchor="middle" font-weight="bold">Contribution 1</text>
+  <text x="200" y="224" font-size="12" fill="#222" text-anchor="middle">Integrated adaptive platform</text>
+  <text x="200" y="242" font-size="11" fill="#444" text-anchor="middle">Chapters 3-4 - implemented</text>
 
-  <!-- C2 -->
-  <rect x="20" y="238" width="310" height="38" rx="4" fill="#f5f5f5" stroke="#666" stroke-width="1.5"/>
-  <text x="175" y="256" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">C2: Prerequisite-constrained H-MAB</text>
-  <text x="175" y="271" font-size="12" fill="#666" text-anchor="middle">Chapter 4</text>
-
-  <!-- C3 -->
-  <rect x="350" y="192" width="310" height="38" rx="4" fill="#f5f5f5" stroke="#666" stroke-width="1.5"/>
-  <text x="505" y="210" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">C3: FSRS for programming retention</text>
-  <text x="505" y="225" font-size="12" fill="#666" text-anchor="middle">Chapter 4</text>
-
-  <!-- C4 -->
-  <rect x="350" y="238" width="310" height="38" rx="4" fill="#f5f5f5" stroke="#666" stroke-width="1.5"/>
-  <text x="505" y="256" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">C4: Open-source deployable platform</text>
-  <text x="505" y="271" font-size="12" fill="#666" text-anchor="middle">Chapters 3--5</text>
-
-  <!-- Connecting lines from contributions to chapters -->
-  <line x1="175" y1="192" x2="312" y2="144" stroke="#283593" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <line x1="175" y1="192" x2="434" y2="144" stroke="#e65100" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <line x1="505" y1="192" x2="434" y2="144" stroke="#e65100" stroke-width="1.5" stroke-dasharray="3,2"/>
-  <line x1="505" y1="238" x2="556" y2="144" stroke="#6a1b9a" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <!-- Contribution 2: Pilot protocol -->
+  <rect x="360" y="186" width="240" height="68" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="480" y="206" font-size="14" fill="#000" text-anchor="middle" font-weight="bold">Contribution 2</text>
+  <text x="480" y="224" font-size="12" fill="#222" text-anchor="middle">Pilot evaluation protocol</text>
+  <text x="480" y="242" font-size="11" fill="#444" text-anchor="middle">Chapter 5 - specified</text>
 
   <!-- Research questions row -->
-  <text x="340" y="310" font-size="16" font-weight="bold" fill="#333" text-anchor="middle">Research Questions</text>
-  <rect x="18" y="322" width="155" height="34" rx="4" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
-  <text x="95" y="344" font-size="13" fill="#1565c0" text-anchor="middle" font-weight="bold">RQ1: Model accuracy</text>
+  <text x="340" y="282" font-size="16" font-weight="bold" fill="#000" text-anchor="middle">Research Questions</text>
+  <rect x="18" y="294" width="155" height="34" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="95" y="316" font-size="13" fill="#000" text-anchor="middle" font-weight="bold">RQ1: Predictive validity</text>
 
-  <rect x="183" y="322" width="155" height="34" rx="4" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
-  <text x="260" y="344" font-size="13" fill="#e65100" text-anchor="middle" font-weight="bold">RQ2: MAB effectiveness</text>
+  <rect x="183" y="294" width="155" height="34" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="260" y="316" font-size="13" fill="#000" text-anchor="middle" font-weight="bold">RQ2: Learning gain</text>
 
-  <rect x="348" y="322" width="155" height="34" rx="4" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
-  <text x="425" y="344" font-size="13" fill="#6a1b9a" text-anchor="middle" font-weight="bold">RQ3: FSRS retention</text>
+  <rect x="348" y="294" width="155" height="34" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="425" y="316" font-size="13" fill="#000" text-anchor="middle" font-weight="bold">RQ3: Retention</text>
 
-  <rect x="513" y="322" width="155" height="34" rx="4" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
-  <text x="590" y="344" font-size="13" fill="#2e7d32" text-anchor="middle" font-weight="bold">RQ4: Usability (SUS)</text>
+  <rect x="513" y="294" width="155" height="34" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="590" y="316" font-size="13" fill="#000" text-anchor="middle" font-weight="bold">RQ4: Usability (SUS)</text>
 </svg>
 </div>
 
-<div class="caption">
-  <strong>Figure 1.4.</strong> Thesis structure roadmap showing the linear progression of chapters, the mapping of four contributions to their primary chapters, and the four research questions addressed.
-</div>
 </div>
 
 </body>

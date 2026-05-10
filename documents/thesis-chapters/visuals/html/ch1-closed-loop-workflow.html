@@ -34,8 +34,17 @@ svg text {
   stroke-width: 3px;
   stroke-linejoin: round;
 }
-svg .state-label, svg rect + text, svg [font-weight="bold"] {
-  stroke-width: 0;  /* Don't apply halo to state box labels */
+svg .state-label,
+svg rect + text,
+svg [font-weight="bold"],
+svg text[fill="#fff"],
+svg text[fill="#FFF"],
+svg text[fill="white"],
+svg text[fill="#f5f5f5"],
+svg text[fill="#F5F5F5"],
+svg text[fill="#ebebeb"],
+svg text[fill="#e0e0e0"] {
+  stroke-width: 0;  /* No halo on box labels OR on light-fill text inside dark blocks */
 }
 </style>
 </head>
@@ -48,89 +57,86 @@ svg .state-label, svg rect + text, svg [font-weight="bold"] {
       <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
     </marker>
     <marker id="arr-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+      <polygon points="0 0, 10 3.5, 0 7" fill="#222"/>
     </marker>
   </defs>
 
   <!-- Step 1: Student requests recommendation -->
-  <rect x="210" y="10" width="260" height="52" rx="8" fill="#e3f2fd" stroke="#1565c0" stroke-width="2"/>
-  <text x="340" y="32" font-size="16" font-weight="bold" fill="#1565c0" text-anchor="middle">Step 1</text>
+  <rect x="210" y="10" width="260" height="52" rx="8" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="340" y="32" font-size="16" font-weight="bold" fill="#222" text-anchor="middle">Step 1</text>
   <text x="340" y="50" font-size="15" fill="#333" text-anchor="middle">Student requests recommendation</text>
 
   <!-- Arrow down -->
   <line x1="340" y1="62" x2="340" y2="85" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Step 2: Adaptive Engine processes -->
-  <rect x="120" y="90" width="440" height="135" rx="8" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="2"/>
-  <text x="340" y="112" font-size="16" font-weight="bold" fill="#6a1b9a" text-anchor="middle">Step 2: Adaptive Engine Generates Recommendation</text>
+  <rect x="120" y="90" width="440" height="135" rx="8" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="340" y="112" font-size="16" font-weight="bold" fill="#222" text-anchor="middle">Step 2: Adaptive Engine Generates Recommendation</text>
 
   <!-- Sub-boxes inside adaptive engine -->
-  <rect x="140" y="122" width="120" height="40" rx="4" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
-  <text x="200" y="138" font-size="14" font-weight="bold" fill="#3949ab" text-anchor="middle">BKT</text>
+  <rect x="140" y="122" width="120" height="40" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="200" y="138" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">BKT</text>
   <text x="200" y="154" font-size="13" fill="#555" text-anchor="middle">Mastery check</text>
 
-  <rect x="272" y="122" width="120" height="40" rx="4" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
-  <text x="332" y="138" font-size="14" font-weight="bold" fill="#3949ab" text-anchor="middle">Elo</text>
+  <rect x="272" y="122" width="120" height="40" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="332" y="138" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Elo</text>
   <text x="332" y="154" font-size="13" fill="#555" text-anchor="middle">ZPD filter</text>
 
-  <rect x="404" y="122" width="120" height="40" rx="4" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
-  <text x="464" y="138" font-size="14" font-weight="bold" fill="#3949ab" text-anchor="middle">H-MAB</text>
+  <rect x="404" y="122" width="120" height="40" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="464" y="138" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">H-MAB</text>
   <text x="464" y="154" font-size="13" fill="#555" text-anchor="middle">Select problem</text>
 
-  <rect x="140" y="170" width="120" height="40" rx="4" fill="#e8eaf6" stroke="#3949ab" stroke-width="1.5"/>
-  <text x="200" y="186" font-size="14" font-weight="bold" fill="#3949ab" text-anchor="middle">FSRS</text>
+  <rect x="140" y="170" width="120" height="40" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="200" y="186" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">FSRS</text>
   <text x="200" y="202" font-size="13" fill="#555" text-anchor="middle">Review queue</text>
 
-  <rect x="272" y="170" width="252" height="40" rx="4" fill="#e0f2f1" stroke="#00695c" stroke-width="1.5"/>
-  <text x="398" y="186" font-size="14" font-weight="bold" fill="#00695c" text-anchor="middle">Knowledge Graph</text>
+  <rect x="272" y="170" width="252" height="40" rx="4" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="398" y="186" font-size="14" font-weight="bold" fill="#222" text-anchor="middle">Knowledge Graph</text>
   <text x="398" y="202" font-size="13" fill="#555" text-anchor="middle">Prerequisites + structure</text>
 
   <!-- Arrow down -->
   <line x1="340" y1="225" x2="340" y2="248" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Step 3: Student submits code -->
-  <rect x="210" y="253" width="260" height="52" rx="8" fill="#fff3e0" stroke="#e65100" stroke-width="2"/>
-  <text x="340" y="275" font-size="16" font-weight="bold" fill="#e65100" text-anchor="middle">Step 3</text>
+  <rect x="210" y="253" width="260" height="52" rx="8" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="340" y="275" font-size="16" font-weight="bold" fill="#222" text-anchor="middle">Step 3</text>
   <text x="340" y="293" font-size="15" fill="#333" text-anchor="middle">Student submits code solution</text>
 
   <!-- Arrow down -->
   <line x1="340" y1="305" x2="340" y2="328" stroke="#333" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Step 4: Docker sandbox executes -->
-  <rect x="210" y="333" width="260" height="52" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="2"/>
-  <text x="340" y="355" font-size="16" font-weight="bold" fill="#c62828" text-anchor="middle">Step 4</text>
+  <rect x="210" y="333" width="260" height="52" rx="8" fill="#f5f5f5" stroke="#222" stroke-width="2"/>
+  <text x="340" y="355" font-size="16" font-weight="bold" fill="#222" text-anchor="middle">Step 4</text>
   <text x="340" y="373" font-size="15" fill="#333" text-anchor="middle">Docker sandbox executes + grades</text>
 
-  <!-- Arrow to right, then up (the loop) -->
-  <line x1="470" y1="359" x2="590" y2="359" stroke="#2e7d32" stroke-width="2.5"/>
-  <line x1="590" y1="359" x2="590" y2="157" stroke="#2e7d32" stroke-width="2.5"/>
-  <line x1="590" y1="157" x2="528" y2="157" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#arr-green)"/>
+  <!-- Arrow to right, then up (the loop). Endpoint x=560 lands on Step 2's right boundary (box right edge = 120+440 = 560). -->
+  <line x1="470" y1="359" x2="590" y2="359" stroke="#222" stroke-width="2.5"/>
+  <line x1="590" y1="359" x2="590" y2="157" stroke="#222" stroke-width="2.5"/>
+  <line x1="590" y1="157" x2="560" y2="157" stroke="#222" stroke-width="2.5" marker-end="url(#arr-green)"/>
 
   <!-- Label on the loop arrow -->
-  <rect x="598" y="225" width="76" height="95" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
-  <text x="636" y="243" font-size="13" font-weight="bold" fill="#2e7d32" text-anchor="middle">Async</text>
-  <text x="636" y="258" font-size="13" font-weight="bold" fill="#2e7d32" text-anchor="middle">Updates</text>
+  <rect x="598" y="225" width="76" height="95" rx="5" fill="#f5f5f5" stroke="#222" stroke-width="1.5"/>
+  <text x="636" y="243" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">Async</text>
+  <text x="636" y="258" font-size="13" font-weight="bold" fill="#222" text-anchor="middle">Updates</text>
   <text x="636" y="278" font-size="12" fill="#555" text-anchor="middle">BKT</text>
   <text x="636" y="292" font-size="12" fill="#555" text-anchor="middle">Elo</text>
   <text x="636" y="306" font-size="12" fill="#555" text-anchor="middle">MAB</text>
   <text x="636" y="316" font-size="12" fill="#555" text-anchor="middle">FSRS</text>
 
   <!-- Loop back to step 1 from adaptive engine -->
-  <line x1="120" y1="157" x2="80" y2="157" stroke="#2e7d32" stroke-width="2.5"/>
-  <line x1="80" y1="157" x2="80" y2="36" stroke="#2e7d32" stroke-width="2.5"/>
-  <line x1="80" y1="36" x2="205" y2="36" stroke="#2e7d32" stroke-width="2.5" marker-end="url(#arr-green)"/>
+  <line x1="120" y1="157" x2="80" y2="157" stroke="#222" stroke-width="2.5"/>
+  <line x1="80" y1="157" x2="80" y2="36" stroke="#222" stroke-width="2.5"/>
+  <line x1="80" y1="36" x2="205" y2="36" stroke="#222" stroke-width="2.5" marker-end="url(#arr-green)"/>
 
-  <text x="55" y="100" font-size="14" fill="#2e7d32" text-anchor="middle" font-weight="bold" transform="rotate(-90, 55, 100)">Next cycle</text>
+  <text x="55" y="100" font-size="14" fill="#222" text-anchor="middle" font-weight="bold" transform="rotate(-90, 55, 100)">Next cycle</text>
 
-  <!-- Bottom caption area -->
-  <rect x="160" y="420" width="360" height="36" rx="5" fill="#f5f5f5" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Bottom caption area (widened from 360→480 so italic text fits without overflow) -->
+  <rect x="100" y="420" width="480" height="36" rx="5" fill="#f5f5f5" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
   <text x="340" y="443" font-size="14" fill="#666" text-anchor="middle" font-style="italic">Continuous closed loop: each submission refines the learner model</text>
 </svg>
 </div>
 
-<div class="caption">
-  <strong>Figure 1.2.</strong> Closed-loop adaptive workflow. The student requests a recommendation (Step 1), the adaptive engine generates a personalized problem through its five layers (Step 2), the student submits code (Step 3), the sandbox evaluates the solution (Step 4), and results asynchronously update all adaptive layers.
-</div>
 </div>
 
 </body>

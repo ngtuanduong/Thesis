@@ -1,0 +1,11 @@
+# ABSTRACT
+
+Programming is a core skill in higher education, but introductory CS courses still report 30–40% failure rates worldwide. The mismatch is structural: programming demands individual deliberate practice, while university classes are uniform, large, and resource-constrained. Existing online platforms (LeetCode, HackerRank, Codeforces) host large problem sets but use static difficulty tiers and do not adapt to the individual student. Prior academic work on adaptive learning for programming has typically tackled one component — knowledge tracing, difficulty calibration, problem recommendation, or spaced repetition — in isolation.
+
+This thesis designs and implements an Adaptive Learning Platform for University Programming Courses that integrates these components into a single closed-loop system. The platform is built around a hand-curated knowledge graph of about 30 Python concepts and a five-layer adaptive engine: Bayesian Knowledge Tracing for per-concept mastery, a Dynamic K-Value Elo rating system for difficulty calibration, a Hierarchical Multi-Armed Bandit with Thompson Sampling for problem selection, the Free Spaced Repetition Scheduler (FSRS) for review scheduling, and an exploratory Retrieval-Augmented LLM hint module. The system is delivered as a working full-stack application (React, NestJS, FastAPI, PostgreSQL, Docker sandbox) and is deployed.
+
+The thesis also specifies a pilot evaluation protocol: a between-subjects, pre-/post-test study with 40–60 undergraduate students at Hanoi University over a four-week intervention plus a two-week retention follow-up, using Normalized Learning Gain, prediction accuracy (AUC-ROC), engagement metrics, the System Usability Scale, and the Technology Acceptance Model. The intervention has not been executed at the time of writing; no experimental outcomes are reported.
+
+The two contributions are (1) the integrated platform and (2) the pilot evaluation design. **This thesis should be read as an implementation thesis with a pilot evaluation protocol, not as a completed classroom evaluation.** Layer 5 (LLM hints) is exploratory work and is disabled in the pilot.
+
+**Keywords:** adaptive learning, knowledge tracing, multi-armed bandits, spaced repetition, programming education, Elo rating system.

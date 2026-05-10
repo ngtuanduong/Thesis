@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Table 3.1 - Functional Requirements and Table 3.2 - Non-Functional Requirements</title>
+<title>Table 3.1 - Functional Requirements</title>
 <style>
   body {
     font-family: 'Times New Roman', Times, serif;
@@ -23,15 +23,13 @@
   td:first-child { font-weight: bold; white-space: nowrap; width: 8%; }
   td:nth-child(3) { width: 12%; }
   .section-break td { border-top: 1px solid #ccc; }
-  .priority-high { color: #c62828; font-weight: bold; }
-  .priority-med { color: #e65100; }
-  .priority-low { color: #2e7d32; font-style: italic; }
+  .priority-high { color: #222; font-weight: bold; }
+  .priority-med { color: #222; }
+  .priority-low { color: #222; font-style: italic; }
   .note { font-size: 11px; font-style: italic; margin-top: 6px; }
 </style>
 </head>
 <body>
-
-<div class="table-title">Table 3.1. Functional requirements derived from research objectives.</div>
 
 <table>
   <thead>
@@ -102,57 +100,6 @@
       <td>Log all interaction events for evaluation analysis</td>
       <td class="priority-high">Must</td>
       <td>Obj. 6</td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="table-title">Table 3.2. Non-functional requirements.</div>
-
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Requirement</th>
-      <th>Target</th>
-      <th>Rationale</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>NFR1</td>
-      <td>Code execution latency</td>
-      <td>&lt; 10s for standard problems</td>
-      <td>Student attention; Docker cold start</td>
-    </tr>
-    <tr>
-      <td>NFR2</td>
-      <td>Recommendation latency</td>
-      <td>&lt; 500ms end-to-end</td>
-      <td>Interactive user experience</td>
-    </tr>
-    <tr>
-      <td>NFR3</td>
-      <td>Concurrent users</td>
-      <td>50+ simultaneous</td>
-      <td>Class-size deployment</td>
-    </tr>
-    <tr>
-      <td>NFR4</td>
-      <td>Adaptive update consistency</td>
-      <td>&lt; 2s eventual</td>
-      <td>Next recommendation reflects latest state</td>
-    </tr>
-    <tr>
-      <td>NFR5</td>
-      <td>System availability</td>
-      <td>99% during experiment</td>
-      <td>4-week evaluation period reliability</td>
-    </tr>
-    <tr>
-      <td>NFR6</td>
-      <td>Code execution security</td>
-      <td>Sandboxed, resource-limited</td>
-      <td>Prevent malicious code execution</td>
     </tr>
   </tbody>
 </table>

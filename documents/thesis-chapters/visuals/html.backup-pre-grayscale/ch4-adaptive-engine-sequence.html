@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+body { margin: 0; padding: 20px; background: #fff; font-family: 'Times New Roman', serif; }
+.container { max-width: 920px; margin: 0 auto; }
+.caption { text-align: center; font-size: 13pt; margin-top: 12px; font-style: italic; line-height: 1.5; }
+.caption .label { font-weight: bold; font-style: italic; }
+svg { display: block; margin: 0 auto; }
+svg text { font-family: 'Times New Roman', serif; }
+</style>
+</head>
+<body>
+<div class="container">
+<!-- viewBox 900×720 — tight; doc scales to 15cm ≈ 567 display px, scale ≈ 0.63.
+     Fonts 18-26 px source → 11-16 px display (readable). -->
+<svg width="900" height="720" viewBox="0 0 900 720">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+    <marker id="ar" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#888"/>
+    </marker>
+    <marker id="ab" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#1565c0"/>
+    </marker>
+    <marker id="ao" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e65100"/>
+    </marker>
+    <marker id="ac" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00838f"/>
+    </marker>
+  </defs>
+
+  <!-- ===== TITLE ===== -->
+  <text x="450" y="30" text-anchor="middle" font-size="26" font-weight="bold" fill="#111">Submission Processing Pipeline</text>
+  <text x="450" y="55" text-anchor="middle" font-size="17" fill="#555" font-style="italic">Synchronous execution + asynchronous adaptive updates</text>
+
+  <!-- ===== ACTOR HEADERS (6 columns) ===== -->
+  <!-- Student center=70 -->
+  <rect x="15" y="75" width="110" height="44" rx="6" fill="#1565c0" stroke="#0d47a1" stroke-width="2"/>
+  <text x="70" y="103" text-anchor="middle" font-size="18" fill="#fff" font-weight="bold">Student</text>
+
+  <!-- NestJS center=220 -->
+  <rect x="165" y="75" width="110" height="44" rx="6" fill="#2e7d32" stroke="#1b5e20" stroke-width="2"/>
+  <text x="220" y="103" text-anchor="middle" font-size="18" fill="#fff" font-weight="bold">NestJS API</text>
+
+  <!-- Docker center=370 -->
+  <rect x="315" y="75" width="110" height="44" rx="6" fill="#880e4f" stroke="#560027" stroke-width="2"/>
+  <text x="370" y="103" text-anchor="middle" font-size="18" fill="#fff" font-weight="bold">Docker</text>
+
+  <!-- Adaptive Engine center=530 -->
+  <rect x="460" y="75" width="140" height="44" rx="6" fill="#e65100" stroke="#bf360c" stroke-width="2"/>
+  <text x="530" y="96" text-anchor="middle" font-size="17" fill="#fff" font-weight="bold">Adaptive Engine</text>
+  <text x="530" y="113" text-anchor="middle" font-size="14" fill="#fff">(FastAPI)</text>
+
+  <!-- PostgreSQL center=690 -->
+  <rect x="635" y="75" width="110" height="44" rx="6" fill="#6a1b9a" stroke="#4a148c" stroke-width="2"/>
+  <text x="690" y="103" text-anchor="middle" font-size="18" fill="#fff" font-weight="bold">PostgreSQL</text>
+
+  <!-- Redis center=820 -->
+  <rect x="780" y="75" width="90" height="44" rx="6" fill="#00838f" stroke="#006064" stroke-width="2"/>
+  <text x="825" y="103" text-anchor="middle" font-size="18" fill="#fff" font-weight="bold">Redis</text>
+
+  <!-- ===== LIFELINES ===== -->
+  <line x1="70"  y1="119" x2="70"  y2="685" stroke="#bbb" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="220" y1="119" x2="220" y2="685" stroke="#bbb" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="370" y1="119" x2="370" y2="685" stroke="#bbb" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="530" y1="119" x2="530" y2="685" stroke="#bbb" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="690" y1="119" x2="690" y2="685" stroke="#bbb" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="825" y1="119" x2="825" y2="685" stroke="#bbb" stroke-width="1" stroke-dasharray="5,4"/>
+
+  <!-- ===== PHASE 1: SYNCHRONOUS (y=130-290) ===== -->
+  <rect x="10" y="130" width="880" height="160" rx="6" fill="#e3f2fd" fill-opacity="0.35" stroke="#90caf9" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="25" y="152" font-size="17" fill="#1565c0" font-weight="bold">① SYNCHRONOUS PHASE — student-facing, &lt;5 s</text>
+
+  <!-- 1. Submit code (Student → NestJS) -->
+  <line x1="70" y1="180" x2="215" y2="180" stroke="#333" stroke-width="2.2" marker-end="url(#a)"/>
+  <text x="143" y="173" text-anchor="middle" font-size="17" fill="#222" font-weight="bold">1. Submit code</text>
+
+  <!-- 2. Execute (NestJS → Docker) -->
+  <line x1="220" y1="215" x2="365" y2="215" stroke="#333" stroke-width="2.2" marker-end="url(#a)"/>
+  <text x="292" y="208" text-anchor="middle" font-size="17" fill="#222" font-weight="bold">2. Execute</text>
+
+  <!-- 3. Result (Docker → NestJS, dashed return) -->
+  <line x1="365" y1="250" x2="225" y2="250" stroke="#888" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ar)"/>
+  <text x="292" y="243" text-anchor="middle" font-size="16" fill="#555">3. Result (ACCEPTED / WRONG)</text>
+
+  <!-- 4. Feedback (NestJS → Student, dashed return) -->
+  <line x1="215" y1="280" x2="75" y2="280" stroke="#888" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ar)"/>
+  <text x="143" y="273" text-anchor="middle" font-size="16" fill="#555">4. Feedback</text>
+
+  <!-- ===== PHASE 2: ASYNCHRONOUS (y=305-655) ===== -->
+  <rect x="10" y="305" width="880" height="350" rx="6" fill="#fff3e0" fill-opacity="0.35" stroke="#ffb74d" stroke-width="1" stroke-dasharray="5,3"/>
+  <text x="25" y="327" font-size="17" fill="#e65100" font-weight="bold">② ASYNCHRONOUS PHASE — background adaptive updates</text>
+
+  <!-- 5. Trigger adaptive update (NestJS → Adaptive) -->
+  <line x1="220" y1="360" x2="525" y2="360" stroke="#e65100" stroke-width="2.5" marker-end="url(#ao)"/>
+  <text x="370" y="353" text-anchor="middle" font-size="17" fill="#e65100" font-weight="bold">5. POST /adaptive/update</text>
+
+  <!-- Layer stack inside Adaptive lane (showing sequential processing) -->
+  <rect x="440" y="380" width="180" height="200" rx="6" fill="#fff" stroke="#333" stroke-width="1.8"/>
+  <text x="530" y="402" text-anchor="middle" font-size="15" fill="#333" font-weight="bold">Layers updated sequentially</text>
+
+  <rect x="452" y="412" width="156" height="30" rx="4" fill="#e8eaf6" stroke="#283593" stroke-width="1.5"/>
+  <text x="530" y="432" text-anchor="middle" font-size="16" fill="#283593" font-weight="bold">L1: BKT mastery</text>
+
+  <rect x="452" y="446" width="156" height="30" rx="4" fill="#fce4ec" stroke="#880e4f" stroke-width="1.5"/>
+  <text x="530" y="466" text-anchor="middle" font-size="16" fill="#880e4f" font-weight="bold">L2: Elo rating</text>
+
+  <rect x="452" y="480" width="156" height="30" rx="4" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+  <text x="530" y="500" text-anchor="middle" font-size="16" fill="#e65100" font-weight="bold">L3: MAB reward</text>
+
+  <rect x="452" y="514" width="156" height="30" rx="4" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+  <text x="530" y="534" text-anchor="middle" font-size="16" fill="#6a1b9a" font-weight="bold">L4: FSRS review</text>
+
+  <!-- Small down arrow showing sequential order -->
+  <text x="625" y="480" font-size="22" fill="#666" font-weight="bold">↓</text>
+
+  <!-- 6. Persist all layer state (Adaptive → PostgreSQL) -->
+  <line x1="620" y1="480" x2="685" y2="480" stroke="#1565c0" stroke-width="2.5" marker-end="url(#ab)"/>
+  <text x="653" y="470" text-anchor="middle" font-size="15" fill="#1565c0" font-weight="bold">6. Persist</text>
+
+  <!-- 7. Invalidate cache (Adaptive → Redis) -->
+  <line x1="620" y1="610" x2="820" y2="610" stroke="#00838f" stroke-width="2.5" marker-end="url(#ac)"/>
+  <text x="720" y="602" text-anchor="middle" font-size="16" fill="#00838f" font-weight="bold">7. Invalidate cache</text>
+
+  <!-- 8. Return ack (Adaptive → NestJS, dashed return) -->
+  <line x1="525" y1="640" x2="225" y2="640" stroke="#888" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#ar)"/>
+  <text x="375" y="632" text-anchor="middle" font-size="16" fill="#555">8. Ack (layers updated)</text>
+</svg>
+<div class="caption">
+  <span class="label">Figure 4.1.</span> Submission processing pipeline. The synchronous phase returns a verdict to the student within 5 s; the asynchronous phase updates all four adaptive layers in sequence (BKT → Elo → MAB → FSRS), persists state, and invalidates the Redis cache. No downstream layer is blocked by the student-facing response.
+</div>
+</div>
+</body>
+</html>
