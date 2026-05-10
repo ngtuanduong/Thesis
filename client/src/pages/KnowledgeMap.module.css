@@ -1,0 +1,180 @@
+/* ── Custom ReactFlow Node ── */
+.nodeCenter {
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.nodeRingContainer {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}
+
+.nodeOuterRing {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.nodeInnerCircle {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.nodePercentage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.nodeLabel {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── Popover Actions ── */
+.popoverContent {
+  font-size: var(--font-size-md);
+}
+
+.popoverTitle {
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.popoverAction {
+  margin-top: var(--space-1);
+  padding: var(--space-1) 0;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.popoverPractice {
+  composes: popoverAction;
+  color: var(--color-success);
+}
+
+.popoverViewProblems {
+  composes: popoverAction;
+  color: var(--color-info);
+}
+
+/* ── Graph Container ── */
+.graphContainer {
+  width: 100%;
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+}
+
+/* ── Guidance Panel ── */
+.guidanceCard {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  max-width: 220px;
+  position: relative;
+}
+
+.guidanceClose {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+.guidanceToggle {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Legend ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  justify-content: center;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legendDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ── Topic Concept Row ── */
+.conceptRow {
+  margin-bottom: var(--space-2);
+}
+
+.conceptRowHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.topicFooter {
+  margin-top: var(--space-2);
+  text-align: right;
+}
+
+/* ── Selected Node (mobile tap) ── */
+.nodeSelected {
+  box-shadow: 0 0 0 3px rgba(24, 144, 255, 0.4);
+  opacity: 1 !important;
+}
+
+/* ── Mobile Overrides ── */
+@media (max-width: 767px) {
+  .nodeLabel {
+    max-width: 65px;
+    font-size: 9px;
+  }
+
+  .nodePercentage {
+    font-size: 10px;
+  }
+
+  .guidanceCard {
+    max-width: 180px;
+    font-size: 11px;
+  }
+}

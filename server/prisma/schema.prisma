@@ -1,0 +1,351 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [vector]
+}
+
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  ADMIN
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum SubmissionStatus {
+  PENDING
+  RUNNING
+  ACCEPTED
+  WRONG_ANSWER
+  TIME_LIMIT
+  RUNTIME_ERROR
+  COMPILATION_ERROR
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enrollments     Enrollment[]
+  submissions     Submission[]
+  skillEmbeddings SkillEmbedding[]
+  createdCourses  Course[]         @relation("CourseInstructor")
+  knowledgeStates KnowledgeState[]
+  mabStates       MabState[]
+  fsrsCards       FsrsCard[]
+  eventLogs       EventLog[]
+  experimentGroup ExperimentGroup?
+  chatMessages    ChatMessage[]
+  chatTokenUsage  ChatTokenUsage[]
+
+  @@map("users")
+}
+
+model Course {
+  id           String   @id @default(uuid()) @db.Uuid
+  title        String
+  description  String?
+  instructorId String   @db.Uuid
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  instructor  User         @relation("CourseInstructor", fields: [instructorId], references: [id])
+  enrollments Enrollment[]
+  problems    Problem[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  courseId  String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  course Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+model Problem {
+  id          String     @id @default(uuid()) @db.Uuid
+  title       String
+  description String
+  constraints String?
+  difficulty  Difficulty @default(MEDIUM)
+  courseId    String?    @db.Uuid
+  starterCode String?   @map("starter_code") @db.Text
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  course          Course?           @relation(fields: [courseId], references: [id])
+  testCases       TestCase[]
+  submissions     Submission[]
+  embedding       ProblemEmbedding?
+  problemConcepts ProblemConcept[]
+
+  @@map("problems")
+}
+
+model TestCase {
+  id        String  @id @default(uuid()) @db.Uuid
+  problemId String  @db.Uuid
+  input     String
+  expected  String
+  isHidden  Boolean @default(false)
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@map("test_cases")
+}
+
+model Submission {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  problemId String           @db.Uuid
+  code      String
+  language  String
+  status    SubmissionStatus @default(PENDING)
+  output    String?
+  runtime   Int?
+  memory    Int?
+  createdAt DateTime         @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+
+  @@map("submissions")
+}
+
+model ProblemEmbedding {
+  id           String                        @id @default(uuid()) @db.Uuid
+  problemId    String                        @unique @db.Uuid
+  embedding    Float[]
+  embeddingVec Unsupported("vector(384)")? @map("embedding_vec")
+  updatedAt    DateTime                      @updatedAt
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@map("problem_embeddings")
+}
+
+model SkillEmbedding {
+  id           String                        @id @default(uuid()) @db.Uuid
+  userId       String                        @db.Uuid
+  skillName    String
+  embedding    Float[]
+  embeddingVec Unsupported("vector(384)")? @map("embedding_vec")
+  score        Float                         @default(0)
+  updatedAt    DateTime                      @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, skillName])
+  @@map("skill_embeddings")
+}
+
+// ============================================================
+// Adaptive Learning Models (Knowledge Graph + 4 Adaptive Layers)
+// ============================================================
+
+model Concept {
+  id             Int      @id @default(autoincrement())
+  name           String   @unique @db.VarChar(100)
+  displayName    String   @map("display_name") @db.VarChar(200)
+  description    String?  @db.Text
+  topicGroup     String?  @map("topic_group") @db.VarChar(100)
+  difficultyTier Int      @default(1) @map("difficulty_tier")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  knowledgeStates  KnowledgeState[]
+  problemConcepts  ProblemConcept[]
+  fsrsCards        FsrsCard[]
+  prerequisiteFor  KnowledgeGraphEdge[] @relation("prerequisiteFor")
+  hasPrerequisites KnowledgeGraphEdge[] @relation("hasPrerequisites")
+
+  @@map("concepts")
+}
+
+model KnowledgeGraphEdge {
+  id            Int    @id @default(autoincrement())
+  fromConceptId Int    @map("from_concept_id")
+  toConceptId   Int    @map("to_concept_id")
+  relationType  String @default("PREREQUISITE") @map("relation_type") @db.VarChar(20)
+  weight        Float  @default(1.0)
+
+  fromConcept Concept @relation("prerequisiteFor", fields: [fromConceptId], references: [id], onDelete: Cascade)
+  toConcept   Concept @relation("hasPrerequisites", fields: [toConceptId], references: [id], onDelete: Cascade)
+
+  @@unique([fromConceptId, toConceptId])
+  @@map("knowledge_graph_edges")
+}
+
+model ProblemConcept {
+  id        Int     @id @default(autoincrement())
+  problemId String  @map("problem_id") @db.Uuid
+  conceptId Int     @map("concept_id")
+  isPrimary Boolean @default(false) @map("is_primary")
+
+  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([problemId, conceptId])
+  @@map("problem_concepts")
+}
+
+model KnowledgeState {
+  id        Int      @id @default(autoincrement())
+  studentId String   @map("student_id") @db.Uuid
+  conceptId Int      @map("concept_id")
+  pMastery  Float    @default(0.1) @map("p_mastery")
+  pL0       Float    @default(0.1) @map("p_l0")
+  pTransit  Float    @default(0.2) @map("p_transit")
+  pGuess    Float    @default(0.15) @map("p_guess")
+  pSlip     Float    @default(0.1) @map("p_slip")
+  nAttempts Int      @default(0) @map("n_attempts")
+  nCorrect  Int      @default(0) @map("n_correct")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  student User    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, conceptId])
+  @@index([studentId])
+  @@index([studentId, pMastery])
+  @@map("knowledge_states")
+}
+
+model EloRating {
+  id            Int      @id @default(autoincrement())
+  entityId      String   @map("entity_id") @db.Uuid
+  entityType    String   @map("entity_type") @db.VarChar(10)
+  conceptId     Int?     @map("concept_id")
+  rating        Float    @default(1200.0)
+  kValue        Float    @default(25.0) @map("k_value")
+  trend         Float    @default(0.0)
+  nAttempts     Int      @default(0) @map("n_attempts")
+  ratingHistory Json     @default("[]") @map("rating_history")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@unique([entityId, entityType, conceptId])
+  @@index([entityId, entityType])
+  @@index([rating])
+  @@map("elo_ratings")
+}
+
+model MabState {
+  id          Int      @id @default(autoincrement())
+  studentId   String   @map("student_id") @db.Uuid
+  armId       String   @map("arm_id")
+  armType     String   @map("arm_type") @db.VarChar(10)
+  alpha       Float    @default(1.0)
+  beta        Float    @default(1.0)
+  nPulls      Int      @default(0) @map("n_pulls")
+  totalReward Float    @default(0.0) @map("total_reward")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, armId, armType])
+  @@index([studentId, armType])
+  @@map("mab_states")
+}
+
+model FsrsCard {
+  id             Int       @id @default(autoincrement())
+  studentId      String    @map("student_id") @db.Uuid
+  conceptId      Int       @map("concept_id")
+  difficulty     Float     @default(5.0)
+  stability      Float     @default(1.0)
+  retrievability Float     @default(1.0)
+  state          String    @default("NEW") @db.VarChar(15)
+  dueDate        DateTime  @default(now()) @map("due_date")
+  lastReview     DateTime? @map("last_review")
+  reps           Int       @default(0)
+  lapses         Int       @default(0)
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  student User    @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, conceptId])
+  @@index([studentId, dueDate])
+  @@index([studentId, retrievability])
+  @@map("fsrs_cards")
+}
+
+// === Evaluation & Experiment Models ===
+
+model EventLog {
+  id        Int      @id @default(autoincrement())
+  userId    String   @map("user_id") @db.Uuid
+  event     String   @db.VarChar(50)
+  data      Json     @default("{}")
+  sessionId String?  @map("session_id") @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, event])
+  @@index([createdAt])
+  @@index([event])
+  @@map("event_logs")
+}
+
+model ExperimentGroup {
+  id        Int      @id @default(autoincrement())
+  userId    String   @unique @map("user_id") @db.Uuid
+  groupName String   @map("group_name") @db.VarChar(20)
+  assignedAt DateTime @default(now()) @map("assigned_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([groupName])
+  @@map("experiment_groups")
+}
+
+// === Chatbot Models ===
+
+model ChatMessage {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  role      String   @db.VarChar(10)
+  content   String   @db.Text
+  tokens    Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("chat_messages")
+}
+
+model ChatTokenUsage {
+  id         Int      @id @default(autoincrement())
+  userId     String   @map("user_id") @db.Uuid
+  date       DateTime @db.Date
+  tokensUsed Int      @default(0) @map("tokens_used")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId, date])
+  @@map("chat_token_usage")
+}
