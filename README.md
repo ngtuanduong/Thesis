@@ -259,7 +259,3 @@ Key environment variables (see `.env.example` files in each service):
 | `REDIS_HOST`       | Backend   | Redis hostname                       |
 | `EMBEDDING_MODEL`  | AI Svc    | Sentence-transformer model name      |
 | `CLIENT_URL`       | Backend   | Frontend origin for CORS             |
-
-## License
-
-MIT
